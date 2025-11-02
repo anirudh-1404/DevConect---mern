@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  fetchAllUsers,
   fetchUserProfile,
   loginController,
   logoutController,
@@ -10,10 +11,11 @@ import { protectRoute } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
+router.get("/", fetchAllUsers);
 router.post("/register", registerUser);
 router.post("/login", loginController);
 router.get("/profile", protectRoute, fetchUserProfile);
 router.post("/logout", logoutController);
-router.post("/updateprofile", protectRoute, updateUserProfile);
+router.patch("/updateprofile", protectRoute, updateUserProfile);
 
 export default router;

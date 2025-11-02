@@ -14,6 +14,7 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    bio: "",
   });
 
   const [errors, setErrors] = useState({}); // store field-wise errors
@@ -74,18 +75,17 @@ const Register = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      bio: "",
     });
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <div className="grid grid-cols-2 rounded-3xl p-10 mx-10 md:mx-40 my-20 backdrop-blur-xl bg-gradient-to-br from-cyan-500/10 to-blue-600/10 shadow-[0_0_25px_rgba(6,182,212,0.25)] hover:shadow-[0_0_35px_rgba(6,182,212,0.4)] drop-shadow-lg h-[50rem] w-full max-w-9xl border border-cyan-400/30">
-        {/* LEFT SIDE IMAGE */}
+      <div className="grid grid-cols-2 rounded-3xl p-10 mx-10 md:mx-40 my-10 backdrop-blur-xl bg-gradient-to-br from-cyan-500/10 to-blue-600/10 shadow-[0_0_25px_rgba(6,182,212,0.25)] hover:shadow-[0_0_35px_rgba(6,182,212,0.4)] drop-shadow-lg h-[55rem] w-full max-w-9xl border border-cyan-400/30">
         <div className="flex justify-center items-center text-white text-2xl font-semibold">
           <Lottie animationData={registerAnim} loop={true} />
         </div>
 
-        {/* RIGHT SIDE FORM */}
         <motion.div
           initial={{ opacity: 0, x: 80 }}
           animate={{ opacity: 1, x: 0 }}
@@ -100,7 +100,6 @@ const Register = () => {
           </p>
 
           <form className="space-y-5" onSubmit={handleSubmission}>
-            {/* Email */}
             <div>
               <label htmlFor="email" className="text-sm text-gray-300">
                 Email
@@ -195,6 +194,21 @@ const Register = () => {
                   {errors.confirmPassword}
                 </p>
               )}
+            </div>
+
+            <div>
+              <label htmlFor="bio" className="text-sm text-gray-300">
+                Add your bio
+              </label>
+              <input
+                type="text"
+                id="bio"
+                name="bio"
+                value={formData.bio}
+                placeholder="Short words about yourself!"
+                className="w-full mt-2 px-4 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border"
+                onChange={handleChange}
+              />
             </div>
 
             {/* Submit Button */}

@@ -3,8 +3,29 @@ import genToken from "../utils/authToken.js";
 import { hashedPassword } from "../utils/hashedPassword.js";
 import bcrypt from "bcrypt";
 
+export const fetchAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.find({});
+
+    if (!users) {
+      return res.status(400).json({
+        message: "No users found!",
+      });
+    }
+
+    res.status(200).json({
+      message: "All users fetched!",
+      users: users,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Something went wrong while fetching users!",
+    });
+  }
+};
+
 export const registerUser = async (req, res, next) => {
-  const { email, username, password } = req.body;
+  const { email, username, password, bio, avatar } = req.body;
   try {
     if (!email || !password || !username) {
       res.status(401).json({
@@ -23,6 +44,8 @@ export const registerUser = async (req, res, next) => {
       username,
       email,
       password: encryptedPassword,
+      bio,
+      avatar,
     });
     const token = await genToken(user._id);
     res.cookie("token", token, {
@@ -97,9 +120,11 @@ export const fetchUserProfile = async (req, res, next) => {
     }
 
     res.status(200).json({
+      avatar: userData.avatar,
       username: userData.username,
       email: userData.email,
       id: userData._id,
+      bio: userData.bio,
     });
   } catch (err) {
     res.status(500).json({
@@ -136,21 +161,21 @@ export const updateUserProfile = async (req, res, next) => {
       userData.username = req.body.username;
     }
 
-    if (req.body.email) {
-      userData.email = req.body.email;
+    if (req.body.bio) {
+      userData.bio = req.body.bio;
     }
 
-    if (req.body.password) {
-      userData.password = await hashedPassword(req.body.password);
+    if (req.body.avatar) {
+      userData.avatar = req.body.avatar;
     }
 
     await userData.save();
 
     res.status(200).json({
       message: "Update successful!",
-      email: userData.email,
       username: userData.username,
-      password: userData.password,
+      bio: userData.bio,
+      avatar: userData.avatar,
     });
   } catch (err) {
     res.status(500).json({

@@ -7,6 +7,9 @@ import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
+import Profile from "./pages/Profile";
+import ProtectedRoute from "./pages/auth/ProtectedRoute";
+import UpdateProfile from "./pages/UpdateProfile";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -17,6 +20,22 @@ const App = () => {
         { path: "/", element: <Home /> },
         { path: "/register", element: <Register /> },
         { path: "/login", element: <Login /> },
+        {
+          path: "/profile",
+          element: (
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/updateProfile",
+          element: (
+            <ProtectedRoute>
+              <UpdateProfile />
+            </ProtectedRoute>
+          ),
+        },
       ],
     },
   ]);

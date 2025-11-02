@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   DropdownMenu,
@@ -8,9 +8,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AuthContext } from "@/context/AuthContext";
+import axios from "axios";
 
 const Navbar = () => {
   const { isAuthenticated, logout } = useContext(AuthContext);
+  const [avatar, setAvatar] = useState();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BASE_URL_API}/auth/profile`,
+        { withCredentials: true }
+      );
+      setAvatar(data.avatar);
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <nav className="sticky top-0 left-0 w-full z-50 bg-[#0f2027]/70 backdrop-blur-lg border-b border-white/10 shadow-md">
@@ -61,7 +75,7 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer hover:ring-2 ring-cyan-400 transition-all">
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src={avatar || "https://github.com/shadcn.png"}
                     alt="User Avatar"
                   />
                   <AvatarFallback>AJ</AvatarFallback>
@@ -71,9 +85,11 @@ const Navbar = () => {
                 align="end"
                 className="bg-gray-600 backdrop-blur-md border border-white/10 text-white shadow-lg rounded-xl p-2"
               >
-                <DropdownMenuItem className="hover:bg-white/10 rounded-md cursor-pointer">
-                  Profile
-                </DropdownMenuItem>
+                <Link to="/profile">
+                  <DropdownMenuItem className="hover:bg-white/10 rounded-md cursor-pointer">
+                    Profile
+                  </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem className="hover:bg-white/10 rounded-md cursor-pointer">
                   Settings
                 </DropdownMenuItem>

@@ -15,6 +15,12 @@ const UserSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    bio: {
+      type: String,
+    },
+    avatar: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
