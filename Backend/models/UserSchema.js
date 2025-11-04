@@ -17,9 +17,27 @@ const UserSchema = mongoose.Schema(
     },
     bio: {
       type: String,
+      default: "",
     },
     avatar: {
       type: String,
+    },
+    role: {
+      type: String,
+      enum: ["Developer", "Recruiter"],
+      default: "Developer",
+    },
+    skills: {
+      type: [String],
+      default: [],
+    },
+    github: {
+      type: "String",
+      default: "",
+    },
+    linkedin: {
+      type: String,
+      default: "",
     },
   },
   { timestamps: true }

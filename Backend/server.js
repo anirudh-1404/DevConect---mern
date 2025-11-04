@@ -6,6 +6,7 @@ import db from "./config/db.js";
 
 import userRouter from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
+import developerRouter from "./routes/developerRoutes.js";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/api/auth", userRouter);
 app.use("/api/post", postRoutes);
+app.use("/api", developerRouter);
 
 db();
 

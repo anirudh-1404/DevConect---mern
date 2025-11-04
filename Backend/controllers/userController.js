@@ -25,10 +25,10 @@ export const fetchAllUsers = async (req, res, next) => {
 };
 
 export const registerUser = async (req, res, next) => {
-  const { email, username, password, bio, avatar } = req.body;
+  const { email, username, password, bio, avatar, role } = req.body;
   try {
-    if (!email || !password || !username) {
-      res.status(401).json({
+    if (!email || !password || !username || !role) {
+      return res.status(401).json({
         message: "All feilds are required!",
       });
     }
@@ -46,7 +46,9 @@ export const registerUser = async (req, res, next) => {
       password: encryptedPassword,
       bio,
       avatar,
+      role,
     });
+    console.log(role);
     const token = await genToken(user._id);
     res.cookie("token", token, {
       httpOnly: true,
@@ -111,10 +113,11 @@ export const loginController = async (req, res, next) => {
 
 export const fetchUserProfile = async (req, res, next) => {
   try {
-    const userData = await User.findById(req.user);
+    const userId = req.user._id;
+    const userData = await User.findById(userId);
 
     if (!userData) {
-      return res.status(401).json({
+      return res.status(404).json({
         message: "User not found!",
       });
     }
@@ -125,8 +128,10 @@ export const fetchUserProfile = async (req, res, next) => {
       email: userData.email,
       id: userData._id,
       bio: userData.bio,
+      role: userData.role,
     });
   } catch (err) {
+    console.error("Error fetching profile:", err);
     res.status(500).json({
       message: "Something went wrong while fetching profile!",
     });

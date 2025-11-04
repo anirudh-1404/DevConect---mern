@@ -15,6 +15,7 @@ const Register = () => {
     password: "",
     confirmPassword: "",
     bio: "",
+    role: "Developer",
   });
 
   const [errors, setErrors] = useState({}); // store field-wise errors
@@ -62,7 +63,6 @@ const Register = () => {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
-    // if errors exist, stop form
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -211,7 +211,29 @@ const Register = () => {
               />
             </div>
 
-            {/* Submit Button */}
+            <div className="flex justify-between items-center">
+              <label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="Developer"
+                  checked={formData.role === "Developer"}
+                  onChange={handleChange}
+                />
+                Developer
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="Recruiter"
+                  checked={formData.role === "Recruiter"}
+                  onChange={handleChange}
+                />
+                Recruiter
+              </label>
+            </div>
+
             <button
               type="submit"
               className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold shadow-lg hover:shadow-cyan-500/30 hover:scale-105 transition-all duration-300"

@@ -17,15 +17,11 @@ const DevelopersSection = () => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL_API}/auth`
+          `${import.meta.env.VITE_BASE_URL_API}/developers`
         );
-        console.log("Response:", response.data);
+        console.log("Response:", response.data.devs);
 
-        const data = Array.isArray(response.data)
-          ? response.data
-          : response.data.users;
-
-        setUsers(data || []);
+        setUsers(response.data.devs);
       } catch (err) {
         console.error("Something went wrong while fetching users", err);
       }
@@ -54,7 +50,7 @@ const DevelopersSection = () => {
             <CardHeader className="flex flex-col items-center space-y-4">
               <img
                 src={dev.avatar || "https://github.com/shadcn.png"}
-                alt={dev.username}
+                alt={dev.name || dev.username}
                 className="w-20 h-20 rounded-full border-2 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.5)]"
               />
               <CardTitle className="text-white text-lg font-semibold text-center">

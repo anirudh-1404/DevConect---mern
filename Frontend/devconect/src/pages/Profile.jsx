@@ -67,6 +67,8 @@ const Profile = () => {
           </Avatar>
 
           <h2 className="text-3xl font-semibold">{user.username}</h2>
+          <p className="text-cyan-400 text-sm font-medium">{user.role}</p>
+
           <p className="text-gray-400 mt-1">{user.email}</p>
 
           <p className="text-gray-300 text-sm mt-4 max-w-lg mx-auto italic">

@@ -75,7 +75,7 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer hover:ring-2 ring-cyan-400 transition-all">
                   <AvatarImage
-                    src={avatar || "https://github.com/shadcn.png"}
+                    src={avatar || "http://github.com/shadcn.png"}
                     alt="User Avatar"
                   />
                   <AvatarFallback>AJ</AvatarFallback>
