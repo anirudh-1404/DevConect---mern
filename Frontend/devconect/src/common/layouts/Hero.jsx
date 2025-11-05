@@ -65,7 +65,6 @@ const Hero = () => {
 
         <motion.div className="flex justify-center items-center">
           <motion.div
-            className="w-[90%] md:w-[28rem] lg:w-[40rem] p-6 rounded-3xl bg-gradient-to-br from-cyan-500/10 to-blue-600/10 backdrop-blur-md shadow-[0_0_25px_rgba(6,182,212,0.25)] hover:shadow-[0_0_35px_rgba(6,182,212,0.4)] drop-shadow-xl transition-transform duration-300 ease-out"
             initial={{ opacity: 0, x: 100 }}
             animate={{
               opacity: 1,
@@ -82,7 +81,7 @@ const Hero = () => {
               },
             }}
           >
-            <Lottie animationData={Globe} loop={true} />
+            <Lottie animationData={Globe} loop={true} className="h-[35rem]" />
           </motion.div>
         </motion.div>
       </div>

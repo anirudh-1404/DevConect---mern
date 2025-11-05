@@ -10,6 +10,8 @@ import { AuthProvider } from "./context/AuthContext";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./pages/auth/ProtectedRoute";
 import UpdateProfile from "./pages/UpdateProfile";
+import DevelopersPage from "./pages/DevelopersPage";
+import DeveloperProfile from "./pages/DeveloperProfile";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -35,6 +37,18 @@ const App = () => {
               <UpdateProfile />
             </ProtectedRoute>
           ),
+        },
+        {
+          path: "/developers",
+          element: (
+            <ProtectedRoute>
+              <DevelopersPage />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/developers/:id",
+          element: <DeveloperProfile />,
         },
       ],
     },

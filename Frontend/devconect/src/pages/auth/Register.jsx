@@ -16,15 +16,16 @@ const Register = () => {
     confirmPassword: "",
     bio: "",
     role: "Developer",
+    avatar: "",
   });
 
-  const [errors, setErrors] = useState({}); // store field-wise errors
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" }); // clear error as user types
+    setErrors({ ...errors, [e.target.name]: "" });
   };
 
   const registerFunction = async (data) => {
@@ -76,6 +77,7 @@ const Register = () => {
       password: "",
       confirmPassword: "",
       bio: "",
+      avatar: "",
     });
   };
 
@@ -99,7 +101,7 @@ const Register = () => {
             Show the world what you can build. Collaborate. Create. Connect.
           </p>
 
-          <form className="space-y-5" onSubmit={handleSubmission}>
+          <form className="space-y-2" onSubmit={handleSubmission}>
             <div>
               <label htmlFor="email" className="text-sm text-gray-300">
                 Email
@@ -206,6 +208,20 @@ const Register = () => {
                 name="bio"
                 value={formData.bio}
                 placeholder="Short words about yourself!"
+                className="w-full mt-2 px-4 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border"
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="avatar" className="text-sm text-gray-300">
+                Upload Avatar
+              </label>
+              <input
+                type="text"
+                id="avatar"
+                name="avatar"
+                value={formData.avatar}
+                placeholder="Upload link of your Avatar"
                 className="w-full mt-2 px-4 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border"
                 onChange={handleChange}
               />

@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { UsersRound } from "lucide-react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const DevelopersSection = () => {
   const [users, setUsers] = useState([]);
@@ -31,18 +32,30 @@ const DevelopersSection = () => {
 
   return (
     <section className="mt-20 mb-16 px-6 bg-gradient-to-r from-cyan-400/10 to-blue-500/10 py-12 mx-7 rounded-3xl border border-white/10 shadow-[0_0_25px_rgba(6,182,212,0.15)]">
-      <div className="flex justify-center items-center gap-3 mb-10">
-        <UsersRound
-          size={42}
-          className="text-cyan-400 drop-shadow-[0_0_12px_rgba(6,182,212,0.6)]"
-        />
-        <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 text-4xl font-extrabold text-center tracking-wide">
-          Meet Top Developers
-        </h2>
+      <div className="flex flex-col md:flex-row justify-between items-center mb-10 px-4">
+        <div className="flex items-center gap-3">
+          <UsersRound
+            size={42}
+            className="text-cyan-400 drop-shadow-[0_0_12px_rgba(6,182,212,0.6)]"
+          />
+          <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 text-3xl sm:text-4xl font-extrabold tracking-wide">
+            Meet Top Developers
+          </h2>
+        </div>
+
+        <Link
+          to="/developers"
+          className="mt-4 md:mt-0 px-5 py-2.5 rounded-full text-sm font-semibold
+    bg-gradient-to-r from-cyan-400 to-blue-600 text-white
+    hover:shadow-[0_0_18px_rgba(6,182,212,0.7)] hover:scale-105
+    transition-all duration-300"
+        >
+          Show All →
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 px-6">
-        {users.map((dev, index) => (
+        {users.slice(0, 4).map((dev, index) => (
           <Card
             key={index}
             className="bg-white/10 rounded-2xl p-6 border border-white/10 hover:border-cyan-400/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:-translate-y-2 transition-all duration-300"
@@ -62,9 +75,11 @@ const DevelopersSection = () => {
             </CardHeader>
 
             <CardFooter className="flex justify-center">
-              <button className="text-white bg-gradient-to-r from-cyan-400 to-blue-600 px-6 py-2.5 rounded-full text-sm font-semibold hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] hover:scale-105 transition-all duration-300">
-                View Profile
-              </button>
+              <Link to={`/developers/${dev._id}`}>
+                <button className="text-white bg-gradient-to-r from-cyan-400 to-blue-600 px-6 py-2.5 rounded-full text-sm font-semibold hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] hover:scale-105 transition-all duration-300">
+                  View Profile
+                </button>
+              </Link>
             </CardFooter>
           </Card>
         ))}

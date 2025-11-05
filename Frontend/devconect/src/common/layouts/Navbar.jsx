@@ -34,7 +34,7 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex gap-8 text-white font-medium">
-          {["Home", "Developers", "Projects", "Community"].map((item) => (
+          {["Developers", "Projects", "Community"].map((item) => (
             <Link
               key={item}
               to={`/${item.toLowerCase()}`}
