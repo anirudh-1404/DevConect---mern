@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import registerAnim from "../../../Lottie/registerAnim.json";
@@ -28,6 +28,14 @@ const Register = () => {
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      toast.success("User already logged in!");
+      navigate("/");
+    }
+  }, [navigate]);
+
   const registerFunction = async (data) => {
     try {
       setLoading(true);
@@ -49,7 +57,6 @@ const Register = () => {
     e.preventDefault();
     let newErrors = {};
 
-    // Validation checks
     if (!formData.username.trim()) newErrors.username = "Username is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
     if (!formData.password.trim()) newErrors.password = "Password is required";
@@ -217,13 +224,17 @@ const Register = () => {
                 Upload Avatar
               </label>
               <input
-                type="text"
+                type="file"
                 id="avatar"
                 name="avatar"
-                value={formData.avatar}
-                placeholder="Upload link of your Avatar"
-                className="w-full mt-2 px-4 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border"
-                onChange={handleChange}
+                accept="image/*"
+                className="w-full mt-2 px-4 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border border-white/20 cursor-pointer file:cursor-pointer"
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    avatar: e.target.files[0], // <-- actual file here
+                  }))
+                }
               />
             </div>
 

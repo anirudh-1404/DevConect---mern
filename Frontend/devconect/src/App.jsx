@@ -12,6 +12,10 @@ import ProtectedRoute from "./pages/auth/ProtectedRoute";
 import UpdateProfile from "./pages/UpdateProfile";
 import DevelopersPage from "./pages/DevelopersPage";
 import DeveloperProfile from "./pages/DeveloperProfile";
+import RecruitersPage from "./pages/RecruitersPage";
+import RecruitersProfile from "./pages/RecruitersProfile";
+import CreatePost from "./pages/CreatePost";
+import Community from "./pages/Community";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -49,6 +53,35 @@ const App = () => {
         {
           path: "/developers/:id",
           element: <DeveloperProfile />,
+        },
+        {
+          path: "/recruiters",
+          element: (
+            <ProtectedRoute>
+              <RecruitersPage />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/recruiters/:id",
+          element: (
+            <ProtectedRoute>
+              <RecruitersProfile />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/post/create",
+
+          element: (
+            <ProtectedRoute>
+              <CreatePost />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/community",
+          element: <Community />,
         },
       ],
     },

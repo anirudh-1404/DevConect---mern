@@ -34,7 +34,7 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex gap-8 text-white font-medium">
-          {["Developers", "Projects", "Community"].map((item) => (
+          {["Developers", "Projects", "Community", "Recruiters"].map((item) => (
             <Link
               key={item}
               to={`/${item.toLowerCase()}`}
@@ -71,36 +71,49 @@ const Navbar = () => {
               </Link>
             </>
           ) : (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer hover:ring-2 ring-cyan-400 transition-all">
-                  <AvatarImage
-                    src={avatar || "http://github.com/shadcn.png"}
-                    alt="User Avatar"
-                  />
-                  <AvatarFallback>AJ</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="bg-gray-600 backdrop-blur-md border border-white/10 text-white shadow-lg rounded-xl p-2"
-              >
-                <Link to="/profile">
-                  <DropdownMenuItem className="hover:bg-white/10 rounded-md cursor-pointer">
-                    Profile
-                  </DropdownMenuItem>
-                </Link>
-                <DropdownMenuItem className="hover:bg-white/10 rounded-md cursor-pointer">
-                  Settings
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => logout()}
-                  className="text-red-400 hover:text-red-500 hover:bg-white/10 rounded-md cursor-pointer"
+            <>
+              <Link to="/post/create">
+                <button
+                  className="px-4 py-2 rounded-full border border-cyan-400 text-cyan-300 font-medium text-sm tracking-wide 
+  transition-all duration-300 ease-in-out backdrop-blur-lg mr-8
+  hover:bg-gradient-to-r hover:from-cyan-400 hover:to-blue-600 hover:text-white hover:border-transparent 
+  hover:shadow-[0_0_18px_rgba(6,182,212,0.6)] 
+  active:scale-95"
                 >
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  Create Post
+                </button>
+              </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className="cursor-pointer hover:ring-2 ring-cyan-400 transition-all">
+                    <AvatarImage
+                      src={avatar || "http://github.com/shadcn.png"}
+                      alt="User Avatar"
+                    />
+                    <AvatarFallback>AJ</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="bg-gray-600 backdrop-blur-md border border-white/10 text-white shadow-lg rounded-xl p-2"
+                >
+                  <Link to="/profile">
+                    <DropdownMenuItem className="hover:bg-white/10 rounded-md cursor-pointer">
+                      Profile
+                    </DropdownMenuItem>
+                  </Link>
+                  <DropdownMenuItem className="hover:bg-white/10 rounded-md cursor-pointer">
+                    Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => logout()}
+                    className="text-red-400 hover:text-red-500 hover:bg-white/10 rounded-md cursor-pointer"
+                  >
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
           )}
         </div>
       </div>

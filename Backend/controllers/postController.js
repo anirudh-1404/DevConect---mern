@@ -1,4 +1,3 @@
-import { json } from "express";
 import { Post } from "../models/PostSchema.js";
 
 export const createPostController = async (req, res, next) => {
@@ -32,7 +31,7 @@ export const createPostController = async (req, res, next) => {
 export const fetchAllPosts = async (req, res, next) => {
   try {
     const allPosts = await Post.find({})
-      .populate("author", "name email")
+      .populate("author", "username avatar")
       .sort({ createdAt: -1 });
 
     if (!allPosts || allPosts.length === 0) {
@@ -48,6 +47,32 @@ export const fetchAllPosts = async (req, res, next) => {
   } catch (err) {
     res.status(500).json({
       message: "Unable to fetch posts!",
+    });
+  }
+};
+
+export const fetchPostByUser = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const userPosts = await Post.find({ author: id })
+      .populate("author", "username avatar")
+      .sort({ createdAt: -1 });
+
+    if (!userPosts || userPosts.length === 0) {
+      return res.status(200).json({
+        message: "This user has not created any posts yet.",
+        posts: [],
+      });
+    }
+
+    res.status(200).json({
+      message: "Posts fetched successfully.",
+      posts: userPosts,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "Unable to fetch user's posts!",
     });
   }
 };
