@@ -6,6 +6,7 @@ import {
   fetchAllPosts,
   fetchMyPosts,
   fetchPostByUser,
+  toggleLike,
   updatePostController,
 } from "../controllers/postController.js";
 
@@ -17,5 +18,6 @@ router.get("/my", protectRoute, fetchMyPosts);
 router.get("/user/:id", fetchPostByUser);
 router.patch("/update/:id", protectRoute, updatePostController);
 router.delete("/delete/:id", protectRoute, deletePostController);
+router.post("/:id/like", protectRoute, toggleLike);
 
 export default router;

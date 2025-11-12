@@ -32,6 +32,7 @@ export const fetchAllPosts = async (req, res, next) => {
   try {
     const allPosts = await Post.find({})
       .populate("author", "username avatar")
+      .populate("likes", "username avatar")
       .sort({ createdAt: -1 });
 
     if (!allPosts || allPosts.length === 0) {
@@ -79,10 +80,11 @@ export const fetchPostByUser = async (req, res, next) => {
 
 export const fetchMyPosts = async (req, res, next) => {
   try {
-    const myPosts = await Post.find({ author: req.user._id }).sort({
-      createdAt: -1,
-    });
-
+    const myPosts = await Post.find({ author: req.user._id })
+      .sort({
+        createdAt: -1,
+      })
+      .populate("likes", "username avatar");
     if (!myPosts || myPosts.length === 0) {
       return res.status(401).json({
         message: "No posts found!",
@@ -165,6 +167,47 @@ export const deletePostController = async (req, res, next) => {
   } catch (err) {
     res.status(500).json({
       message: "Something went wrong while deleting this post!",
+    });
+  }
+};
+
+export const toggleLike = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found!",
+      });
+    }
+
+    const liked = post.likes.some(
+      (like) => like && like.toString() === userId.toString()
+    );
+
+    if (liked) {
+      post.likes = post.likes.filter(
+        (like) => like && like.toString() !== userId.toString()
+      );
+      await post.save();
+      return res.status(200).json({
+        message: "Post unliked!",
+        likes: post.likes.length,
+      });
+    } else {
+      post.likes.push(userId);
+      await post.save();
+      return res.status(200).json({
+        message: "Post liked!",
+        likes: post.likes.length,
+      });
+    }
+  } catch (err) {
+    console.error("Error in toggleLike:", err.message);
+    return res.status(500).json({
+      message: "Something went wrong while liking/unliking post!",
     });
   }
 };

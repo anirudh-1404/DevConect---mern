@@ -161,7 +161,6 @@ export const updateUserProfile = async (req, res, next) => {
         message: "User not found!",
       });
     }
-
     if (req.body.username) {
       userData.username = req.body.username;
     }

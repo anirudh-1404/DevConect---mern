@@ -20,8 +20,6 @@ const DevelopersSection = () => {
         const response = await axios.get(
           `${import.meta.env.VITE_BASE_URL_API}/developers`
         );
-        console.log("Response:", response.data.devs);
-
         setUsers(response.data.devs);
       } catch (err) {
         console.error("Something went wrong while fetching users", err);

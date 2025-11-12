@@ -52,7 +52,11 @@ const App = () => {
         },
         {
           path: "/developers/:id",
-          element: <DeveloperProfile />,
+          element: (
+            <ProtectedRoute>
+              <DeveloperProfile />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "/recruiters",
@@ -72,7 +76,6 @@ const App = () => {
         },
         {
           path: "/post/create",
-
           element: (
             <ProtectedRoute>
               <CreatePost />
