@@ -16,6 +16,7 @@ import RecruitersPage from "./pages/RecruitersPage";
 import RecruitersProfile from "./pages/RecruitersProfile";
 import CreatePost from "./pages/CreatePost";
 import Community from "./pages/Community";
+import About from "./pages/About";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -85,6 +86,10 @@ const App = () => {
         {
           path: "/community",
           element: <Community />,
+        },
+        {
+          path: "/about",
+          element: <About />,
         },
       ],
     },

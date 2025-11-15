@@ -4,6 +4,8 @@ import React from "react";
 import AboutSection from "@/common/layouts/AboutSection";
 import MissionSection from "@/common/layouts/MissionSection";
 import DevelopersSection from "@/common/layouts/DevelopersSection";
+import RecruitersSection from "@/common/layouts/RecruitersSection";
+import TestimonialsSection from "@/common/layouts/TestimonialsSection";
 
 const Home = () => {
   return (
@@ -12,6 +14,8 @@ const Home = () => {
       <ExploreSection />
       <AboutSection />
       <DevelopersSection />
+      <RecruitersSection />
+      <TestimonialsSection />
       <MissionSection />
     </div>
   );
