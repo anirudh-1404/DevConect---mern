@@ -36,16 +36,16 @@ const Login = () => {
   const loginFunction = async (data) => {
     try {
       const response = await API.post("/auth/login", data);
-      localStorage.setItem("token", response.data.token);
-      setIsAuthenticated(true);
-      if (response.status === 200) {
-        toast.success(response.data.message || "Login Successful!");
-        navigate("/");
-      }
 
-      console.log(response);
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+
+      setIsAuthenticated(true);
+
+      toast.success(response.data.message || "Login Successful!");
+      navigate("/");
     } catch (err) {
-      toast.error(err.message || "Something went wrong!");
+      toast.error(err.response?.data?.message || "Something went wrong!");
       console.log("Error", err.message);
     }
   };

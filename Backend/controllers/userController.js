@@ -102,6 +102,7 @@ export const loginController = async (req, res, next) => {
 
     return res.status(200).json({
       message: "login successfull!",
+      user: userExists,
     });
   } catch (err) {
     console.log(err);

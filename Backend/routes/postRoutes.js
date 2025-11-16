@@ -1,7 +1,9 @@
 import express from "express";
 import { protectRoute } from "../middlewares/authMiddleware.js";
 import {
+  addComment,
   createPostController,
+  deleteComment,
   deletePostController,
   fetchAllPosts,
   fetchMyPosts,
@@ -19,5 +21,7 @@ router.get("/user/:id", fetchPostByUser);
 router.patch("/update/:id", protectRoute, updatePostController);
 router.delete("/delete/:id", protectRoute, deletePostController);
 router.post("/:id/like", protectRoute, toggleLike);
+router.post("/:id/comment", protectRoute, addComment);
+router.delete("/:postId/comment/:commentId", protectRoute, deleteComment);
 
 export default router;

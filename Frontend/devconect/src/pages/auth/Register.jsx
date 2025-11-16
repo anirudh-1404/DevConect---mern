@@ -31,7 +31,7 @@ const Register = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      toast.success("User already logged in!");
+      toast.success("Already logged in!");
       navigate("/");
     }
   }, [navigate]);

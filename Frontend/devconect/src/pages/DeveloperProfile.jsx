@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom";
 const DeveloperProfile = () => {
   const [devProfile, setDevProfile] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [likedBy, setLikedBy] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
@@ -111,6 +113,9 @@ const DeveloperProfile = () => {
               <p className="text-red-400/80 italic">No skills added.</p>
             )}
           </div>
+          <button className="px-6 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-600 hover:scale-105 transition-all font-medium">
+            Connect
+          </button>
         </div>
       </div>
 
@@ -130,9 +135,14 @@ const DeveloperProfile = () => {
                 key={post._id}
                 className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-[0_0_15px_rgba(6,182,212,0.15)]"
               >
-                <h3 className="text-xl font-semibold mb-2 text-white">
-                  {post.title}
-                </h3>
+                <div className="flex justify-between">
+                  <h3 className="text-xl font-semibold mb-2 text-white">
+                    {post.title}
+                  </h3>
+                  <p className="text-gray-500 text-xs mt-3 flex">
+                    Posted on {new Date(post.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
 
                 <p className="text-gray-300 text-sm leading-relaxed mb-4">
                   {post.content}
@@ -146,11 +156,56 @@ const DeveloperProfile = () => {
                   />
                 )}
 
-                <p className="text-gray-500 text-xs mt-3">
-                  Posted on {new Date(post.createdAt).toLocaleDateString()}
-                </p>
+                <button
+                  onClick={() => {
+                    setLikedBy(post.likes || []);
+                    setModal(true);
+                  }}
+                  className=" text-gray-400 hover:text-cyan-300 transition text-lg mt-2"
+                >
+                  &hearts; {post.likes?.length || 0}
+                </button>
               </div>
             ))}
+          </div>
+        )}
+
+        {modal && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
+            <div className="bg-[#0f172a] border border-cyan-400/30 rounded-2xl p-6 w-96 text-white shadow-[0_0_25px_rgba(6,182,212,0.4)] relative">
+              <button
+                onClick={() => setModal(false)}
+                className="absolute top-3 right-4 text-gray-400 hover:text-cyan-400 text-xl"
+              >
+                ✕
+              </button>
+
+              <h3 className="text-2xl font-bold text-center bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text mb-4">
+                Liked By
+              </h3>
+
+              {likedBy.length === 0 ? (
+                <p className="text-gray-400 text-center italic">
+                  No likes yet on this post.
+                </p>
+              ) : (
+                <div className="space-y-4 max-h-60 overflow-y-auto">
+                  {likedBy.map((user) => (
+                    <div
+                      key={user._id}
+                      className="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/10 transition"
+                    >
+                      <img
+                        src={user.avatar || "https://github.com/shadcn.png"}
+                        alt={user.username}
+                        className="w-10 h-10 rounded-full border border-cyan-400"
+                      />
+                      <p className="text-sm font-medium">{user.username}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </section>

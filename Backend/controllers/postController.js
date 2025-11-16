@@ -1,13 +1,12 @@
 import { Post } from "../models/PostSchema.js";
 
-export const createPostController = async (req, res, next) => {
+/* ---------------------- CREATE POST ---------------------- */
+export const createPostController = async (req, res) => {
   try {
     const { title, content, image } = req.body;
 
     if (!title || !content) {
-      return res.status(400).json({
-        message: "Title or Content is required!",
-      });
+      return res.status(400).json({ message: "Title or Content is required!" });
     }
 
     const post = await Post.create({
@@ -22,192 +21,178 @@ export const createPostController = async (req, res, next) => {
       post,
     });
   } catch (err) {
-    res.status(500).json({
-      messgae: "Unable to create post!",
-    });
+    res.status(500).json({ message: "Unable to create post!" });
   }
 };
 
-export const fetchAllPosts = async (req, res, next) => {
+/* ---------------------- FETCH ALL POSTS ---------------------- */
+export const fetchAllPosts = async (req, res) => {
   try {
     const allPosts = await Post.find({})
       .populate("author", "username avatar")
       .populate("likes", "username avatar")
+      .populate("comments.user", "username avatar")
       .sort({ createdAt: -1 });
 
-    if (!allPosts || allPosts.length === 0) {
-      return res.status(401).json({
-        message: "No posts found!",
-      });
-    }
-
-    res.status(200).json({
-      message: "All posts fetched successfully!",
-      allPosts,
-    });
+    res.status(200).json({ message: "All posts fetched!", allPosts });
   } catch (err) {
-    res.status(500).json({
-      message: "Unable to fetch posts!",
-    });
+    res.status(500).json({ message: "Unable to fetch posts!" });
   }
 };
 
-export const fetchPostByUser = async (req, res, next) => {
-  const { id } = req.params;
-
+/* ---------------------- FETCH USER POSTS ---------------------- */
+export const fetchPostByUser = async (req, res) => {
   try {
-    const userPosts = await Post.find({ author: id })
+    const posts = await Post.find({ author: req.params.id })
       .populate("author", "username avatar")
+      .populate("likes", "username avatar")
+      .populate("comments.user", "username avatar")
       .sort({ createdAt: -1 });
 
-    if (!userPosts || userPosts.length === 0) {
-      return res.status(200).json({
-        message: "This user has not created any posts yet.",
-        posts: [],
-      });
-    }
-
-    res.status(200).json({
-      message: "Posts fetched successfully.",
-      posts: userPosts,
-    });
+    res.status(200).json({ message: "User posts fetched!", posts });
   } catch (err) {
-    return res.status(500).json({
-      message: "Unable to fetch user's posts!",
-    });
+    res.status(500).json({ message: "Unable to fetch user posts!" });
   }
 };
 
-export const fetchMyPosts = async (req, res, next) => {
+/* ---------------------- FETCH MY POSTS ---------------------- */
+export const fetchMyPosts = async (req, res) => {
   try {
     const myPosts = await Post.find({ author: req.user._id })
-      .sort({
-        createdAt: -1,
-      })
-      .populate("likes", "username avatar");
-    if (!myPosts || myPosts.length === 0) {
-      return res.status(401).json({
-        message: "No posts found!",
-      });
-    }
+      .populate("likes", "username avatar")
+      .populate("comments.user", "username avatar")
+      .sort({ createdAt: -1 });
 
-    res.status(200).json({
-      message: "Your posts fetched successfully!",
-      myPosts,
-    });
+    res.status(200).json({ message: "Your posts fetched!", myPosts });
   } catch (err) {
-    res.status(500).json({
-      message: "Unable to fetch your posts!",
-    });
+    res.status(500).json({ message: "Unable to fetch your posts!" });
   }
 };
 
-export const updatePostController = async (req, res, next) => {
+/* ---------------------- UPDATE POST ---------------------- */
+export const updatePostController = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, content, image } = req.body;
 
-    const posts = await Post.findById(id);
+    const post = await Post.findById(id);
+    if (!post) return res.status(404).json({ message: "Post not found!" });
 
-    if (posts.author.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        message: "You are not authorized to edit this post!",
-      });
+    if (post.author.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Not authorized to update!" });
     }
 
-    if (!posts) {
-      return res.status(401).json({
-        messgae: "No posts found!",
-      });
-    }
-    const updatePost = await Post.findByIdAndUpdate(
-      id,
-      {
-        title,
-        content,
-        image,
-      },
-      { new: true }
-    );
+    const updated = await Post.findByIdAndUpdate(id, req.body, { new: true });
 
-    res.status(200).json({
-      message: "Post update successful!",
-      updatePost,
-    });
+    res.status(200).json({ message: "Post updated!", updated });
   } catch (err) {
-    res.status(500).json({
-      message: "Something went wrong while updating posts!",
-    });
+    res.status(500).json({ message: "Error updating post!" });
   }
 };
 
-export const deletePostController = async (req, res, next) => {
+/* ---------------------- DELETE POST ---------------------- */
+export const deletePostController = async (req, res) => {
   try {
-    const { id } = req.params;
+    const post = await Post.findById(req.params.id);
 
-    const postToDelete = await Post.findById(id);
+    if (!post) return res.status(404).json({ message: "Post not found!" });
 
-    if (postToDelete.author.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        message: "You are not authorized to delete this post!",
-      });
+    if (post.author.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Not authorized!" });
     }
 
-    if (!postToDelete) {
-      return res.status(400).json({
-        messgae: "Post not found!",
-      });
-    }
+    await post.deleteOne();
 
-    await postToDelete.deleteOne();
-
-    res.status(200).json({
-      message: "Post deleted successfully!",
-    });
+    res.status(200).json({ message: "Post deleted!" });
   } catch (err) {
-    res.status(500).json({
-      message: "Something went wrong while deleting this post!",
-    });
+    res.status(500).json({ message: "Error deleting post!" });
   }
 };
 
-export const toggleLike = async (req, res, next) => {
+/* ---------------------- LIKE / UNLIKE ---------------------- */
+export const toggleLike = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; // postId
     const userId = req.user._id;
 
     const post = await Post.findById(id);
-    if (!post) {
-      return res.status(404).json({
-        message: "Post not found!",
-      });
-    }
+    if (!post) return res.status(404).json({ message: "Post not found" });
 
-    const liked = post.likes.some(
-      (like) => like && like.toString() === userId.toString()
-    );
+    const alreadyLiked = post.likes.includes(userId);
 
-    if (liked) {
-      post.likes = post.likes.filter(
-        (like) => like && like.toString() !== userId.toString()
-      );
+    if (alreadyLiked) {
+      post.likes = post.likes.filter((l) => l.toString() !== userId.toString());
       await post.save();
-      return res.status(200).json({
-        message: "Post unliked!",
-        likes: post.likes.length,
-      });
+      return res
+        .status(200)
+        .json({ message: "Post unliked!", likes: post.likes.length });
     } else {
       post.likes.push(userId);
       await post.save();
-      return res.status(200).json({
-        message: "Post liked!",
-        likes: post.likes.length,
-      });
+      return res
+        .status(200)
+        .json({ message: "Post liked!", likes: post.likes.length });
     }
   } catch (err) {
-    console.error("Error in toggleLike:", err.message);
-    return res.status(500).json({
-      message: "Something went wrong while liking/unliking post!",
+    return res.status(500).json({ message: "Like/unlike error!" });
+  }
+};
+
+/* ---------------------- ADD COMMENT ---------------------- */
+export const addComment = async (req, res) => {
+  try {
+    const { id } = req.params; // postId
+    const userId = req.user._id;
+    const { text } = req.body;
+
+    if (!text.trim())
+      return res.status(400).json({ message: "Text is required!" });
+
+    const post = await Post.findById(id);
+    if (!post) return res.status(404).json({ message: "Post not found!" });
+
+    post.comments.push({
+      user: userId,
+      text,
     });
+
+    await post.save();
+
+    const updatedPost = await Post.findById(id).populate(
+      "comments.user",
+      "username avatar"
+    );
+
+    res.status(200).json({
+      message: "Comment added!",
+      comments: updatedPost.comments,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Error adding comment!" });
+  }
+};
+
+/* ---------------------- DELETE COMMENT ---------------------- */
+export const deleteComment = async (req, res) => {
+  try {
+    const { postId, commentId } = req.params;
+    const userId = req.user._id;
+
+    const post = await Post.findById(postId);
+    if (!post) return res.status(404).json({ message: "Post not found!" });
+
+    const comment = post.comments.id(commentId);
+    if (!comment)
+      return res.status(404).json({ message: "Comment not found!" });
+
+    if (comment.user.toString() !== userId.toString()) {
+      return res.status(401).json({ message: "Not authorized!" });
+    }
+
+    comment.deleteOne();
+    await post.save();
+
+    res.status(200).json({ message: "Comment deleted!" });
+  } catch (err) {
+    res.status(500).json({ message: "Error deleting comment!" });
   }
 };
