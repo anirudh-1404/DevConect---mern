@@ -8,14 +8,20 @@ import {
   updateUserProfile,
 } from "../controllers/userController.js";
 import { protectRoute } from "../middlewares/authMiddleware.js";
+import upload from "../middlewares/multer.js";
 
 const router = express.Router();
 
 router.get("/", fetchAllUsers);
-router.post("/register", registerUser);
+router.post("/register", upload.single("avatar"), registerUser);
 router.post("/login", loginController);
 router.get("/profile", protectRoute, fetchUserProfile);
 router.post("/logout", logoutController);
-router.patch("/updateprofile", protectRoute, updateUserProfile);
+router.patch(
+  "/updateprofile",
+  upload.single("avatar"),
+  protectRoute,
+  updateUserProfile
+);
 
 export default router;

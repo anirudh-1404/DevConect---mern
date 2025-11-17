@@ -11,10 +11,16 @@ import {
   toggleLike,
   updatePostController,
 } from "../controllers/postController.js";
+import upload from "../middlewares/multer.js";
 
 const router = express.Router();
 
-router.post("/create", protectRoute, createPostController);
+router.post(
+  "/create",
+  protectRoute,
+  upload.single("image"),
+  createPostController
+);
 router.get("/", fetchAllPosts);
 router.get("/my", protectRoute, fetchMyPosts);
 router.get("/user/:id", fetchPostByUser);

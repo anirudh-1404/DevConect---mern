@@ -1,5 +1,5 @@
 import React from "react";
-import { Users, FolderOpen, MessageSquare, Upload } from "lucide-react";
+import { Users, MessageSquare, Upload, Briefcase } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 const cardContent = [
@@ -8,8 +8,8 @@ const cardContent = [
     icon: <Users className="w-8 h-8 text-cyan-400" />,
   },
   {
-    title: "Browse Projects",
-    icon: <FolderOpen className="w-8 h-8 text-blue-400" />,
+    title: "Find Recruiters",
+    icon: <Briefcase className="w-8 h-8 text-cyan-600" />,
   },
   {
     title: "Join Communities",

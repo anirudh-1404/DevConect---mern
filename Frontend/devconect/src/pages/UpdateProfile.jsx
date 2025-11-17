@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
@@ -8,7 +7,7 @@ const EditProfileModal = ({ user, onClose, onUpdate }) => {
   const [formData, setFormData] = useState({
     username: user?.username || "",
     bio: user?.bio || "",
-    avatar: user?.avatar || "",
+    avatar: user?.avatar || null,
   });
 
   const handleChange = (e) => {
@@ -17,17 +16,31 @@ const EditProfileModal = ({ user, onClose, onUpdate }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const form = new FormData();
+    form.append("username", formData.username);
+    form.append("bio", formData.bio);
+
+    if (formData.avatar) {
+      form.append("avatar", formData.avatar);
+    }
+
     try {
       const { data } = await axios.patch(
         `${import.meta.env.VITE_BASE_URL_API}/auth/updateprofile`,
-        formData,
-        { withCredentials: true }
+        form,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
       );
       onUpdate(data);
       toast.success("Profile update successful!");
       onClose();
     } catch (err) {
-      toast.error("❌ Error updating profile:", err);
+      toast.error("Error updating profile:", err);
     }
   };
 
@@ -74,14 +87,14 @@ const EditProfileModal = ({ user, onClose, onUpdate }) => {
             </div>
 
             <div>
-              <label className="block text-gray-300 text-sm mb-1">
-                Avatar URL
-              </label>
+              <label className="block text-gray-300 text-sm mb-1">Avatar</label>
               <input
-                type="text"
+                type="file"
                 name="avatar"
-                value={formData.avatar}
-                onChange={handleChange}
+                accept="image/*"
+                onChange={(e) =>
+                  setFormData({ ...formData, avatar: e.target.files[0] })
+                }
                 className="w-full p-2 rounded-md bg-white/10 border border-cyan-400/20 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
               />
             </div>

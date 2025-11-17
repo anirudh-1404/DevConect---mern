@@ -5,7 +5,6 @@ import registerAnim from "../../../Lottie/registerAnim.json";
 import API from "@/API/Interceptor";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
 import { RingLoader } from "react-spinners";
 
 const Register = () => {
@@ -16,17 +15,12 @@ const Register = () => {
     confirmPassword: "",
     bio: "",
     role: "Developer",
-    avatar: "",
+    avatar: null,
   });
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
-  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -36,39 +30,63 @@ const Register = () => {
     }
   }, [navigate]);
 
-  const registerFunction = async (data) => {
+  //
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
+  };
+  //
+  const registerFunction = async () => {
     try {
       setLoading(true);
-      const response = await API.post("/auth/register", data);
+
+      const form = new FormData();
+      form.append("username", formData.username);
+      form.append("email", formData.email);
+      form.append("password", formData.password);
+      form.append("bio", formData.bio);
+      form.append("role", formData.role);
+
+      if (formData.avatar) {
+        form.append("avatar", formData.avatar);
+      }
+
+      const response = await API.post("/auth/register", form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       if (response.status === 201) {
-        toast.success(response.data.message || "User created successfully!");
+        toast.success(response.data.message || "User Registered Successfully!");
         navigate("/login");
       }
-      console.log(response);
     } catch (err) {
-      toast.error(err.message || "Something went wrong");
-      console.log("Error", err.message);
+      toast.error(err.response?.data?.message || "Something went wrong!");
+      console.log("Register Error:", err);
     } finally {
       setLoading(false);
     }
   };
 
+  //
   const handleSubmission = (e) => {
     e.preventDefault();
+
     let newErrors = {};
 
-    if (!formData.username.trim()) newErrors.username = "Username is required";
-    if (!formData.email.trim()) newErrors.email = "Email is required";
-    if (!formData.password.trim()) newErrors.password = "Password is required";
+    if (!formData.username.trim()) newErrors.username = "Username is required!";
+    if (!formData.email.trim()) newErrors.email = "Email is required!";
+    if (!formData.password.trim()) newErrors.password = "Password is required!";
     if (!formData.confirmPassword.trim())
-      newErrors.confirmPassword = "Confirm password is required";
+      newErrors.confirmPassword = "Confirm password is required!";
 
     if (
       formData.password &&
       formData.confirmPassword &&
       formData.password !== formData.confirmPassword
     ) {
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = "Passwords do not match!";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -76,7 +94,7 @@ const Register = () => {
       return;
     }
 
-    registerFunction(formData);
+    registerFunction();
 
     setFormData({
       username: "",
@@ -84,7 +102,8 @@ const Register = () => {
       password: "",
       confirmPassword: "",
       bio: "",
-      avatar: "",
+      role: "Developer",
+      avatar: null,
     });
   };
 
@@ -113,73 +132,69 @@ const Register = () => {
           </p>
 
           <form className="space-y-4" onSubmit={handleSubmission}>
-            {/* EMAIL */}
-            <div className="space-y-1">
+            <div>
               <label className="text-sm text-gray-300">Email</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 placeholder="you@example.com"
-                className="w-full px-4 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/40 outline-none transition"
                 onChange={handleChange}
+                className="w-full px-4 py-3 rounded-xl bg-white/10 text-white border border-white/20 focus:border-cyan-400 outline-none"
               />
             </div>
-
-            <div className="space-y-1">
+            <div>
               <label className="text-sm text-gray-300">Username</label>
               <input
                 type="text"
                 name="username"
                 value={formData.username}
                 placeholder="John Doe"
-                className="w-full px-4 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/40 outline-none transition"
                 onChange={handleChange}
+                className="w-full px-4 py-3 rounded-xl bg-white/10 text-white border border-white/20 focus:border-cyan-400 outline-none"
               />
             </div>
-
-            <div className="space-y-1">
+            <div>
               <label className="text-sm text-gray-300">Password</label>
               <input
                 type="password"
                 name="password"
                 value={formData.password}
                 placeholder="••••••••"
-                className="w-full px-4 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:border-cyan-400 focus:ring-2 outline-none"
                 onChange={handleChange}
+                className="w-full px-4 py-3 rounded-xl bg-white/10 text-white border border-white/20 focus:border-cyan-400 outline-none"
               />
             </div>
-
-            <div className="space-y-1">
+            <div>
               <label className="text-sm text-gray-300">Confirm Password</label>
               <input
                 type="password"
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 placeholder="••••••••"
-                className="w-full px-4 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:border-cyan-400 focus:ring-2 outline-none"
                 onChange={handleChange}
+                className="w-full px-4 py-3 rounded-xl bg-white/10 text-white border border-white/20 focus:border-cyan-400 outline-none"
               />
             </div>
 
-            <div className="space-y-1">
+            <div>
               <label className="text-sm text-gray-300">Bio</label>
               <textarea
                 name="bio"
                 value={formData.bio}
                 placeholder="Tell something about yourself..."
-                className="w-full min-h-[80px] px-4 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:border-cyan-400 focus:ring-2 outline-none resize-none"
                 onChange={handleChange}
-              ></textarea>
+                className="w-full px-4 py-3 rounded-xl bg-white/10 text-white border border-white/20 min-h-[80px] outline-none"
+              />
             </div>
 
             <div>
               <label className="text-sm text-gray-300">Avatar</label>
-              <div className="mt-2 border border-white/20 bg-white/10 rounded-xl px-4 py-3 cursor-pointer hover:border-cyan-400 transition">
+              <div className="mt-2 border border-white/20 bg-white/10 rounded-xl px-4 py-3">
                 <input
                   type="file"
                   accept="image/*"
-                  className="w-full cursor-pointer"
+                  className="w-full"
                   onChange={(e) =>
                     setFormData({ ...formData, avatar: e.target.files[0] })
                   }
@@ -191,10 +206,10 @@ const Register = () => {
               {["Developer", "Recruiter"].map((r) => (
                 <label
                   key={r}
-                  className={`cursor-pointer px-4 py-2 rounded-full border text-sm transition ${
+                  className={`cursor-pointer px-4 py-2 rounded-full border text-sm ${
                     formData.role === r
                       ? "border-cyan-500 text-cyan-300 bg-white/10"
-                      : "border-white/20 text-gray-400 hover:border-cyan-400"
+                      : "border-white/20 text-gray-400"
                   }`}
                 >
                   <input
@@ -212,7 +227,7 @@ const Register = () => {
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] hover:scale-105 transition text-white font-semibold"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold hover:scale-105 transition"
             >
               {loading ? (
                 <RingLoader size={22} color="white" />
@@ -220,10 +235,9 @@ const Register = () => {
                 "Create Account"
               )}
             </button>
-
             <p className="text-center text-gray-400 text-sm pt-2">
-              Already a member?{" "}
-              <a href="/login" className="text-cyan-400 hover:text-cyan-300">
+              Already a member?
+              <a href="/login" className="text-cyan-400">
                 Login
               </a>
             </p>

@@ -1,6 +1,5 @@
 import { Post } from "../models/PostSchema.js";
 
-/* ---------------------- CREATE POST ---------------------- */
 export const createPostController = async (req, res) => {
   try {
     const { title, content, image } = req.body;
@@ -12,7 +11,7 @@ export const createPostController = async (req, res) => {
     const post = await Post.create({
       title,
       content,
-      image,
+      image: req.file.path,
       author: req.user._id,
     });
 
@@ -25,7 +24,6 @@ export const createPostController = async (req, res) => {
   }
 };
 
-/* ---------------------- FETCH ALL POSTS ---------------------- */
 export const fetchAllPosts = async (req, res) => {
   try {
     const allPosts = await Post.find({})
@@ -40,7 +38,6 @@ export const fetchAllPosts = async (req, res) => {
   }
 };
 
-/* ---------------------- FETCH USER POSTS ---------------------- */
 export const fetchPostByUser = async (req, res) => {
   try {
     const posts = await Post.find({ author: req.params.id })
@@ -55,7 +52,6 @@ export const fetchPostByUser = async (req, res) => {
   }
 };
 
-/* ---------------------- FETCH MY POSTS ---------------------- */
 export const fetchMyPosts = async (req, res) => {
   try {
     const myPosts = await Post.find({ author: req.user._id })
@@ -69,7 +65,6 @@ export const fetchMyPosts = async (req, res) => {
   }
 };
 
-/* ---------------------- UPDATE POST ---------------------- */
 export const updatePostController = async (req, res) => {
   try {
     const { id } = req.params;
@@ -89,7 +84,6 @@ export const updatePostController = async (req, res) => {
   }
 };
 
-/* ---------------------- DELETE POST ---------------------- */
 export const deletePostController = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -108,7 +102,6 @@ export const deletePostController = async (req, res) => {
   }
 };
 
-/* ---------------------- LIKE / UNLIKE ---------------------- */
 export const toggleLike = async (req, res) => {
   try {
     const { id } = req.params; // postId
@@ -137,7 +130,6 @@ export const toggleLike = async (req, res) => {
   }
 };
 
-/* ---------------------- ADD COMMENT ---------------------- */
 export const addComment = async (req, res) => {
   try {
     const { id } = req.params; // postId
@@ -171,7 +163,6 @@ export const addComment = async (req, res) => {
   }
 };
 
-/* ---------------------- DELETE COMMENT ---------------------- */
 export const deleteComment = async (req, res) => {
   try {
     const { postId, commentId } = req.params;

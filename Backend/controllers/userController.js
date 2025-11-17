@@ -45,7 +45,7 @@ export const registerUser = async (req, res, next) => {
       email,
       password: encryptedPassword,
       bio,
-      avatar,
+      avatar: req.file.path,
       role,
     });
     console.log(role);
@@ -155,7 +155,7 @@ export const logoutController = async (req, res, next) => {
 
 export const updateUserProfile = async (req, res, next) => {
   try {
-    const userData = await User.findById(req.user);
+    const userData = await User.findById(req.user._id);
 
     if (!userData) {
       return res.status(401).json({
@@ -170,8 +170,8 @@ export const updateUserProfile = async (req, res, next) => {
       userData.bio = req.body.bio;
     }
 
-    if (req.body.avatar) {
-      userData.avatar = req.body.avatar;
+    if (req.file) {
+      userData.avatar = req.file.path;
     }
 
     await userData.save();
