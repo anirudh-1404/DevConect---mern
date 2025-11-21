@@ -1,19 +1,34 @@
 import API from "@/API/Interceptor";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const DeveloperProfile = () => {
   const [devProfile, setDevProfile] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
   const [modal, setModal] = useState(false);
   const [likedBy, setLikedBy] = useState([]);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followersModal, setFollowersModal] = useState(false);
+  const [followingModal, setFollowingModal] = useState(false);
+
   const { id } = useParams();
+  const navigate = useNavigate();
+
+  const localUser = JSON.parse(localStorage.getItem("user") || "{}");
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const response = await API.get(`/developers/${id}`);
         setDevProfile(response.data.dev);
+
+        setFollowersCount(response.data.dev.followers?.length || 0);
+
+        if (response.data.dev.followers?.includes(localUser.id)) {
+          setIsFollowing(true);
+        }
       } catch (err) {
         console.log("Unable to fetch developer profile");
       }
@@ -28,9 +43,33 @@ const DeveloperProfile = () => {
       }
     };
 
+    const trackView = async () => {
+      try {
+        if (id !== localUser.id) {
+          await API.post(`/analytics/profile-view/${id}`);
+        }
+      } catch (err) {
+        console.log("Unable to track profile view");
+      }
+    };
+
     fetchProfile();
     fetchUserPosts();
+    trackView();
   }, [id]);
+
+  const handleFollow = async () => {
+    try {
+      const res = await API.post(`/auth/follow/${id}`);
+
+      toast.success(res.data.message);
+
+      setIsFollowing(res.data.isFollowing);
+      setFollowersCount(res.data.followersCount);
+    } catch (e) {
+      toast.error("Something went wrong");
+    }
+  };
 
   if (!devProfile) {
     return (
@@ -44,7 +83,9 @@ const DeveloperProfile = () => {
 
   return (
     <section className="min-h-screen bg-gradient-to-b from-[#020617] to-[#0f172a] text-white py-20 px-6">
+      { }
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center md:items-start gap-12">
+        { }
         <div className="flex justify-center w-full md:w-1/3">
           <img
             src={devProfile.avatar || "https://github.com/shadcn.png"}
@@ -53,15 +94,38 @@ const DeveloperProfile = () => {
           />
         </div>
 
+        { }
         <div className="w-full md:w-2/3 space-y-5">
+          { }
           <h1 className="text-4xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text tracking-wide">
             {devProfile.username}
           </h1>
+
+          { }
+          <div className="flex items-center gap-6 text-gray-300 text-sm">
+            <p
+              onClick={() => setFollowersModal(true)}
+              className="hover:text-cyan-300 transition cursor-pointer"
+            >
+              Followers: <span className="text-cyan-400">{followersCount}</span>
+            </p>
+
+            <p
+              onClick={() => setFollowingModal(true)}
+              className="hover:text-cyan-300 transition cursor-pointer"
+            >
+              Following:
+              <span className="text-cyan-400">
+                {devProfile.following?.length || 0}
+              </span>
+            </p>
+          </div>
 
           <p className="text-gray-300 text-sm leading-relaxed italic">
             {devProfile.bio || "This developer hasn't added a bio yet."}
           </p>
 
+          { }
           <div className="space-y-2 text-gray-400 text-sm">
             <p>
               <span className="text-cyan-400 font-medium">Email:</span>{" "}
@@ -113,9 +177,30 @@ const DeveloperProfile = () => {
               <p className="text-red-400/80 italic">No skills added.</p>
             )}
           </div>
-          <button className="px-6 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-600 hover:scale-105 transition-all font-medium">
-            Connect
-          </button>
+
+          { }
+          {localUser.id !== devProfile._id && (
+            <div className="flex gap-4">
+              <button
+                onClick={handleFollow}
+                className={`px-7 py-2.5 rounded-full font-medium text-white transition-all cursor-pointer 
+                bg-gradient-to-r from-cyan-400 to-blue-600
+                hover:scale-[1.05] hover:shadow-[0_0_25px_rgba(6,182,212,0.6)]
+              `}
+              >
+                {isFollowing ? "Following ✓" : "Follow +"}
+              </button>
+              <button
+                onClick={() => navigate(`/messages?userId=${devProfile._id}`)}
+                className={`px-7 py-2.5 rounded-full font-medium text-white transition-all cursor-pointer 
+                bg-gradient-to-r from-gray-700 to-gray-900 border border-gray-600
+                hover:scale-[1.05] hover:shadow-[0_0_25px_rgba(255,255,255,0.2)]
+              `}
+              >
+                Message
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -161,7 +246,7 @@ const DeveloperProfile = () => {
                     setLikedBy(post.likes || []);
                     setModal(true);
                   }}
-                  className=" text-gray-400 hover:text-cyan-300 transition text-lg mt-2"
+                  className="text-gray-400 hover:text-cyan-300 transition text-lg mt-2"
                 >
                   &hearts; {post.likes?.length || 0}
                 </button>
@@ -170,6 +255,87 @@ const DeveloperProfile = () => {
           </div>
         )}
 
+        { }
+        {followersModal && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
+            <div className="bg-[#0f172a] border border-cyan-400/30 rounded-2xl p-6 w-96 text-white shadow-[0_0_25px_rgba(6,182,212,0.4)] relative">
+              <button
+                onClick={() => setFollowersModal(false)}
+                className="absolute top-3 right-4 text-gray-400 hover:text-cyan-400 text-xl"
+              >
+                ✕
+              </button>
+
+              <h3 className="text-2xl font-bold text-center bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text mb-4">
+                Followers
+              </h3>
+
+              {devProfile.followers?.length === 0 ? (
+                <p className="text-gray-400 text-center italic">
+                  No followers yet.
+                </p>
+              ) : (
+                <div className="space-y-4 max-h-60 overflow-y-auto">
+                  {devProfile.followers.map((user) => (
+                    <div
+                      key={user._id}
+                      className="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/10 transition"
+                    >
+                      <img
+                        src={user.avatar || "https://github.com/shadcn.png"}
+                        alt={user.username}
+                        className="w-10 h-10 rounded-full border border-cyan-400"
+                      />
+                      <p className="text-sm font-medium">{user.username}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        { }
+        {followingModal && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
+            <div className="bg-[#0f172a] border border-cyan-400/30 rounded-2xl p-6 w-96 text-white shadow-[0_0_25px_rgba(6,182,212,0.4)] relative">
+              <button
+                onClick={() => setFollowingModal(false)}
+                className="absolute top-3 right-4 text-gray-400 hover:text-cyan-400 text-xl"
+              >
+                ✕
+              </button>
+
+              <h3 className="text-2xl font-bold text-center bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text mb-4">
+                Following
+              </h3>
+
+              {devProfile.following?.length === 0 ? (
+                <p className="text-gray-400 text-center italic">
+                  Not following anyone.
+                </p>
+              ) : (
+                <div className="space-y-4 max-h-60 overflow-y-auto">
+                  {devProfile.following.map((user) => (
+                    <div
+                      key={user._id}
+                      className="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/10 transition"
+                    >
+                      <img
+                        src={user.avatar || "https://github.com/shadcn.png"}
+                        alt={user.username}
+                        className="w-10 h-10 rounded-full border border-cyan-400"
+                      />
+                      <p className="text-sm font-medium">{user.username}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        { }
         {modal && (
           <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
             <div className="bg-[#0f172a] border border-cyan-400/30 rounded-2xl p-6 w-96 text-white shadow-[0_0_25px_rgba(6,182,212,0.4)] relative">

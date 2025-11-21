@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Lottie from "lottie-react";
+
+import SaveChangesLoader from "../../Lottie/SaveChangesLoader.json";
 
 const EditProfileModal = ({ user, onClose, onUpdate }) => {
   const [formData, setFormData] = useState({
@@ -9,6 +12,8 @@ const EditProfileModal = ({ user, onClose, onUpdate }) => {
     bio: user?.bio || "",
     avatar: user?.avatar || null,
   });
+
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,6 +31,7 @@ const EditProfileModal = ({ user, onClose, onUpdate }) => {
     }
 
     try {
+      setLoading(true);
       const { data } = await axios.patch(
         `${import.meta.env.VITE_BASE_URL_API}/auth/updateprofile`,
         form,
@@ -38,6 +44,7 @@ const EditProfileModal = ({ user, onClose, onUpdate }) => {
       );
       onUpdate(data);
       toast.success("Profile update successful!");
+      setLoading(false);
       onClose();
     } catch (err) {
       toast.error("Error updating profile:", err);
@@ -59,7 +66,7 @@ const EditProfileModal = ({ user, onClose, onUpdate }) => {
           exit={{ scale: 0.8, opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <h2 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
+          <h2 className="text-2xl font-bold text-center mb-6 bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent cursor-pointer">
             Edit Profile
           </h2>
 
@@ -99,21 +106,31 @@ const EditProfileModal = ({ user, onClose, onUpdate }) => {
               />
             </div>
 
-            <div className="flex justify-between mt-6">
-              <button
-                type="submit"
-                className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-5 py-2 rounded-full font-medium hover:shadow-[0_0_15px_rgba(6,182,212,0.5)]"
-              >
-                Save Changes
-              </button>
-              <button
-                type="button"
-                onClick={onClose}
-                className="text-gray-300 hover:text-red-400 transition"
-              >
-                Cancel
-              </button>
-            </div>
+            {!loading ? (
+              <div className="flex justify-between mt-6">
+                <button
+                  type="submit"
+                  className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-5 py-2 rounded-full font-medium hover:shadow-[0_0_15px_rgba(6,182,212,0.5)] cursor-pointer"
+                >
+                  Save Changes
+                </button>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="text-gray-300 hover:text-red-400 transition cursor-pointer"
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <div className="flex justify-center items-center w-full py-4">
+                <Lottie
+                  animationData={SaveChangesLoader}
+                  loop={true}
+                  className="w-16 h-16"
+                />
+              </div>
+            )}
           </form>
         </motion.div>
       </motion.div>

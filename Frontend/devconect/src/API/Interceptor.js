@@ -13,7 +13,7 @@ const API = axios.create({
 API.interceptors.request.use(
   (config) => {
     console.log("req sent");
-    console.log("URL", config.baseURL + config.url); //base url + signup url
+    console.log("URL", config.baseURL + config.url); 
     console.log("Method", config.method?.toUpperCase());
 
     const token = localStorage.getItem("token");

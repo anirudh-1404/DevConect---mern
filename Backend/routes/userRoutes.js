@@ -5,7 +5,9 @@ import {
   loginController,
   logoutController,
   registerUser,
+  toggleFollowUser,
   updateUserProfile,
+  getUserById,
 } from "../controllers/userController.js";
 import { protectRoute } from "../middlewares/authMiddleware.js";
 import upload from "../middlewares/multer.js";
@@ -23,5 +25,7 @@ router.patch(
   protectRoute,
   updateUserProfile
 );
+router.post("/follow/:id", protectRoute, toggleFollowUser);
+router.get("/:id", protectRoute, getUserById);
 
 export default router;

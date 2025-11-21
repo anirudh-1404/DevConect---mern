@@ -7,6 +7,7 @@ import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
+import { SocketContextProvider } from "./context/SocketContext";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./pages/auth/ProtectedRoute";
 import UpdateProfile from "./pages/UpdateProfile";
@@ -17,6 +18,15 @@ import RecruitersProfile from "./pages/RecruitersProfile";
 import CreatePost from "./pages/CreatePost";
 import Community from "./pages/Community";
 import About from "./pages/About";
+import Chat from "./pages/Chat";
+import PostDetails from "./pages/PostDetails";
+import Jobs from "./pages/Jobs";
+import JobDetails from "./pages/JobDetails";
+import CreateJob from "./pages/CreateJob";
+import Dashboard from "./pages/Dashboard";
+import CodingSessions from "./pages/CodingSessions";
+import CodingSession from "./pages/CodingSession";
+import ResumeBuilder from "./pages/ResumeBuilder";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -84,27 +94,86 @@ const App = () => {
           ),
         },
         {
+          path: "/post/:id",
+          element: (
+            <ProtectedRoute>
+              <PostDetails />
+            </ProtectedRoute>
+          ),
+        },
+        {
           path: "/community",
           element: <Community />,
+        },
+        {
+          path: "/jobs",
+          element: <ProtectedRoute> <Jobs /> </ProtectedRoute>,
+        },
+        {
+          path: "/jobs/create",
+          element: (
+            <ProtectedRoute>
+              <CreateJob />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/jobs/:id",
+          element: <ProtectedRoute> <JobDetails /> </ProtectedRoute>,
+        },
+        {
+          path: "/coding-sessions",
+          element: (
+            <ProtectedRoute>
+              <CodingSessions />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/coding-session/:id",
+          element: (
+            <ProtectedRoute>
+              <CodingSession />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "/about",
           element: <About />,
         },
+        {
+          path: "/messages",
+          element: (
+            <ProtectedRoute>
+              <Chat />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/dashboard",
+          element: (
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/resume-builder",
+          element: (
+            <ProtectedRoute>
+              <ResumeBuilder />
+            </ProtectedRoute>
+          ),
+        },
       ],
     },
   ]);
-
   return (
     <AuthProvider>
-      <Toaster
-        position="top-center"
-        toastOptions={{
-          success: { duration: 2500 },
-          error: { duration: 3000 },
-        }}
-      />
-      <RouterProvider router={router} />
+      <SocketContextProvider>
+        <RouterProvider router={router} />
+        <Toaster />
+      </SocketContextProvider>
     </AuthProvider>
   );
 };

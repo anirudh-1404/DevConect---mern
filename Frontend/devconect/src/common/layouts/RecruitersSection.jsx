@@ -59,7 +59,7 @@ const RecruitersSection = () => {
             </h3>
             <p className="text-cyan-400 text-sm">{"Recruiter"}</p>
             <Link to={`/recruiters/${rec._id}`}>
-              <button className="mt-4 px-5 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-blue-500 to-cyan-400 text-white hover:scale-105 hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all duration-300">
+              <button className="mt-4 px-5 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-blue-500 to-cyan-400 text-white hover:scale-105 hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all duration-300 cursor-pointer">
                 View Profile
               </button>
             </Link>

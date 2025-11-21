@@ -2,22 +2,28 @@ import API from "@/API/Interceptor";
 import { AuthContext } from "@/context/authContext";
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import ProtectedRoute from "./auth/ProtectedRoute";
+import { Heart, MessageCircle, Share2, Bookmark, MoreHorizontal, Trash2 } from "lucide-react";
 
 const Community = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [likedBy, setLikedBy] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [commentText, setCommentText] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [expandedComments, setExpandedComments] = useState({});
 
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, user } = useContext(AuthContext);
 
   const fetchPosts = async () => {
     try {
+      setLoading(true);
       const response = await API.get("/post");
       setAllPosts(response.data.allPosts);
     } catch (err) {
       console.log("Unable to fetch community posts!", err.message);
+      toast.error("Failed to load posts");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,215 +47,421 @@ const Community = () => {
       );
 
       setCommentText((prev) => ({ ...prev, [postId]: "" }));
+      toast.success("Comment added!");
       fetchPosts();
     } catch (err) {
       console.log("Failed to add comment", err.message);
+      toast.error("Failed to add comment");
     }
   };
 
   const handleDeleteComment = async (postId, commentId) => {
     try {
       await API.delete(`/post/${postId}/comment/${commentId}`);
+      toast.success("Comment deleted!");
       fetchPosts();
     } catch (err) {
       console.log("Failed to delete comment", err.message);
+      toast.error("Failed to delete comment");
     }
+  };
+
+  const toggleComments = (postId) => {
+    setExpandedComments(prev => ({
+      ...prev,
+      [postId]: !prev[postId]
+    }));
   };
 
   useEffect(() => {
     fetchPosts();
   }, []);
 
+  const localUser = JSON.parse(localStorage.getItem("user") || "{}");
+
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#020617] to-[#0f172a] px-6 py-12 text-white">
-      <h1 className="text-4xl font-extrabold text-center bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text tracking-wide mb-16">
-        DevConnect Community Feed
-      </h1>
+    <main className="min-h-screen bg-gradient-to-br from-[#020617] via-[#0a0f1e] to-[#020617] text-white px-4 sm:px-6 py-16 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
 
-      <section className="max-w-3xl mx-auto space-y-8">
-        {allPosts.map((item) => {
-          const localUser = JSON.parse(localStorage.getItem("user") || "{}");
+      {/* Header Section */}
+      <div className="relative z-10 text-center mb-16 max-w-4xl mx-auto">
+        <div className="inline-block mb-4">
+          <span className="px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 
+          border border-cyan-500/30 text-cyan-300 text-sm font-semibold backdrop-blur-sm">
+            Community Feed
+          </span>
+        </div>
 
-          return (
-            <div
-              key={item._id}
-              className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-[0_0_15px_rgba(6,182,212,0.15)] hover:shadow-[0_0_25px_rgba(6,182,212,0.35)] transition-all duration-300"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <img
-                  src={item?.author?.avatar || "https://github.com/shadcn.png"}
-                  alt="author-avatar"
-                  className="w-12 h-12 rounded-full border border-cyan-400"
-                />
+        <h1 className="text-5xl sm:text-6xl font-extrabold text-transparent bg-clip-text 
+        bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 tracking-tight 
+        drop-shadow-[0_0_30px_rgba(6,182,212,0.5)] mb-6 animate-gradient">
+          DevConnect Community
+        </h1>
 
-                <div>
-                  <h3 className="font-semibold text-lg">
-                    {item?.author?.username}
-                  </h3>
-                  <p className="text-gray-400 text-xs">
-                    Posted on {new Date(item.createdAt).toLocaleDateString()}
-                  </p>
+        <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          Share knowledge, collaborate on ideas, and discover what fellow
+          developers & recruiters are building right now.
+        </p>
+      </div>
+
+      {/* Divider */}
+      <div className="relative z-10 w-full flex justify-center mb-16">
+        <div className="w-48 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent rounded-full 
+        shadow-[0_0_25px_rgba(6,182,212,0.5)]"></div>
+      </div>
+
+      {/* Loading State */}
+      {loading ? (
+        <section className="max-w-3xl mx-auto space-y-8 relative z-10">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-gray-900/50 backdrop-blur-xl border border-cyan-800/40 
+            rounded-3xl p-8 animate-pulse">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-full bg-gray-800"></div>
+                <div className="flex-1">
+                  <div className="h-4 bg-gray-800 rounded w-32 mb-2"></div>
+                  <div className="h-3 bg-gray-800 rounded w-24"></div>
                 </div>
               </div>
+              <div className="h-6 bg-gray-800 rounded w-3/4 mb-4"></div>
+              <div className="h-4 bg-gray-800 rounded w-full mb-2"></div>
+              <div className="h-4 bg-gray-800 rounded w-5/6"></div>
+            </div>
+          ))}
+        </section>
+      ) : allPosts.length === 0 ? (
+        // Empty State
+        <section className="max-w-3xl mx-auto relative z-10">
+          <div className="bg-gray-900/50 backdrop-blur-xl border border-cyan-800/40 
+          rounded-3xl p-16 text-center">
+            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 
+            flex items-center justify-center border border-cyan-500/30">
+              <MessageCircle className="w-12 h-12 text-cyan-400" />
+            </div>
+            <h3 className="text-2xl font-bold text-cyan-300 mb-3">No Posts Yet</h3>
+            <p className="text-gray-400 max-w-md mx-auto">
+              Be the first to share something with the community! Create a post to get started.
+            </p>
+          </div>
+        </section>
+      ) : (
+        // Posts Section
+        <section className="max-w-3xl mx-auto space-y-8 relative z-10">
+          {allPosts.map((item) => {
+            const isLiked = item.likes?.some(like => String(like._id) === String(localUser._id));
+            const commentsExpanded = expandedComments[item._id];
 
-              <h2 className="text-xl font-semibold mb-2">{item.title}</h2>
+            return (
+              <article
+                key={item._id}
+                className="group bg-gray-900/60 backdrop-blur-xl border border-cyan-800/40 
+                rounded-3xl p-6 sm:p-8 shadow-[0_0_30px_rgba(6,182,212,0.15)]
+                hover:shadow-[0_0_50px_rgba(6,182,212,0.3)] hover:border-cyan-500/60
+                transition-all duration-500 relative overflow-hidden"
+              >
+                {/* Gradient Overlay on Hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-500/5 
+                opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
 
-              <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                {item.content}
-              </p>
+                {/* Post Header */}
+                <div className="relative flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className="relative">
+                      <img
+                        src={item?.author?.avatar || "https://github.com/shadcn.png"}
+                        className="w-14 h-14 rounded-full object-cover border-2 border-cyan-400 
+                        shadow-[0_0_20px_rgba(6,182,212,0.4)] group-hover:scale-105 transition-transform"
+                        alt="avatar"
+                      />
+                      <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full 
+                      border-2 border-gray-900"></div>
+                    </div>
 
-              {item.image && (
-                <img
-                  src={item.image}
-                  alt="post-img"
-                  className="w-full rounded-xl max-h-80 object-cover border border-cyan-400/30 shadow-md"
-                />
-              )}
-
-              <div className="flex items-center gap-2 mt-2">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-
-                    if (!isAuthenticated) {
-                      toast.error("Please login to like posts! 💬");
-                      return;
-                    }
-
-                    handleLike(item._id);
-                  }}
-                  className={`text-xl transition-transform duration-200 ${
-                    item.likes?.length > 0
-                      ? "text-cyan-400 hover:scale-110"
-                      : "text-gray-400 hover:text-cyan-300 hover:scale-110"
-                  }`}
-                >
-                  {item.likes?.length > 0 ? "💙" : "🤍"}
-                </button>
-
-                <button
-                  onClick={() => {
-                    setLikedBy(item.likes || []);
-                    setShowModal(true);
-                  }}
-                  className="text-sm text-gray-400 hover:text-cyan-300 transition"
-                >
-                  {item.likes?.length || 0} Likes
-                </button>
-              </div>
-
-              {/* comments */}
-              <div className="mt-6 space-y-4">
-                {item.comments?.length > 0 && (
-                  <div className="space-y-3">
-                    {item.comments.map((c) => (
-                      <div
-                        key={c._id}
-                        className="bg-white/5 border border-white/10 p-3 rounded-xl flex justify-between items-start"
-                      >
-                        <div className="flex gap-3">
-                          <img
-                            src={
-                              c.user?.avatar || "https://github.com/shadcn.png"
-                            }
-                            className="w-10 h-10 rounded-full border border-cyan-400"
-                            alt=""
-                          />
-                          <div>
-                            <p className="text-sm font-semibold text-cyan-400">
-                              {c.user?.username}
-                            </p>
-                            <p className="text-gray-300 text-sm">{c.text}</p>
-                          </div>
-                        </div>
-
-                        {String(c.user?._id) === String(localUser._id) && (
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-
-                              if (!isAuthenticated) {
-                                return toast.error(
-                                  "Please login to delete comments!"
-                                );
-                              }
-
-                              handleDeleteComment(item._id, c._id);
-                            }}
-                            className="text-red-400 hover:text-red-300 text-sm"
-                          >
-                            Delete
-                          </button>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="text-lg font-semibold text-cyan-300 hover:text-cyan-200 
+                        transition cursor-pointer">
+                          {item?.author?.username}
+                        </h3>
+                        {item?.author?.role && (
+                          <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full 
+                          bg-gradient-to-r from-cyan-500/20 to-blue-500/20 
+                          text-cyan-300 border border-cyan-500/30">
+                            {item.author.role}
+                          </span>
                         )}
                       </div>
-                    ))}
+
+                      <p className="text-gray-400 text-xs flex items-center gap-1">
+                        <span>{new Date(item.createdAt).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        })}</span>
+                        <span>•</span>
+                        <span>{new Date(item.createdAt).toLocaleTimeString('en-US', {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* More Options */}
+                  <button className="p-2 rounded-full hover:bg-gray-800/50 transition">
+                    <MoreHorizontal className="w-5 h-5 text-gray-400" />
+                  </button>
+                </div>
+
+                {/* Post Content */}
+                <div className="relative mb-6">
+                  <h2 className="text-2xl font-bold mb-3 tracking-tight bg-gradient-to-r from-white to-gray-300 
+                  bg-clip-text text-transparent">
+                    {item.title}
+                  </h2>
+
+                  <p className="text-gray-300 text-base leading-relaxed">
+                    {item.content}
+                  </p>
+                </div>
+
+                {/* Post Image */}
+                {item.image && (
+                  <div className="relative mb-6 group/image">
+                    <img
+                      src={item.image}
+                      alt="post"
+                      className="w-full rounded-2xl max-h-96 object-cover border border-cyan-500/30 
+                      shadow-[0_0_30px_rgba(6,182,212,0.25)] group-hover/image:scale-[1.02] 
+                      transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent 
+                    rounded-2xl opacity-0 group-hover/image:opacity-100 transition-opacity"></div>
                   </div>
                 )}
 
-                {/* ADD COMMENT */}
-                <div className="flex gap-3 mt-4">
-                  <input
-                    type="text"
-                    placeholder="Add a comment..."
-                    value={commentText[item._id] || ""}
-                    onChange={(e) =>
-                      setCommentText((prev) => ({
-                        ...prev,
-                        [item._id]: e.target.value,
-                      }))
-                    }
-                    className="flex-1 px-4 py-2 rounded-xl bg-white/10 border border-cyan-400/30 text-white placeholder-gray-400 focus:ring-2 focus:ring-cyan-400/40 outline-none"
-                  />
-
+                {/* Interaction Stats */}
+                <div className="relative flex items-center gap-6 py-4 border-y border-cyan-800/30">
+                  {/* Like Button */}
                   <button
                     onClick={() => {
-                      if (!isAuthenticated) {
-                        return toast.error("Please login to post comments!");
-                      }
-                      handleAddComment(item._id);
+                      if (!isAuthenticated)
+                        return toast.error("Please login to like posts!");
+                      handleLike(item._id);
                     }}
-                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold hover:scale-105 transition-all"
+                    className="group/like flex items-center gap-2 transition-all duration-300"
                   >
-                    Post
+                    <div className="relative">
+                      <Heart
+                        className={`w-6 h-6 transition-all duration-300 ${isLiked
+                            ? "fill-red-500 text-red-500 scale-110"
+                            : "text-gray-400 group-hover/like:text-red-400 group-hover/like:scale-110"
+                          }`}
+                      />
+                      {isLiked && (
+                        <div className="absolute inset-0 animate-ping">
+                          <Heart className="w-6 h-6 text-red-500 opacity-75" />
+                        </div>
+                      )}
+                    </div>
+                    <span
+                      className="text-sm font-medium cursor-pointer hover:text-cyan-300 transition"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setLikedBy(item.likes || []);
+                        setShowModal(true);
+                      }}
+                    >
+                      <span className={isLiked ? "text-red-400" : "text-gray-400"}>
+                        {item.likes?.length || 0}
+                      </span>
+                      <span className="text-gray-500 ml-1">
+                        {item.likes?.length === 1 ? 'Like' : 'Likes'}
+                      </span>
+                    </span>
+                  </button>
+
+                  {/* Comment Button */}
+                  <button
+                    onClick={() => toggleComments(item._id)}
+                    className="flex items-center gap-2 hover:text-cyan-300 transition group/comment"
+                  >
+                    <MessageCircle className="w-6 h-6 text-gray-400 group-hover/comment:text-cyan-400 
+                    group-hover/comment:scale-110 transition-all" />
+                    <span className="text-sm font-medium text-gray-400 group-hover/comment:text-cyan-300">
+                      {item.comments?.length || 0} {item.comments?.length === 1 ? 'Comment' : 'Comments'}
+                    </span>
+                  </button>
+
+                  {/* Share Button */}
+                  <button className="flex items-center gap-2 hover:text-cyan-300 transition group/share ml-auto">
+                    <Share2 className="w-5 h-5 text-gray-400 group-hover/share:text-cyan-400 
+                    group-hover/share:scale-110 transition-all" />
+                  </button>
+
+                  {/* Bookmark Button */}
+                  <button className="flex items-center gap-2 hover:text-cyan-300 transition group/bookmark">
+                    <Bookmark className="w-5 h-5 text-gray-400 group-hover/bookmark:text-cyan-400 
+                    group-hover/bookmark:scale-110 transition-all" />
                   </button>
                 </div>
-              </div>
-            </div>
-          );
-        })}
-      </section>
 
+                {/* Comments Section */}
+                <div className={`relative transition-all duration-500 overflow-hidden ${commentsExpanded ? 'max-h-[2000px] opacity-100 mt-6' : 'max-h-0 opacity-0'
+                  }`}>
+                  {/* Comments Header */}
+                  {item.comments?.length > 0 && (
+                    <div className="flex items-center gap-2 pb-4 mb-4 border-b border-cyan-800/30">
+                      <MessageCircle className="w-5 h-5 text-cyan-400" />
+                      <h4 className="text-sm font-semibold text-cyan-300">
+                        {item.comments.length} {item.comments.length === 1 ? 'Comment' : 'Comments'}
+                      </h4>
+                    </div>
+                  )}
+
+                  {/* Comments List */}
+                  <div className="space-y-4 mb-6 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+                    {item.comments?.map((c) => (
+                      <div
+                        key={c._id}
+                        className="flex gap-3 bg-gray-800/40 p-4 rounded-xl border border-cyan-800/20
+                        hover:bg-gray-800/60 hover:border-cyan-700/30 transition-all duration-300 group/comment"
+                      >
+                        <img
+                          src={c.user?.avatar || "https://github.com/shadcn.png"}
+                          className="w-10 h-10 rounded-full border border-cyan-400/50 
+                          shadow-[0_0_15px_rgba(6,182,212,0.3)] flex-shrink-0"
+                          alt=""
+                        />
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-1">
+                            <p className="text-sm font-semibold text-cyan-300">
+                              {c.user?.username}
+                            </p>
+                            {String(c.user?._id) === String(localUser._id) && (
+                              <button
+                                onClick={() => handleDeleteComment(item._id, c._id)}
+                                className="opacity-0 group-hover/comment:opacity-100 p-1.5 rounded-lg 
+                                hover:bg-red-500/20 text-red-400 hover:text-red-300 transition-all"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                          <p className="text-gray-300 text-sm leading-relaxed break-words">{c.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Add Comment Input */}
+                  <div className="flex gap-3">
+                    <img
+                      src={localUser?.avatar || "https://github.com/shadcn.png"}
+                      className="w-10 h-10 rounded-full border border-cyan-400/50 flex-shrink-0"
+                      alt=""
+                    />
+                    <div className="flex-1 flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="Write a comment..."
+                        value={commentText[item._id] || ""}
+                        onChange={(e) =>
+                          setCommentText((prev) => ({
+                            ...prev,
+                            [item._id]: e.target.value,
+                          }))
+                        }
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            if (!isAuthenticated) return toast.error("Please login to comment!");
+                            handleAddComment(item._id);
+                          }
+                        }}
+                        className="flex-1 px-4 py-3 rounded-xl bg-gray-800/60 border border-cyan-500/30 
+                        text-white placeholder-gray-400 focus:ring-2 focus:ring-cyan-500/40 
+                        focus:border-cyan-500/50 outline-none transition-all"
+                      />
+
+                      <button
+                        onClick={() => {
+                          if (!isAuthenticated)
+                            return toast.error("Please login to comment!");
+                          handleAddComment(item._id);
+                        }}
+                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 
+                        text-white font-semibold hover:from-cyan-400 hover:to-blue-500
+                        hover:scale-105 active:scale-95 transition-all shadow-lg 
+                        shadow-cyan-500/25 hover:shadow-cyan-500/40"
+                      >
+                        Post
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </section>
+      )}
+
+      {/* Liked By Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
-          <div className="bg-[#0f172a] border border-cyan-400/30 rounded-2xl p-6 w-96 text-white shadow-[0_0_25px_rgba(6,182,212,0.4)] relative">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-md z-50 
+        animate-fadeIn">
+          <div
+            className="bg-gray-900/95 border border-cyan-400/40 rounded-2xl p-6 w-96 max-w-[90vw]
+            shadow-[0_0_60px_rgba(6,182,212,0.5)] relative animate-scaleIn"
+          >
             <button
               onClick={() => setShowModal(false)}
-              className="absolute top-3 right-4 text-gray-400 hover:text-cyan-400 text-xl"
+              className="absolute top-4 right-4 text-gray-400 hover:text-cyan-300 
+              hover:rotate-90 transition-all duration-300"
             >
-              ✕
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
 
-            <h3 className="text-2xl font-bold text-center bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text mb-4">
-              Liked By
-            </h3>
+            <div className="flex items-center gap-2 mb-6">
+              <Heart className="w-6 h-6 text-red-500 fill-red-500" />
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-600 
+              text-transparent bg-clip-text">
+                Liked By
+              </h3>
+            </div>
 
             {likedBy.length === 0 ? (
-              <p className="text-gray-400 text-center italic">
-                No likes yet on this post.
-              </p>
+              <p className="text-gray-400 text-center py-8">No likes yet.</p>
             ) : (
-              <div className="space-y-4 max-h-60 overflow-y-auto">
+              <div className="space-y-3 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
                 {likedBy.map((user) => (
                   <div
                     key={user._id}
-                    className="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/10 transition"
+                    className="flex items-center gap-3 bg-gray-800/40 p-3 rounded-xl 
+                    border border-cyan-800/20 hover:bg-gray-800/60 hover:border-cyan-700/30
+                    transition-all duration-300 cursor-pointer group"
                   >
                     <img
                       src={user.avatar || "https://github.com/shadcn.png"}
-                      alt={user.username}
-                      className="w-10 h-10 rounded-full border border-cyan-400"
+                      className="w-12 h-12 rounded-full border-2 border-cyan-400/50 
+                      group-hover:border-cyan-400 transition-all"
+                      alt=""
                     />
-                    <p className="text-sm font-medium">{user.username}</p>
+                    <div>
+                      <p className="font-semibold text-cyan-300 group-hover:text-cyan-200 transition">
+                        {user.username}
+                      </p>
+                      {user.role && (
+                        <p className="text-xs text-gray-400">{user.role}</p>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -257,6 +469,37 @@ const Community = () => {
           </div>
         </div>
       )}
+
+      <style jsx>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(17, 24, 39, 0.5);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(6, 182, 212, 0.3);
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(6, 182, 212, 0.5);
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes scaleIn {
+          from { transform: scale(0.9); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out;
+        }
+        .animate-scaleIn {
+          animation: scaleIn 0.3s ease-out;
+        }
+      `}</style>
     </main>
   );
 };

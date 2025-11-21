@@ -74,7 +74,7 @@ const DevelopersSection = () => {
 
             <CardFooter className="flex justify-center">
               <Link to={`/developers/${dev._id}`}>
-                <button className="text-white bg-gradient-to-r from-cyan-400 to-blue-600 px-6 py-2.5 rounded-full text-sm font-semibold hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] hover:scale-105 transition-all duration-300">
+                <button className="text-white bg-gradient-to-r from-cyan-400 to-blue-600 px-6 py-2.5 rounded-full text-sm font-semibold hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] hover:scale-105 transition-all duration-300 cursor-pointer">
                   View Profile
                 </button>
               </Link>

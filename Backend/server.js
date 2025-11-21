@@ -8,10 +8,16 @@ import userRouter from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import developerRouter from "./routes/developerRoutes.js";
 import recruiterRouter from "./routes/recruiterRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
+import jobRoutes from "./routes/jobRoutes.js";
+import analyticsRoutes from "./routes/analyticsRoutes.js";
+import codingSessionRoutes from "./routes/codingSessionRoutes.js";
+import executionRoutes from "./routes/executionRoutes.js";
+import resumeRoutes from "./routes/resumeRoutes.js";
+import { app, server } from "./socket/socket.js";
 
 dotenv.config();
-
-const app = express();
 
 app.use(express.json());
 app.use(
@@ -27,10 +33,17 @@ app.use("/api/auth", userRouter);
 app.use("/api/post", postRoutes);
 app.use("/api", developerRouter);
 app.use("/api", recruiterRouter);
+app.use("/api/messages", messageRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/jobs", jobRoutes);
+app.use("/api/analytics", analyticsRoutes);
+app.use("/api/sessions", codingSessionRoutes);
+app.use("/api/code", executionRoutes);
+app.use("/api/resumes", resumeRoutes);
 
 db();
 
-app.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, () => {
   console.log("app is running on port 8000");
 });
 

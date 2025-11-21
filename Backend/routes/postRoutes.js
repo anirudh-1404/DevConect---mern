@@ -10,6 +10,7 @@ import {
   fetchPostByUser,
   toggleLike,
   updatePostController,
+  getPostById,
 } from "../controllers/postController.js";
 import upload from "../middlewares/multer.js";
 
@@ -24,6 +25,7 @@ router.post(
 router.get("/", fetchAllPosts);
 router.get("/my", protectRoute, fetchMyPosts);
 router.get("/user/:id", fetchPostByUser);
+router.get("/:id", getPostById);
 router.patch("/update/:id", protectRoute, updatePostController);
 router.delete("/delete/:id", protectRoute, deletePostController);
 router.post("/:id/like", protectRoute, toggleLike);

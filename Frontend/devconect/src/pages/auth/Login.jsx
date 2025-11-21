@@ -71,84 +71,119 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-[#020617] to-[#0f172a] px-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl bg-white/5 backdrop-blur-xl border border-cyan-400/20 shadow-[0_0_40px_rgba(6,182,212,0.15)] rounded-3xl p-10">
-        <div className="hidden md:flex justify-center items-center">
+    <div className="min-h-screen bg-[#020617] flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="
+          w-full max-w-7xl 
+          bg-gray-900/80 backdrop-blur-lg 
+          border border-cyan-800/50 
+          rounded-2xl shadow-2xl shadow-cyan-900/20
+          p-8 md:p-12 lg:p-16
+          grid grid-cols-1 lg:grid-cols-2
+          gap-10 lg:gap-16
+        "
+      >
+        {}
+        <div className="hidden lg:flex flex-col items-center justify-center space-y-4 p-4 border-r border-cyan-800/30">
           <Lottie
             animationData={loginAnim}
-            loop={true}
-            className="w-80 opacity-90"
+            loop
+            className="w-full max-w-lg opacity-90 transition-opacity duration-500 hover:opacity-100"
           />
+          <p className="text-xl font-semibold text-cyan-400 text-center mt-4">
+            Welcome back to the community.
+          </p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, x: 60 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7 }}
-          className="flex flex-col justify-center text-white"
-        >
-          <h2 className="text-3xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
-            Welcome Back 👋
+        {}
+        <div className="flex flex-col justify-center space-y-6">
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight">
+            Login to <span className="text-white">DevConnect</span>
           </h2>
-          <p className="text-gray-400 text-sm mt-2 mb-10">
-            Continue your journey — collaborate & grow with the DevConnect
-            community.
+
+          <p className="text-gray-400 text-sm sm:text-base leading-relaxed border-l-4 border-cyan-500 pl-3 py-1">
+            Connect with developers and stay updated with tech trends.
           </p>
 
-          <form className="space-y-5" onSubmit={handleSubmission}>
-            <div className="space-y-1">
-              <label className="text-sm text-gray-300">Email</label>
+          <form className="space-y-6" onSubmit={handleSubmission}>
+            {}
+            <div>
+              <label className="text-sm font-medium text-gray-300 block mb-1">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 placeholder="you@example.com"
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-xl bg-white/10 text-white 
-                placeholder-gray-400 border
-                ${errors.email ? "border-red-400" : "border-white/20"}
-                focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/40 outline-none transition`}
+                className={`w-full px-4 py-3 rounded-lg bg-gray-700/50 text-white border 
+                  ${
+                    errors.email
+                      ? "border-red-500 ring-red-500"
+                      : "border-gray-700 hover:border-cyan-500/50"
+                  }
+                  focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 
+                  outline-none transition duration-300`}
               />
               {errors.email && (
-                <p className="text-red-400 text-xs">{errors.email}</p>
+                <p className="text-red-400 text-xs mt-1">{errors.email}</p>
               )}
             </div>
 
-            <div className="space-y-1">
-              <label className="text-sm text-gray-300">Password</label>
+            {}
+            <div>
+              <label className="text-sm font-medium text-gray-300 block mb-1">
+                Password
+              </label>
               <input
                 type="password"
                 name="password"
                 value={formData.password}
                 placeholder="••••••••"
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-xl bg-white/10 text-white 
-                placeholder-gray-400 border
-                ${errors.password ? "border-red-400" : "border-white/20"}
-                focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/40 outline-none transition`}
+                className={`w-full px-4 py-3 rounded-lg bg-gray-700/50 text-white border 
+                  ${
+                    errors.password
+                      ? "border-red-500 ring-red-500"
+                      : "border-gray-700 hover:border-cyan-500/50"
+                  }
+                  focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 
+                  outline-none transition duration-300`}
               />
               {errors.password && (
-                <p className="text-red-400 text-xs">{errors.password}</p>
+                <p className="text-red-400 text-xs mt-1">{errors.password}</p>
               )}
             </div>
 
-            <button
+            {}
+            <motion.button
               type="submit"
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 text-white font-semibold
-              hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] hover:scale-[1.03] active:scale-[0.98] transition-all duration-300"
+              whileHover={{ scale: 1.015 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full mt-4 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white 
+                font-bold text-lg shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 
+                transition-all duration-300"
             >
               Login
-            </button>
+            </motion.button>
           </form>
 
-          <p className="text-center text-gray-400 text-sm mt-6">
-            New to DevConnect?{" "}
-            <Link to="/register" className="text-cyan-400 hover:text-cyan-300">
+          {}
+          <p className="text-center text-gray-500 text-sm pt-2">
+            New here?
+            <Link
+              to="/register"
+              className="text-cyan-400 hover:text-cyan-300 font-semibold ml-1 transition duration-300"
+            >
               Create an account
             </Link>
           </p>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </div>
   );
 };

@@ -22,7 +22,7 @@ const MissionSection = () => {
         Ready to build your dev network?
       </p>
       <Link to="/register">
-        <button className="mt-4 text-white bg-gradient-to-r from-cyan-400 to-blue-600 text-lg font-semibold px-10 py-4 rounded-full hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] hover:scale-105 transition-all duration-300">
+        <button className="mt-4 text-white bg-gradient-to-r from-cyan-400 to-blue-600 text-lg font-semibold px-10 py-4 rounded-full hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] hover:scale-105 transition-all duration-300 cursor-pointer">
           Join Now
         </button>
       </Link>

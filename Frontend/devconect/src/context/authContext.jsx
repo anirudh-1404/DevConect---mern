@@ -1,26 +1,39 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState, useContext } from "react";
 import toast from "react-hot-toast";
 
 export const AuthContext = createContext();
 
+export const useAuth = () => useContext(AuthContext);
+
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) setIsAuthenticated(true);
+    const userData = localStorage.getItem("user");
+
+    if (token && userData) {
+      setIsAuthenticated(true);
+      setUser(JSON.parse(userData));
+    }
+    setLoading(false);
   }, []);
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
     setIsAuthenticated(false);
-    console.log("Token removed! logging out....");
+    setUser(null);
+
     window.location.href = "/login";
   };
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, setIsAuthenticated, logout }}
+      value={{ isAuthenticated, setIsAuthenticated, user, setUser, logout, loading }}
     >
       {children}
     </AuthContext.Provider>

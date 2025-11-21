@@ -1,17 +1,25 @@
 import { Post } from "../models/PostSchema.js";
+import Notification from "../models/NotificationSchema.js";
+import { getReceiverSocketId, io } from "../socket/socket.js";
 
 export const createPostController = async (req, res) => {
   try {
-    const { title, content, image } = req.body;
+    const { title, content } = req.body;
+
+    let imagePath = null;
 
     if (!title || !content) {
       return res.status(400).json({ message: "Title or Content is required!" });
     }
 
+    if (req.file) {
+      imagePath = req.file.path;
+    }
+
     const post = await Post.create({
       title,
       content,
-      image: req.file.path,
+      image: imagePath,
       author: req.user._id,
     });
 
@@ -38,6 +46,24 @@ export const fetchAllPosts = async (req, res) => {
   }
 };
 
+export const getPostById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await Post.findById(id)
+      .populate("author", "username avatar")
+      .populate("likes", "username avatar")
+      .populate("comments.user", "username avatar");
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found!" });
+    }
+
+    res.status(200).json({ message: "Post fetched!", post });
+  } catch (err) {
+    res.status(500).json({ message: "Unable to fetch post!" });
+  }
+};
+
 export const fetchPostByUser = async (req, res) => {
   try {
     const posts = await Post.find({ author: req.params.id })
@@ -54,14 +80,24 @@ export const fetchPostByUser = async (req, res) => {
 
 export const fetchMyPosts = async (req, res) => {
   try {
+    console.log("Fetching posts for user:", req.user?._id);
+
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
     const myPosts = await Post.find({ author: req.user._id })
+      .populate("author", "username avatar")
       .populate("likes", "username avatar")
       .populate("comments.user", "username avatar")
       .sort({ createdAt: -1 });
 
+    console.log(`Found ${myPosts.length} posts for user ${req.user._id}`);
     res.status(200).json({ message: "Your posts fetched!", myPosts });
   } catch (err) {
-    res.status(500).json({ message: "Unable to fetch your posts!" });
+    console.error("Error in fetchMyPosts:", err.message);
+    console.error("Stack:", err.stack);
+    res.status(500).json({ message: "Unable to fetch your posts!", error: err.message });
   }
 };
 
@@ -104,7 +140,7 @@ export const deletePostController = async (req, res) => {
 
 export const toggleLike = async (req, res) => {
   try {
-    const { id } = req.params; // postId
+    const { id } = req.params;
     const userId = req.user._id;
 
     const post = await Post.findById(id);
@@ -121,6 +157,25 @@ export const toggleLike = async (req, res) => {
     } else {
       post.likes.push(userId);
       await post.save();
+
+
+      if (post.author.toString() !== userId.toString()) {
+        const newNotification = new Notification({
+          type: "like",
+          from: userId,
+          to: post.author,
+          message: `liked your post`,
+          link: `/post/${post._id}`,
+        });
+
+        await newNotification.save();
+
+        const receiverSocketId = getReceiverSocketId(post.author);
+        if (receiverSocketId) {
+          io.to(receiverSocketId).emit("newNotification", newNotification);
+        }
+      }
+
       return res
         .status(200)
         .json({ message: "Post liked!", likes: post.likes.length });
@@ -132,7 +187,7 @@ export const toggleLike = async (req, res) => {
 
 export const addComment = async (req, res) => {
   try {
-    const { id } = req.params; // postId
+    const { id } = req.params;
     const userId = req.user._id;
     const { text } = req.body;
 
@@ -148,6 +203,24 @@ export const addComment = async (req, res) => {
     });
 
     await post.save();
+
+
+    if (post.author.toString() !== userId.toString()) {
+      const newNotification = new Notification({
+        type: "comment",
+        from: userId,
+        to: post.author,
+        message: `commented on your post`,
+        link: `/post/${post._id}`,
+      });
+
+      await newNotification.save();
+
+      const receiverSocketId = getReceiverSocketId(post.author);
+      if (receiverSocketId) {
+        io.to(receiverSocketId).emit("newNotification", newNotification);
+      }
+    }
 
     const updatedPost = await Post.findById(id).populate(
       "comments.user",

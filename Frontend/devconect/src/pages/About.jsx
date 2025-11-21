@@ -1,161 +1,224 @@
-import Lottie from "lottie-react";
 import React from "react";
-import AboutAnim from "../../Lottie/AboutAnim.json";
+import { motion } from "framer-motion";
+import {
+  Code2,
+  Users,
+  Globe,
+  Sparkles,
+  Rocket,
+  Heart,
+  Target,
+  Zap,
+  Linkedin,
+  Twitter,
+  Github,
+  Mail
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 const About = () => {
+  const values = [
+    {
+      icon: Zap,
+      title: "Innovation",
+      desc: "Pushing boundaries with cutting-edge technologies and creative solutions.",
+      color: "from-yellow-400 to-orange-500"
+    },
+    {
+      icon: Users,
+      title: "Collaboration",
+      desc: "Fostering a global community where teamwork drives success.",
+      color: "from-blue-400 to-cyan-500"
+    },
+    {
+      icon: Target,
+      title: "Growth",
+      desc: "Empowering continuous learning and professional development.",
+      color: "from-green-400 to-emerald-500"
+    },
+    {
+      icon: Heart,
+      title: "Passion",
+      desc: "Driven by a genuine love for code and community building.",
+      color: "from-pink-400 to-rose-500"
+    }
+  ];
+
   return (
-    <main className="min-h-screen px-6 md:px-14 py-8 text-white">
-      <section className="grid grid-cols-1 md:grid-cols-2 items-center gap-10 py-10">
-        <div className="space-y-6 text-center md:text-left">
-          <h1 className="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text tracking-wide leading-tight">
-            Empowering Developers. <br /> Connecting Innovators.
-          </h1>
+    <div className="min-h-screen bg-[#0B1120] text-white overflow-x-hidden">
 
-          <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto md:mx-0 leading-relaxed">
-            DevConnect bridges the gap between developers and recruiters,
-            fostering collaboration, growth, and innovation in the tech world.
-          </p>
+      <section className="relative pt-32 pb-20 px-6">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[128px]" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[128px]" />
         </div>
 
-        <div className="flex justify-center md:justify-end">
-          <div className="w-full max-w-[400px] md:max-w-[500px] drop-shadow-[0_0_30px_rgba(6,182,212,0.3)]">
-            <Lottie animationData={AboutAnim} loop={true} />
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 px-6 text-center border-t border-white/10">
-        <h2 className="text-3xl font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent text-center mb-6">
-          Our Mission
-        </h2>
-        <p className="text-gray-400 text-center max-w-4xl mx-auto leading-relaxed text-base sm:text-lg">
-          At DevConnect, our mission is to empower developers by connecting them
-          to real opportunities and forward-thinking recruiters. We believe in
-          creating a collaborative environment where talent meets innovation.
-        </p>
-      </section>
-
-      <section className="py-20 px-6 md:px-12 border-t border-white/10">
-        <h2 className="text-3xl font-semibold text-center bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent mb-12">
-          Our Core Values
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {[
-            {
-              title: "Innovation",
-              desc: "We embrace cutting-edge technologies, fresh ideas, and creative thinking to drive digital transformation.",
-            },
-            {
-              title: "Collaboration",
-              desc: "We connect developers and recruiters globally — fostering teamwork, networking, and opportunity creation.",
-            },
-            {
-              title: "Growth",
-              desc: "We inspire continuous growth through learning, challenges, and real-world opportunities that shape better developers.",
-            },
-          ].map((card, i) => (
-            <div
-              key={i}
-              className="bg-white/10 backdrop-blur-lg border border-cyan-400/20 rounded-2xl p-8 text-center 
-              shadow-[0_0_25px_rgba(6,182,212,0.25)] hover:shadow-[0_0_35px_rgba(6,182,212,0.5)] 
-              hover:scale-105 transition-all duration-300"
-            >
-              <h3 className="text-xl font-semibold text-cyan-400 mb-3">
-                {card.title}
-              </h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                {card.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="py-20 px-6 md:px-12 border-t border-white/10 text-center">
-        <h2 className="text-3xl font-semibold bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent mb-8">
-          Why Choose DevConnect?
-        </h2>
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-6 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-300">
-            <h3 className="text-lg font-semibold text-cyan-400 mb-2">
-              🔗 Real Connections
-            </h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Build lasting professional relationships with top recruiters and
-              developers across industries.
-            </p>
-          </div>
-          <div className="p-6 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-300">
-            <h3 className="text-lg font-semibold text-cyan-400 mb-2">
-              💼 Verified Opportunities
-            </h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Access genuine job listings and internship opportunities verified
-              by industry professionals.
-            </p>
-          </div>
-          <div className="p-6 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-300">
-            <h3 className="text-lg font-semibold text-cyan-400 mb-2">
-              🌍 Global Reach
-            </h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Be a part of an ever-growing tech community where boundaries don't
-              limit innovation.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="flex flex-col items-center justify-center py-20 px-6 border-t border-white/10">
-        <h1 className="text-3xl font-bold text-center bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text mb-10">
-          Meet Our CEO
-        </h1>
-
-        <img
-          src="src/assets/profile_picture.jpeg"
-          alt="Anirudh Joshi"
-          className="w-40 h-40 md:w-48 md:h-48 rounded-full border-4 border-cyan-400 mx-auto shadow-[0_0_40px_rgba(6,182,212,0.5)] object-cover"
-        />
-
-        <h2 className="text-2xl font-semibold mt-6 text-center">
-          Anirudh Joshi
-        </h2>
-
-        <p className="text-cyan-400 text-sm text-center font-medium">
-          Founder & CEO, DevConnect
-        </p>
-
-        <p className="text-gray-400 text-center italic max-w-2xl mx-auto mt-4 leading-relaxed">
-          "I started DevConnect to create a platform where developers and
-          recruiters can connect, collaborate, and grow together — shaping the
-          future of tech."
-        </p>
-        <div className="w-24 h-[2px] bg-gradient-to-r from-cyan-400 to-blue-500 mt-8 rounded-full shadow-[0_0_20px_rgba(6,182,212,0.5)]"></div>
-      </section>
-
-      <section className="py-20 text-center border-t border-white/10">
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text">
-          Be a Part of the Revolution
-        </h2>
-
-        <p className="text-gray-400 mt-3 max-w-3xl mx-auto leading-relaxed text-base sm:text-lg">
-          Join DevConnect today and unlock limitless opportunities — collaborate
-          with developers, connect with recruiters, and shape the future of
-          innovation.
-        </p>
-        <Link to="/register">
-          <button
-            className="mt-8 px-8 py-3 rounded-full bg-gradient-to-r from-cyan-400 to-blue-600 
-          text-white font-semibold shadow-lg hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] 
-          hover:scale-105 transition-all duration-300"
+        <div className="relative max-w-7xl mx-auto text-center z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            Join DevConnect
-          </button>
-        </Link>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+              Empowering <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">Developers</span>
+              <br />
+              Connecting <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Innovators</span>
+            </h1>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+              DevConnect bridges the gap between talent and opportunity, creating a ecosystem where developers thrive and innovation knows no bounds.
+            </p>
+          </motion.div>
+        </div>
       </section>
-    </main>
+
+
+      <section className="py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-8"
+            >
+              <h2 className="text-4xl font-bold">
+                Our Mission <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+                  Shaping the Future
+                </span>
+              </h2>
+              <p className="text-gray-400 text-lg leading-relaxed">
+                At DevConnect, we believe that every line of code has the potential to change the world. Our mission is to democratize access to opportunities in tech, making it easier for developers to showcase their skills and for companies to find the perfect talent.
+              </p>
+              <div className="flex gap-4">
+                <div className="pl-4 border-l-2 border-cyan-500">
+                  <h4 className="text-white font-semibold mb-1">For Developers</h4>
+                  <p className="text-sm text-gray-400">Showcase work, find peers, get hired.</p>
+                </div>
+                <div className="pl-4 border-l-2 border-purple-500">
+                  <h4 className="text-white font-semibold mb-1">For Recruiters</h4>
+                  <p className="text-sm text-gray-400">Discover talent, verify skills, hire fast.</p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl blur-2xl opacity-20" />
+              <div className="relative bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-xl">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-4">
+                    <div className="h-32 bg-white/5 rounded-lg animate-pulse" />
+                    <div className="h-20 bg-white/5 rounded-lg animate-pulse" />
+                  </div>
+                  <div className="space-y-4 pt-8">
+                    <div className="h-20 bg-white/5 rounded-lg animate-pulse" />
+                    <div className="h-32 bg-white/5 rounded-lg animate-pulse" />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+
+      <section className="py-24 px-6 bg-white/5">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Core Values</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              The principles that guide everything we do at DevConnect.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {values.map((value, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="group p-8 rounded-2xl bg-[#0B1120] border border-white/10 hover:border-white/20 transition-all duration-300 hover:-translate-y-1"
+              >
+                <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${value.color} p-0.5 mb-6`}>
+                  <div className="w-full h-full bg-[#0B1120] rounded-[7px] flex items-center justify-center">
+                    <value.icon size={20} className="text-white" />
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold mb-3">{value.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  {value.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+      <section className="py-24 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative inline-block"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full blur-xl opacity-50" />
+            <img
+              src="src/assets/profile_picture.jpeg"
+              alt="Anirudh Joshi"
+              className="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-[#0B1120] object-cover mx-auto mb-8"
+            />
+          </motion.div>
+
+          <h2 className="text-3xl font-bold mb-2">Anirudh Joshi</h2>
+          <p className="text-cyan-400 font-medium mb-6">Founder & CEO</p>
+
+          <blockquote className="text-xl md:text-2xl text-gray-300 font-light italic mb-8 leading-relaxed">
+            "I started DevConnect to create a platform where developers and recruiters can connect, collaborate, and grow together — shaping the future of tech."
+          </blockquote>
+
+          <div className="flex justify-center gap-4">
+            <a href="#" className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
+              <Linkedin size={20} />
+            </a>
+            <a href="#" className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
+              <Twitter size={20} />
+            </a>
+            <a href="#" className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
+              <Github size={20} />
+            </a>
+          </div>
+        </div>
+      </section>
+
+
+      <section className="py-24 px-6">
+        <div className="max-w-5xl mx-auto relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 to-cyan-600 px-6 py-16 text-center">
+          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+          <div className="relative z-10">
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
+              Ready to Start Your Journey?
+            </h2>
+            <p className="text-blue-100 text-lg max-w-2xl mx-auto mb-10">
+              Join thousands of developers and recruiters who are already building the future together.
+            </p>
+            <Link to="/register">
+              <button className="bg-white text-blue-600 px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                Join DevConnect Now
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 
