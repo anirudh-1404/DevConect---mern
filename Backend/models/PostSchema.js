@@ -15,6 +15,19 @@ const PostSchema = new mongoose.Schema(
       default: "",
       required: false,
     },
+    postType: {
+      type: String,
+      enum: ["text", "video", "audio"],
+      default: "text",
+    },
+    videoUrl: {
+      type: String,
+      default: "",
+    },
+    audioUrl: {
+      type: String,
+      default: "",
+    },
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -37,7 +37,7 @@ const ResumeBuilder = () => {
         languages: [],
     });
 
-    // Fetch user's resumes
+    
     const fetchResumes = async () => {
         try {
             setLoading(true);
@@ -55,7 +55,7 @@ const ResumeBuilder = () => {
         fetchResumes();
     }, []);
 
-    // Auto-fill from profile
+    
     const handleAutoFill = async () => {
         try {
             const response = await API.get("/resumes/autofill");
@@ -78,7 +78,7 @@ const ResumeBuilder = () => {
         }
     };
 
-    // Create new resume
+    
     const handleCreateNew = () => {
         setCurrentResume(null);
         setFormData({
@@ -106,7 +106,7 @@ const ResumeBuilder = () => {
         });
     };
 
-    // Load resume
+    
     const handleLoadResume = async (resumeId) => {
         try {
             const response = await API.get(`/resumes/${resumeId}`);
@@ -119,16 +119,16 @@ const ResumeBuilder = () => {
         }
     };
 
-    // Save resume
+    
     const handleSave = async () => {
         try {
             setSaving(true);
             if (currentResume) {
-                // Update existing
+                
                 await API.put(`/resumes/${currentResume._id}`, formData);
                 toast.success("Resume updated!");
             } else {
-                // Create new
+                
                 const response = await API.post("/resumes/create", formData);
                 setCurrentResume(response.data.resume);
                 toast.success("Resume created!");
@@ -142,7 +142,7 @@ const ResumeBuilder = () => {
         }
     };
 
-    // Delete resume
+    
     const handleDelete = async (resumeId) => {
         if (!window.confirm("Are you sure you want to delete this resume?")) return;
 
@@ -159,7 +159,7 @@ const ResumeBuilder = () => {
         }
     };
 
-    // Download PDF
+    
     const handleDownloadPDF = () => {
         const element = document.getElementById("resume-content");
         const opt = {
@@ -174,7 +174,7 @@ const ResumeBuilder = () => {
         toast.success("Downloading PDF...");
     };
 
-    // Add/Remove array items
+    
     const addArrayItem = (field, defaultItem) => {
         setFormData((prev) => ({
             ...prev,
@@ -198,7 +198,7 @@ const ResumeBuilder = () => {
         }));
     };
 
-    // Add/Remove skills
+    
     const addSkill = (type) => {
         const skill = prompt(`Enter ${type} skill:`);
         if (skill) {
@@ -225,7 +225,7 @@ const ResumeBuilder = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#020617] via-[#0a0f1e] to-[#020617] text-white py-16 px-4">
             <div className="max-w-7xl mx-auto">
-                {/* Header */}
+                {}
                 <div className="text-center mb-12">
                     <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 mb-4">
                         Resume Builder
@@ -234,7 +234,7 @@ const ResumeBuilder = () => {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                    {/* Sidebar - Resume List */}
+                    {}
                     <div className="lg:col-span-1">
                         <div className="bg-gray-900/60 backdrop-blur-xl border border-cyan-800/40 rounded-2xl p-6">
                             <div className="flex items-center justify-between mb-4">
@@ -284,10 +284,10 @@ const ResumeBuilder = () => {
                         </div>
                     </div>
 
-                    {/* Main Content - Form */}
+                    {}
                     <div className="lg:col-span-3">
                         <div className="bg-gray-900/60 backdrop-blur-xl border border-cyan-800/40 rounded-2xl p-6">
-                            {/* Action Buttons */}
+                            {}
                             <div className="flex flex-wrap gap-3 mb-6">
                                 <button
                                     onClick={handleAutoFill}
@@ -320,9 +320,9 @@ const ResumeBuilder = () => {
                                 </button>
                             </div>
 
-                            {/* Form */}
+                            {}
                             <div className="space-y-6 max-h-[70vh] overflow-y-auto pr-4 custom-scrollbar">
-                                {/* Basic Info */}
+                                {}
                                 <div>
                                     <h3 className="text-lg font-bold text-cyan-300 mb-3">Basic Info</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -344,7 +344,7 @@ const ResumeBuilder = () => {
                                     </div>
                                 </div>
 
-                                {/* Personal Info */}
+                                {}
                                 <div>
                                     <h3 className="text-lg font-bold text-cyan-300 mb-3">Personal Information</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -435,7 +435,7 @@ const ResumeBuilder = () => {
                                     </div>
                                 </div>
 
-                                {/* Summary */}
+                                {}
                                 <div>
                                     <h3 className="text-lg font-bold text-cyan-300 mb-3">Professional Summary</h3>
                                     <textarea
@@ -447,7 +447,7 @@ const ResumeBuilder = () => {
                                     />
                                 </div>
 
-                                {/* Experience */}
+                                {}
                                 <div>
                                     <div className="flex items-center justify-between mb-3">
                                         <h3 className="text-lg font-bold text-cyan-300">Work Experience</h3>
@@ -537,7 +537,7 @@ const ResumeBuilder = () => {
                                     ))}
                                 </div>
 
-                                {/* Education */}
+                                {}
                                 <div>
                                     <div className="flex items-center justify-between mb-3">
                                         <h3 className="text-lg font-bold text-cyan-300">Education</h3>
@@ -624,7 +624,7 @@ const ResumeBuilder = () => {
                                     ))}
                                 </div>
 
-                                {/* Skills */}
+                                {}
                                 <div>
                                     <h3 className="text-lg font-bold text-cyan-300 mb-3">Skills</h3>
                                     <div className="space-y-4">
@@ -685,7 +685,7 @@ const ResumeBuilder = () => {
                                     </div>
                                 </div>
 
-                                {/* Projects - Similar structure to Experience */}
+                                {}
                                 <div>
                                     <div className="flex items-center justify-between mb-3">
                                         <h3 className="text-lg font-bold text-cyan-300">Projects</h3>
@@ -769,7 +769,7 @@ const ResumeBuilder = () => {
                     </div>
                 </div>
 
-                {/* Preview Modal */}
+                {}
                 {showPreview && (
                     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
                         <div className="relative max-w-5xl w-full my-8">
@@ -788,7 +788,7 @@ const ResumeBuilder = () => {
                     </div>
                 )}
 
-                {/* Hidden template for PDF export */}
+                {}
                 <div className="hidden">
                     {formData.template === "modern" ? (
                         <ModernTemplate resumeData={formData} />

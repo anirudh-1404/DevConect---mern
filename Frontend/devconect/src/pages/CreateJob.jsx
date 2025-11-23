@@ -1,7 +1,7 @@
 import API from "@/API/Interceptor";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Plus, X } from "lucide-react";
+import { ArrowLeft, Plus, X, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
@@ -21,7 +21,7 @@ const CreateJob = () => {
 
     const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-    
+
     if (user.role?.toLowerCase() !== "recruiter") {
         navigate("/jobs");
         return null;
@@ -70,23 +70,23 @@ const CreateJob = () => {
     return (
         <div className="min-h-screen bg-[#020617] text-white px-4 sm:px-6 py-16">
             <div className="max-w-3xl mx-auto">
-                {}
-                <Link to="/jobs" className="inline-flex items-center text-cyan-400 hover:text-cyan-300 mb-8 transition-colors">
+                { }
+                <Link to="/jobs" className="inline-flex items-center text-midnight-blue hover:text-midnight-violet mb-8 transition-all duration-300 hover:translate-x-[-4px]">
                     <ArrowLeft className="w-5 h-5 mr-2" />
                     Back to Jobs
                 </Link>
 
-                {}
+                { }
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 mb-2">
+                    <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-midnight-blue to-midnight-violet mb-2">
                         Post a New Job
                     </h1>
-                    <p className="text-gray-400">Find the perfect candidate for your team</p>
+                    <p className="text-slate-400">Find the perfect candidate for your team</p>
                 </div>
 
-                {}
-                <form onSubmit={handleSubmit} className="bg-gray-900/50 backdrop-blur-xl border border-cyan-800/40 rounded-3xl p-8">
-                    {}
+                { }
+                <form onSubmit={handleSubmit} className="bg-midnight-gray/50 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+                    { }
                     <div className="mb-6">
                         <label className="block text-gray-400 mb-2 font-medium">
                             Job Title <span className="text-red-400">*</span>
@@ -97,17 +97,12 @@ const CreateJob = () => {
                             value={formData.title}
                             onChange={handleChange}
                             placeholder="e.g. Senior React Developer"
-                            className="
-                w-full px-4 py-3 rounded-xl 
-                bg-gray-800/40 border border-cyan-500/30 
-                text-white placeholder-gray-500 
-                focus:ring-2 focus:ring-cyan-500/40 outline-none
-              "
+                            className="w-full px-4 py-3 rounded-xl bg-midnight-black border border-white/10 text-white placeholder-slate-500 focus:ring-2 focus:ring-midnight-blue/40 focus:border-midnight-blue outline-none transition-all duration-300"
                             required
                         />
                     </div>
 
-                    {}
+                    { }
                     <div className="mb-6">
                         <label className="block text-gray-400 mb-2 font-medium">
                             Company <span className="text-red-400">*</span>
@@ -118,17 +113,12 @@ const CreateJob = () => {
                             value={formData.company}
                             onChange={handleChange}
                             placeholder="e.g. TechCorp Inc."
-                            className="
-                w-full px-4 py-3 rounded-xl 
-                bg-gray-800/40 border border-cyan-500/30 
-                text-white placeholder-gray-500 
-                focus:ring-2 focus:ring-cyan-500/40 outline-none
-              "
+                            className="w-full px-4 py-3 rounded-xl bg-midnight-black border border-white/10 text-white placeholder-slate-500 focus:ring-2 focus:ring-midnight-blue/40 focus:border-midnight-blue outline-none transition-all duration-300"
                             required
                         />
                     </div>
 
-                    {}
+                    { }
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
                             <label className="block text-gray-400 mb-2 font-medium">
@@ -140,12 +130,7 @@ const CreateJob = () => {
                                 value={formData.location}
                                 onChange={handleChange}
                                 placeholder="e.g. San Francisco, CA"
-                                className="
-                  w-full px-4 py-3 rounded-xl 
-                  bg-gray-800/40 border border-cyan-500/30 
-                  text-white placeholder-gray-500 
-                  focus:ring-2 focus:ring-cyan-500/40 outline-none
-                "
+                                className="w-full px-4 py-3 rounded-xl bg-midnight-black border border-white/10 text-white placeholder-slate-500 focus:ring-2 focus:ring-midnight-blue/40 focus:border-midnight-blue outline-none transition-all duration-300"
                                 required
                             />
                         </div>
@@ -157,12 +142,7 @@ const CreateJob = () => {
                                 name="type"
                                 value={formData.type}
                                 onChange={handleChange}
-                                className="
-                  w-full px-4 py-3 rounded-xl 
-                  bg-gray-800/40 border border-cyan-500/30 
-                  text-white 
-                  focus:ring-2 focus:ring-cyan-500/40 outline-none
-                "
+                                className="w-full px-4 py-3 rounded-xl bg-midnight-black border border-white/10 text-white focus:ring-2 focus:ring-midnight-blue/40 focus:border-midnight-blue outline-none transition-all duration-300"
                             >
                                 <option value="Remote">Remote</option>
                                 <option value="Onsite">Onsite</option>
@@ -171,7 +151,7 @@ const CreateJob = () => {
                         </div>
                     </div>
 
-                    {}
+                    { }
                     <div className="mb-6">
                         <label className="block text-gray-400 mb-2 font-medium">
                             Salary Range (Optional)
@@ -182,16 +162,11 @@ const CreateJob = () => {
                             value={formData.salary}
                             onChange={handleChange}
                             placeholder="e.g. $120k - $180k"
-                            className="
-                w-full px-4 py-3 rounded-xl 
-                bg-gray-800/40 border border-cyan-500/30 
-                text-white placeholder-gray-500 
-                focus:ring-2 focus:ring-cyan-500/40 outline-none
-              "
+                            className="w-full px-4 py-3 rounded-xl bg-midnight-black border border-white/10 text-white placeholder-slate-500 focus:ring-2 focus:ring-midnight-blue/40 focus:border-midnight-blue outline-none transition-all duration-300"
                         />
                     </div>
 
-                    {}
+                    { }
                     <div className="mb-6">
                         <label className="block text-gray-400 mb-2 font-medium">
                             Job Description <span className="text-red-400">*</span>
@@ -202,17 +177,12 @@ const CreateJob = () => {
                             onChange={handleChange}
                             rows={8}
                             placeholder="Describe the role, responsibilities, and what makes this opportunity great..."
-                            className="
-                w-full px-4 py-3 rounded-xl 
-                bg-gray-800/40 border border-cyan-500/30 
-                text-white placeholder-gray-500 
-                focus:ring-2 focus:ring-cyan-500/40 outline-none
-              "
+                            className="w-full px-4 py-3 rounded-xl bg-midnight-black border border-white/10 text-white placeholder-slate-500 focus:ring-2 focus:ring-midnight-blue/40 focus:border-midnight-blue outline-none transition-all duration-300 resize-none"
                             required
                         />
                     </div>
 
-                    {}
+                    { }
                     <div className="mb-8">
                         <label className="block text-gray-400 mb-2 font-medium">
                             Requirements
@@ -224,24 +194,12 @@ const CreateJob = () => {
                                 onChange={(e) => setCurrentRequirement(e.target.value)}
                                 onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addRequirement())}
                                 placeholder="Add a requirement and press Enter"
-                                className="
-                  flex-1 px-4 py-3 rounded-xl 
-                  bg-gray-800/40 border border-cyan-500/30 
-                  text-white placeholder-gray-500 
-                  focus:ring-2 focus:ring-cyan-500/40 outline-none
-                "
+                                className="flex-1 px-4 py-3 rounded-xl bg-midnight-black border border-white/10 text-white placeholder-slate-500 focus:ring-2 focus:ring-midnight-blue/40 focus:border-midnight-blue outline-none transition-all duration-300"
                             />
                             <button
                                 type="button"
                                 onClick={addRequirement}
-                                className="
-                  px-6 py-3 rounded-xl 
-                  bg-cyan-500/10 border border-cyan-500/50 
-                  text-cyan-400 font-semibold 
-                  hover:bg-cyan-500 hover:text-white 
-                  transition-all duration-300
-                  flex items-center gap-2
-                "
+                                className="px-6 py-3 rounded-xl bg-midnight-blue/10 border border-midnight-blue/50 text-midnight-blue font-semibold hover:bg-midnight-blue hover:text-white transition-all duration-300 flex items-center gap-2 hover:scale-105 active:scale-95"
                             >
                                 <Plus className="w-5 h-5" />
                                 Add
@@ -253,7 +211,7 @@ const CreateJob = () => {
                                 {formData.requirements.map((req, index) => (
                                     <div
                                         key={index}
-                                        className="flex items-center justify-between bg-gray-800/40 border border-cyan-800/30 rounded-xl px-4 py-3"
+                                        className="flex items-center justify-between bg-midnight-gray/40 border border-white/10 rounded-xl px-4 py-3 hover:border-midnight-blue/30 transition-colors"
                                     >
                                         <span className="text-gray-300">{req}</span>
                                         <button
@@ -269,20 +227,20 @@ const CreateJob = () => {
                         )}
                     </div>
 
-                    {}
+                    { }
                     <button
                         type="submit"
                         disabled={loading}
-                        className="
-              w-full py-4 rounded-xl 
-              bg-gradient-to-r from-cyan-500 to-blue-600 
-              text-white font-bold text-lg
-              hover:shadow-lg hover:shadow-cyan-500/25 
-              disabled:opacity-50 disabled:cursor-not-allowed
-              transition-all duration-300
-            "
+                        className="w-full py-4 rounded-xl bg-gradient-to-r from-midnight-blue to-midnight-violet text-white font-bold text-lg hover:shadow-lg hover:shadow-midnight-blue/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
                     >
-                        {loading ? "Posting..." : "Post Job"}
+                        {loading ? (
+                            <>
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                                Posting...
+                            </>
+                        ) : (
+                            "Post Job"
+                        )}
                     </button>
                 </form>
             </div>

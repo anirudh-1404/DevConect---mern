@@ -41,7 +41,7 @@ const testimonials = [
 ];
 
 const TestimonialCard = ({ t }) => (
-  <div className="min-w-[350px] bg-gray-900/50 border border-white/10 backdrop-blur-xl p-8 rounded-3xl mx-4 hover:border-cyan-500/30 transition-all duration-300 group">
+  <div className="min-w-[350px] bg-midnight-gray/50 border border-white/5 backdrop-blur-xl p-8 rounded-3xl mx-4 hover:border-midnight-blue/30 transition-all duration-300 group">
     <div className="flex items-center gap-1 mb-4">
       {[...Array(5)].map((_, i) => (
         <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
@@ -51,7 +51,7 @@ const TestimonialCard = ({ t }) => (
     <div className="flex items-center gap-4">
       <img src={t.avatar} alt={t.name} className="w-12 h-12 rounded-full bg-white/10" />
       <div>
-        <h4 className="text-white font-semibold group-hover:text-cyan-400 transition-colors">{t.name}</h4>
+        <h4 className="text-white font-semibold group-hover:text-midnight-blue transition-colors">{t.name}</h4>
         <p className="text-gray-500 text-sm">{t.role}</p>
       </div>
     </div>
@@ -60,10 +60,10 @@ const TestimonialCard = ({ t }) => (
 
 const TestimonialsSection = () => {
   return (
-    <section className="py-24 bg-[#020617] overflow-hidden relative">
-      {/* Background Gradients */}
+    <section className="py-24 bg-midnight-black overflow-hidden relative">
+      { }
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/5 rounded-full blur-[120px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-midnight-blue/5 rounded-full blur-[120px]" />
       </div>
 
       <div className="text-center mb-16 relative z-10 px-6">
@@ -73,7 +73,7 @@ const TestimonialsSection = () => {
           viewport={{ once: true }}
           className="text-3xl md:text-5xl font-bold text-white mb-6"
         >
-          Loved by <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Developers</span>
+          Loved by <span className="text-transparent bg-clip-text bg-gradient-to-r from-midnight-blue to-midnight-violet">Developers</span>
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -86,7 +86,7 @@ const TestimonialsSection = () => {
         </motion.p>
       </div>
 
-      {/* Marquee Container */}
+      { }
       <div className="relative flex overflow-x-hidden group">
         <div className="flex animate-marquee whitespace-nowrap py-4">
           {[...testimonials, ...testimonials].map((t, i) => (
@@ -99,9 +99,9 @@ const TestimonialsSection = () => {
           ))}
         </div>
 
-        {/* Fade Edges */}
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#020617] to-transparent z-10" />
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#020617] to-transparent z-10" />
+        { }
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-midnight-black to-transparent z-10" />
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-midnight-black to-transparent z-10" />
       </div>
     </section>
   );

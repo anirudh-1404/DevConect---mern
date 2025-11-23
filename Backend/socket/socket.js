@@ -9,6 +9,7 @@ const io = new Server(server, {
     cors: {
         origin: ["http://localhost:5174"],
         methods: ["GET", "POST"],
+        credentials: true,
     },
 });
 
@@ -16,7 +17,7 @@ export const getReceiverSocketId = (receiverId) => {
     return userSocketMap[receiverId];
 };
 
-const userSocketMap = {}; 
+const userSocketMap = {};
 
 io.on("connection", (socket) => {
     console.log("a user connected", socket.id);
@@ -24,15 +25,15 @@ io.on("connection", (socket) => {
     const userId = socket.handshake.query.userId;
     if (userId != "undefined") userSocketMap[userId] = socket.id;
 
-    
+
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
-    
+
     socket.on("join-coding-session", (sessionId) => {
         socket.join(`session-${sessionId}`);
         console.log(`User ${userId} joined coding session ${sessionId}`);
 
-        
+
         socket.to(`session-${sessionId}`).emit("user-joined-session", {
             userId,
             socketId: socket.id,
@@ -43,14 +44,14 @@ io.on("connection", (socket) => {
         socket.leave(`session-${sessionId}`);
         console.log(`User ${userId} left coding session ${sessionId}`);
 
-        
+
         socket.to(`session-${sessionId}`).emit("user-left-session", {
             userId,
         });
     });
 
     socket.on("code-change", ({ sessionId, code, userId: senderId }) => {
-        
+
         socket.to(`session-${sessionId}`).emit("code-update", {
             code,
             userId: senderId,
@@ -58,7 +59,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("cursor-position", ({ sessionId, position, userId: senderId }) => {
-        
+
         socket.to(`session-${sessionId}`).emit("cursor-update", {
             position,
             userId: senderId,
@@ -66,14 +67,14 @@ io.on("connection", (socket) => {
     });
 
     socket.on("language-change", ({ sessionId, language, userId: senderId }) => {
-        
+
         socket.to(`session-${sessionId}`).emit("language-update", {
             language,
             userId: senderId,
         });
     });
 
-    
+
     socket.on("disconnect", () => {
         console.log("user disconnected", socket.id);
         delete userSocketMap[userId];

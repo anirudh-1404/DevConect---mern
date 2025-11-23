@@ -5,7 +5,7 @@ const ClassicTemplate = ({ resumeData }) => {
 
     return (
         <div className="bg-white text-black w-full max-w-4xl mx-auto shadow-2xl p-12" id="resume-content">
-            {/* Header */}
+            {}
             <div className="text-center border-b-2 border-black pb-4 mb-6">
                 <h1 className="text-4xl font-bold mb-2">{personalInfo?.fullName || "YOUR NAME"}</h1>
 
@@ -26,7 +26,7 @@ const ClassicTemplate = ({ resumeData }) => {
                 </div>
             </div>
 
-            {/* Summary */}
+            {}
             {summary && (
                 <div className="mb-6">
                     <h2 className="text-xl font-bold uppercase mb-2 border-b border-black">
@@ -36,7 +36,7 @@ const ClassicTemplate = ({ resumeData }) => {
                 </div>
             )}
 
-            {/* Experience */}
+            {}
             {experience && experience.length > 0 && (
                 <div className="mb-6">
                     <h2 className="text-xl font-bold uppercase mb-2 border-b border-black">
@@ -61,7 +61,7 @@ const ClassicTemplate = ({ resumeData }) => {
                 </div>
             )}
 
-            {/* Education */}
+            {}
             {education && education.length > 0 && (
                 <div className="mb-6">
                     <h2 className="text-xl font-bold uppercase mb-2 border-b border-black">
@@ -88,7 +88,7 @@ const ClassicTemplate = ({ resumeData }) => {
                 </div>
             )}
 
-            {/* Skills */}
+            {}
             {(skills?.technical?.length > 0 || skills?.soft?.length > 0) && (
                 <div className="mb-6">
                     <h2 className="text-xl font-bold uppercase mb-2 border-b border-black">
@@ -109,7 +109,7 @@ const ClassicTemplate = ({ resumeData }) => {
                 </div>
             )}
 
-            {/* Projects */}
+            {}
             {projects && projects.length > 0 && (
                 <div className="mb-6">
                     <h2 className="text-xl font-bold uppercase mb-2 border-b border-black">
@@ -146,7 +146,7 @@ const ClassicTemplate = ({ resumeData }) => {
                 </div>
             )}
 
-            {/* Certifications */}
+            {}
             {certifications && certifications.length > 0 && (
                 <div className="mb-6">
                     <h2 className="text-xl font-bold uppercase mb-2 border-b border-black">
@@ -172,7 +172,7 @@ const ClassicTemplate = ({ resumeData }) => {
                 </div>
             )}
 
-            {/* Languages */}
+            {}
             {languages && languages.length > 0 && (
                 <div className="mb-6">
                     <h2 className="text-xl font-bold uppercase mb-2 border-b border-black">

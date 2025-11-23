@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#020617] pt-20">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-midnight-black pt-20">
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -15,7 +15,7 @@ const Hero = () => {
             opacity: [0.3, 0.5, 0.3]
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] bg-purple-500/20 rounded-full blur-[120px]"
+          className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] bg-midnight-violet/20 rounded-full blur-[120px]"
         />
         <motion.div
           animate={{
@@ -24,7 +24,7 @@ const Hero = () => {
             opacity: [0.2, 0.4, 0.2]
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[20%] -right-[10%] w-[60vw] h-[60vw] bg-cyan-500/20 rounded-full blur-[100px]"
+          className="absolute top-[20%] -right-[10%] w-[60vw] h-[60vw] bg-midnight-blue/20 rounded-full blur-[100px]"
         />
         <motion.div
           animate={{
@@ -33,7 +33,7 @@ const Hero = () => {
             opacity: [0.2, 0.3, 0.2]
           }}
           transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-[20%] left-[20%] w-[50vw] h-[50vw] bg-blue-600/20 rounded-full blur-[120px]"
+          className="absolute -bottom-[20%] left-[20%] w-[50vw] h-[50vw] bg-blue-500/10 rounded-full blur-[120px]"
         />
       </div>
 
@@ -52,10 +52,10 @@ const Hero = () => {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 hover:bg-white/10 transition-colors cursor-default"
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-midnight-blue opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-midnight-blue"></span>
             </span>
-            <span className="text-sm font-medium text-cyan-300 tracking-wide uppercase">The Future of Dev Collaboration</span>
+            <span className="text-sm font-medium text-midnight-blue tracking-wide uppercase">The Future of Dev Collaboration</span>
           </motion.div>
 
 
@@ -66,7 +66,7 @@ const Hero = () => {
             className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.1]"
           >
             Build Faster. <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 animate-gradient-x">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-midnight-blue via-blue-500 to-midnight-violet animate-gradient-x">
               Grow Together.
             </span>
           </motion.h1>
@@ -89,7 +89,7 @@ const Hero = () => {
             className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
           >
             <Link to="/register" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-lg shadow-[0_0_40px_-10px_rgba(6,182,212,0.5)] hover:shadow-[0_0_60px_-15px_rgba(6,182,212,0.6)] hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 group">
+              <button className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-midnight-blue to-midnight-violet text-white font-bold text-lg shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)] hover:shadow-[0_0_60px_-15px_rgba(59,130,246,0.6)] hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 group">
                 Get Started Free
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
@@ -97,7 +97,7 @@ const Hero = () => {
 
             <Link to="/community" className="w-full sm:w-auto">
               <button className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-2 backdrop-blur-sm">
-                <Globe className="w-5 h-5 text-gray-400" />
+                <Globe className="w-5 h-5 text-midnight-blue" />
                 Explore Community
               </button>
             </Link>

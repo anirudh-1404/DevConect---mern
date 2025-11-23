@@ -8,7 +8,7 @@ const Layout = () => {
   return (
     <>
       <Navbar />
-      <div className="relative min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] overflow-hidden">
+      <div className="relative min-h-screen bg-midnight-black overflow-hidden">
         <Outlet />
       </div>
       <Footer />

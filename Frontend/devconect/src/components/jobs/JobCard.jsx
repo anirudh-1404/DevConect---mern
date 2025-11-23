@@ -7,11 +7,11 @@ const JobCard = ({ job }) => {
         <Link to={`/jobs/${job._id}`}>
             <div
                 className="
-          bg-gray-900/50 backdrop-blur-xl 
-          border border-cyan-800/40 
+          bg-midnight-gray/50 backdrop-blur-xl 
+          border border-white/5 
           rounded-2xl p-6 
-          hover:border-cyan-500/50 
-          hover:shadow-[0_0_25px_rgba(6,182,212,0.2)] 
+          hover:border-midnight-blue/50 
+          hover:shadow-[0_0_25px_rgba(59,130,246,0.2)] 
           transition-all duration-300
           cursor-pointer
           h-full flex flex-col
@@ -20,10 +20,10 @@ const JobCard = ({ job }) => {
                 <div className="flex-1">
                     <div className="flex justify-between items-start mb-4">
                         <div className="flex-1">
-                            <h3 className="text-xl font-bold text-white mb-2 hover:text-cyan-400 transition-colors">
+                            <h3 className="text-xl font-bold text-white mb-2 hover:text-midnight-blue transition-colors">
                                 {job.title}
                             </h3>
-                            <div className="flex items-center text-cyan-400 text-sm font-medium mb-3">
+                            <div className="flex items-center text-midnight-blue text-sm font-medium mb-3">
                                 <Building2 className="w-4 h-4 mr-1.5" />
                                 {job.company}
                             </div>
@@ -70,9 +70,9 @@ const JobCard = ({ job }) => {
                 <button
                     className="
             w-full py-2.5 rounded-xl 
-            bg-cyan-500/10 border border-cyan-500/50 
-            text-cyan-400 font-semibold text-sm
-            hover:bg-cyan-500 hover:text-white 
+            bg-midnight-blue/10 border border-midnight-blue/50 
+            text-midnight-blue font-semibold text-sm
+            hover:bg-midnight-blue hover:text-white 
             transition-all duration-300
             flex items-center justify-center gap-2
           "

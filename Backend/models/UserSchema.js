@@ -39,6 +39,10 @@ const UserSchema = mongoose.Schema(
       type: String,
       default: "",
     },
+    company: {
+      type: String,
+      default: "",
+    },
     followers: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -73,7 +73,7 @@ const DeveloperProfile = () => {
 
   if (!devProfile) {
     return (
-      <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#020617] to-[#0f172a]">
+      <section className="min-h-screen flex items-center justify-center bg-midnight-black">
         <p className="text-gray-400 text-lg animate-pulse">
           Loading profile...
         </p>
@@ -82,7 +82,7 @@ const DeveloperProfile = () => {
   }
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-[#020617] to-[#0f172a] text-white py-20 px-6">
+    <section className="min-h-screen bg-midnight-black text-white py-20 px-6">
       { }
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center md:items-start gap-12">
         { }
@@ -90,14 +90,14 @@ const DeveloperProfile = () => {
           <img
             src={devProfile.avatar || "https://github.com/shadcn.png"}
             alt="dev"
-            className="w-48 h-48 md:w-64 md:h-64 object-cover rounded-2xl border-2 border-cyan-400 shadow-[0_0_40px_rgba(6,182,212,0.4)]"
+            className="w-48 h-48 md:w-64 md:h-64 object-cover rounded-2xl border-2 border-midnight-blue shadow-[0_0_40px_rgba(59,130,246,0.4)]"
           />
         </div>
 
         { }
         <div className="w-full md:w-2/3 space-y-5">
           { }
-          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text tracking-wide">
+          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-midnight-blue to-midnight-violet text-transparent bg-clip-text tracking-wide">
             {devProfile.username}
           </h1>
 
@@ -105,17 +105,17 @@ const DeveloperProfile = () => {
           <div className="flex items-center gap-6 text-gray-300 text-sm">
             <p
               onClick={() => setFollowersModal(true)}
-              className="hover:text-cyan-300 transition cursor-pointer"
+              className="hover:text-blue-400 transition cursor-pointer"
             >
-              Followers: <span className="text-cyan-400">{followersCount}</span>
+              Followers: <span className="text-midnight-blue">{followersCount}</span>
             </p>
 
             <p
               onClick={() => setFollowingModal(true)}
-              className="hover:text-cyan-300 transition cursor-pointer"
+              className="hover:text-blue-400 transition cursor-pointer"
             >
               Following:
-              <span className="text-cyan-400">
+              <span className="text-midnight-blue">
                 {devProfile.following?.length || 0}
               </span>
             </p>
@@ -128,13 +128,20 @@ const DeveloperProfile = () => {
           { }
           <div className="space-y-2 text-gray-400 text-sm">
             <p>
-              <span className="text-cyan-400 font-medium">Email:</span>{" "}
+              <span className="text-midnight-blue font-medium">Email:</span>{" "}
               {devProfile.email}
             </p>
 
+            {devProfile.company && (
+              <p>
+                <span className="text-midnight-blue font-medium">Working at:</span>{" "}
+                {devProfile.company}
+              </p>
+            )}
+
             {devProfile.github ? (
               <p>
-                <span className="text-cyan-400 font-medium">GitHub:</span>{" "}
+                <span className="text-midnight-blue font-medium">GitHub:</span>{" "}
                 <a
                   href={devProfile.github}
                   target="_blank"
@@ -149,7 +156,7 @@ const DeveloperProfile = () => {
 
             {devProfile.linkedin ? (
               <p>
-                <span className="text-cyan-400 font-medium">LinkedIn:</span>{" "}
+                <span className="text-midnight-blue font-medium">LinkedIn:</span>{" "}
                 <a
                   href={devProfile.linkedin}
                   target="_blank"
@@ -167,7 +174,7 @@ const DeveloperProfile = () => {
                 {devProfile.skills.map((skill, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1 bg-cyan-400/20 border border-cyan-400/40 rounded-full text-xs text-cyan-300"
+                    className="px-3 py-1 bg-midnight-blue/20 border border-midnight-blue/40 rounded-full text-xs text-midnight-blue"
                   >
                     {skill}
                   </span>
@@ -184,8 +191,8 @@ const DeveloperProfile = () => {
               <button
                 onClick={handleFollow}
                 className={`px-7 py-2.5 rounded-full font-medium text-white transition-all cursor-pointer 
-                bg-gradient-to-r from-cyan-400 to-blue-600
-                hover:scale-[1.05] hover:shadow-[0_0_25px_rgba(6,182,212,0.6)]
+                bg-gradient-to-r from-midnight-blue to-midnight-violet
+                hover:scale-[1.05] hover:shadow-[0_0_25px_rgba(59,130,246,0.6)]
               `}
               >
                 {isFollowing ? "Following ✓" : "Follow +"}
@@ -205,7 +212,7 @@ const DeveloperProfile = () => {
       </div>
 
       <section className="max-w-4xl mx-auto mt-20">
-        <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent mb-8">
+        <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-midnight-blue to-midnight-violet bg-clip-text text-transparent mb-8">
           {devProfile.username}'s Posts
         </h2>
 
@@ -218,7 +225,7 @@ const DeveloperProfile = () => {
             {userPosts.map((post) => (
               <div
                 key={post._id}
-                className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-[0_0_15px_rgba(6,182,212,0.15)]"
+                className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-[0_0_15px_rgba(59,130,246,0.15)]"
               >
                 <div className="flex justify-between">
                   <h3 className="text-xl font-semibold mb-2 text-white">
@@ -237,7 +244,23 @@ const DeveloperProfile = () => {
                   <img
                     src={post.image}
                     alt="post-img"
-                    className="w-full rounded-xl max-h-80 object-cover border border-cyan-400/30 shadow-md"
+                    className="w-full rounded-xl max-h-80 object-cover border border-midnight-blue/30 shadow-md"
+                  />
+                )}
+
+                {post.postType === "video" && post.videoUrl && (
+                  <video
+                    src={post.videoUrl}
+                    controls
+                    className="w-full rounded-xl max-h-96 border border-midnight-blue/30 shadow-md"
+                  />
+                )}
+
+                {post.postType === "audio" && post.audioUrl && (
+                  <audio
+                    src={post.audioUrl}
+                    controls
+                    className="w-full mt-2"
                   />
                 )}
 
@@ -246,7 +269,7 @@ const DeveloperProfile = () => {
                     setLikedBy(post.likes || []);
                     setModal(true);
                   }}
-                  className="text-gray-400 hover:text-cyan-300 transition text-lg mt-2"
+                  className="text-gray-400 hover:text-midnight-blue transition text-lg mt-2"
                 >
                   &hearts; {post.likes?.length || 0}
                 </button>
@@ -258,15 +281,15 @@ const DeveloperProfile = () => {
         { }
         {followersModal && (
           <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
-            <div className="bg-[#0f172a] border border-cyan-400/30 rounded-2xl p-6 w-96 text-white shadow-[0_0_25px_rgba(6,182,212,0.4)] relative">
+            <div className="bg-midnight-gray border border-midnight-blue/30 rounded-2xl p-6 w-96 text-white shadow-[0_0_25px_rgba(59,130,246,0.4)] relative">
               <button
                 onClick={() => setFollowersModal(false)}
-                className="absolute top-3 right-4 text-gray-400 hover:text-cyan-400 text-xl"
+                className="absolute top-3 right-4 text-gray-400 hover:text-midnight-blue text-xl"
               >
                 ✕
               </button>
 
-              <h3 className="text-2xl font-bold text-center bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text mb-4">
+              <h3 className="text-2xl font-bold text-center bg-gradient-to-r from-midnight-blue to-midnight-violet text-transparent bg-clip-text mb-4">
                 Followers
               </h3>
 
@@ -284,7 +307,7 @@ const DeveloperProfile = () => {
                       <img
                         src={user.avatar || "https://github.com/shadcn.png"}
                         alt={user.username}
-                        className="w-10 h-10 rounded-full border border-cyan-400"
+                        className="w-10 h-10 rounded-full border border-midnight-blue"
                       />
                       <p className="text-sm font-medium">{user.username}</p>
                     </div>
@@ -298,15 +321,15 @@ const DeveloperProfile = () => {
         { }
         {followingModal && (
           <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
-            <div className="bg-[#0f172a] border border-cyan-400/30 rounded-2xl p-6 w-96 text-white shadow-[0_0_25px_rgba(6,182,212,0.4)] relative">
+            <div className="bg-midnight-gray border border-midnight-blue/30 rounded-2xl p-6 w-96 text-white shadow-[0_0_25px_rgba(59,130,246,0.4)] relative">
               <button
                 onClick={() => setFollowingModal(false)}
-                className="absolute top-3 right-4 text-gray-400 hover:text-cyan-400 text-xl"
+                className="absolute top-3 right-4 text-gray-400 hover:text-midnight-blue text-xl"
               >
                 ✕
               </button>
 
-              <h3 className="text-2xl font-bold text-center bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text mb-4">
+              <h3 className="text-2xl font-bold text-center bg-gradient-to-r from-midnight-blue to-midnight-violet text-transparent bg-clip-text mb-4">
                 Following
               </h3>
 
@@ -324,7 +347,7 @@ const DeveloperProfile = () => {
                       <img
                         src={user.avatar || "https://github.com/shadcn.png"}
                         alt={user.username}
-                        className="w-10 h-10 rounded-full border border-cyan-400"
+                        className="w-10 h-10 rounded-full border border-midnight-blue"
                       />
                       <p className="text-sm font-medium">{user.username}</p>
                     </div>
@@ -338,15 +361,15 @@ const DeveloperProfile = () => {
         { }
         {modal && (
           <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
-            <div className="bg-[#0f172a] border border-cyan-400/30 rounded-2xl p-6 w-96 text-white shadow-[0_0_25px_rgba(6,182,212,0.4)] relative">
+            <div className="bg-midnight-gray border border-midnight-blue/30 rounded-2xl p-6 w-96 text-white shadow-[0_0_25px_rgba(59,130,246,0.4)] relative">
               <button
                 onClick={() => setModal(false)}
-                className="absolute top-3 right-4 text-gray-400 hover:text-cyan-400 text-xl"
+                className="absolute top-3 right-4 text-gray-400 hover:text-midnight-blue text-xl"
               >
                 ✕
               </button>
 
-              <h3 className="text-2xl font-bold text-center bg-gradient-to-r from-cyan-400 to-blue-600 text-transparent bg-clip-text mb-4">
+              <h3 className="text-2xl font-bold text-center bg-gradient-to-r from-midnight-blue to-midnight-violet text-transparent bg-clip-text mb-4">
                 Liked By
               </h3>
 
@@ -364,7 +387,7 @@ const DeveloperProfile = () => {
                       <img
                         src={user.avatar || "https://github.com/shadcn.png"}
                         alt={user.username}
-                        className="w-10 h-10 rounded-full border border-cyan-400"
+                        className="w-10 h-10 rounded-full border border-midnight-blue"
                       />
                       <p className="text-sm font-medium">{user.username}</p>
                     </div>

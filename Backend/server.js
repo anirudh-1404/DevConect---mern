@@ -15,7 +15,13 @@ import analyticsRoutes from "./routes/analyticsRoutes.js";
 import codingSessionRoutes from "./routes/codingSessionRoutes.js";
 import executionRoutes from "./routes/executionRoutes.js";
 import resumeRoutes from "./routes/resumeRoutes.js";
-import { app, server } from "./socket/socket.js";
+import applicationRoutes from "./routes/applicationRoutes.js";
+import interviewRoutes from "./routes/interviewRoutes.js";
+import hackathonRoutes from "./routes/hackathonRoutes.js";
+import teamRoutes from "./routes/teamRoutes.js";
+import submissionRoutes from "./routes/submissionRoutes.js";
+import { app, server, io } from "./socket/socket.js";
+import { setupInterviewSocket } from "./socket/interviewSocket.js";
 
 dotenv.config();
 
@@ -40,8 +46,16 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/sessions", codingSessionRoutes);
 app.use("/api/code", executionRoutes);
 app.use("/api/resumes", resumeRoutes);
+app.use("/api/applications", applicationRoutes);
+app.use("/api/interviews", interviewRoutes);
+app.use("/api/hackathons", hackathonRoutes);
+app.use("/api/teams", teamRoutes);
+app.use("/api/submissions", submissionRoutes);
 
 db();
+
+// Setup interview WebRTC signaling
+setupInterviewSocket(io);
 
 server.listen(process.env.PORT, () => {
   console.log("app is running on port 8000");

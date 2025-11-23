@@ -27,7 +27,7 @@ export const fetchAllUsers = async (req, res, next) => {
 };
 
 export const registerUser = async (req, res) => {
-  const { email, username, password, bio, role, skills, github, linkedin } =
+  const { email, username, password, bio, role, skills, github, linkedin, company } =
     req.body;
 
   try {
@@ -53,6 +53,7 @@ export const registerUser = async (req, res) => {
       github,
       linkedin,
       skills: skillsArray,
+      company,
     });
 
     const token = await genToken(user._id);
@@ -139,6 +140,8 @@ export const fetchUserProfile = async (req, res, next) => {
       skills: userData.skills,
       followers: userData.followers,
       following: userData.following,
+      company: userData.company,
+      createdAt: userData.createdAt,
     });
   } catch (err) {
     console.error("Error fetching profile:", err);
@@ -179,6 +182,14 @@ export const updateUserProfile = async (req, res, next) => {
       userData.bio = req.body.bio;
     }
 
+    if (req.body.skills) {
+      userData.skills = JSON.parse(req.body.skills);
+    }
+
+    if (req.body.company) {
+      userData.company = req.body.company;
+    }
+
     if (req.file) {
       userData.avatar = req.file.path;
     }
@@ -190,6 +201,9 @@ export const updateUserProfile = async (req, res, next) => {
       username: userData.username,
       bio: userData.bio,
       avatar: userData.avatar,
+      avatar: userData.avatar,
+      skills: userData.skills,
+      company: userData.company,
     });
   } catch (err) {
     res.status(500).json({
@@ -239,14 +253,14 @@ export const toggleFollowUser = async (req, res, next) => {
       });
     }
 
-    
+
     loggedUser.following.push(targetUserId);
     targetUser.followers.push(loggedInUserId);
 
     await loggedUser.save();
     await targetUser.save();
 
-    
+
     const newNotification = new Notification({
       type: "follow",
       from: loggedInUserId,
@@ -257,7 +271,7 @@ export const toggleFollowUser = async (req, res, next) => {
 
     await newNotification.save();
 
-    
+
     const receiverSocketId = getReceiverSocketId(targetUserId);
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newNotification", newNotification);

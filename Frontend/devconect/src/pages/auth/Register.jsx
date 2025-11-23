@@ -6,6 +6,7 @@ import API from "@/API/Interceptor";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { RingLoader } from "react-spinners";
+import { Eye, EyeOff } from "lucide-react";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -19,11 +20,14 @@ const Register = () => {
     linkedin: "",
     github: "",
     skills: [],
+    company: "",
   });
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -54,6 +58,7 @@ const Register = () => {
       form.append("role", formData.role);
       form.append("linkedin", formData.linkedin);
       form.append("github", formData.github);
+      form.append("company", formData.company);
       form.append("skills", JSON.stringify(formData.skills));
 
       if (formData.avatar) {
@@ -114,6 +119,7 @@ const Register = () => {
       avatar: null,
       linkedin: "",
       github: "",
+      company: "",
       skills: [],
     });
   };
@@ -140,48 +146,48 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#020617] flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-midnight-black flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="
           w-full max-w-7xl 
-          bg-gray-900/80 backdrop-blur-lg 
-          border border-cyan-800/50 
-          rounded-2xl shadow-2xl shadow-cyan-900/20
+          bg-midnight-gray/80 backdrop-blur-lg 
+          border border-white/10 
+          rounded-2xl shadow-2xl shadow-midnight-blue/20
           p-8 md:p-12 lg:p-16
           grid grid-cols-1 lg:grid-cols-2
           gap-10 lg:gap-16
         "
       >
-        { }
-        <div className="hidden lg:flex flex-col items-center justify-center space-y-4 p-4 border-r border-cyan-800/30">
+
+        <div className="hidden lg:flex flex-col items-center justify-center space-y-4 p-4 border-r border-white/10">
           <Lottie
             animationData={registerAnim}
             loop
             className="w-full max-w-lg opacity-90 transition-opacity duration-500 hover:opacity-100"
           />
-          <p className="text-xl font-semibold text-cyan-400 text-center mt-4">
+          <p className="text-xl font-semibold text-midnight-blue text-center mt-4">
             Join the Next-Gen Tech Community.
           </p>
         </div>
 
-        { }
+
         <div className="flex flex-col justify-center space-y-6">
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight">
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-midnight-blue to-midnight-violet tracking-tight">
             Register for <span className="text-white">DevConnect</span>
           </h2>
 
-          <p className="text-gray-400 text-sm sm:text-base leading-relaxed border-l-4 border-cyan-500 pl-3 py-1">
+          <p className="text-gray-400 text-sm sm:text-base leading-relaxed border-l-4 border-midnight-blue pl-3 py-1">
             Build your profile, collaborate on projects, and find your next
             opportunity.
           </p>
 
           <form className="space-y-6" onSubmit={handleSubmission}>
-            { }
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              { }
+
               <div>
                 <label className="text-sm font-medium text-gray-300 block mb-1">
                   Email
@@ -192,19 +198,19 @@ const Register = () => {
                   value={formData.email}
                   placeholder="you@example.com"
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg bg-gray-700/50 text-white border 
+                  className={`w-full px-4 py-3 rounded-lg bg-midnight-gray/50 text-white border 
                     ${errors.email
                       ? "border-red-500 ring-red-500"
-                      : "border-gray-700 hover:border-cyan-500/50"
+                      : "border-white/10 hover:border-midnight-blue/50"
                     } 
-                    focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition duration-300`}
+                    focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue outline-none transition duration-300`}
                 />
                 {errors.email && (
                   <p className="text-red-400 text-xs mt-1">{errors.email}</p>
                 )}
               </div>
 
-              { }
+
               <div>
                 <label className="text-sm font-medium text-gray-300 block mb-1">
                   Username
@@ -215,12 +221,12 @@ const Register = () => {
                   value={formData.username}
                   placeholder="John_Doe_Dev"
                   onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg bg-gray-700/50 text-white border 
+                  className={`w-full px-4 py-3 rounded-lg bg-midnight-gray/50 text-white border 
                     ${errors.username
                       ? "border-red-500 ring-red-500"
-                      : "border-gray-700 hover:border-cyan-500/50"
+                      : "border-white/10 hover:border-midnight-blue/50"
                     } 
-                    focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition duration-300`}
+                    focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue outline-none transition duration-300`}
                 />
                 {errors.username && (
                   <p className="text-red-400 text-xs mt-1">{errors.username}</p>
@@ -228,49 +234,82 @@ const Register = () => {
               </div>
             </div>
 
-            { }
+
+            <div>
+              <label className="text-sm font-medium text-gray-300 block mb-1">
+                Company Name (Optional)
+              </label>
+              <input
+                type="text"
+                name="company"
+                value={formData.company}
+                placeholder="e.g. Google, Startup Inc."
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-lg bg-midnight-gray/50 text-white border border-white/10 hover:border-midnight-blue/50 focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue outline-none transition duration-300"
+              />
+            </div>
+
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              { }
+
               <div>
                 <label className="text-sm font-medium text-gray-300 block mb-1">
                   Password
                 </label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  placeholder="••••••••"
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg bg-gray-700/50 text-white border 
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    placeholder="••••••••"
+                    onChange={handleChange}
+                    className={`w-full px-4 py-3 pr-12 rounded-lg bg-midnight-gray/50 text-white border
                     ${errors.password
-                      ? "border-red-500 ring-red-500"
-                      : "border-gray-700 hover:border-cyan-500/50"
-                    } 
-                    focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition duration-300`}
-                />
+                        ? "border-red-500 ring-red-500"
+                        : "border-white/10 hover:border-midnight-blue/50"
+                      }
+                    focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue outline-none transition duration-300`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-midnight-blue transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
                 {errors.password && (
                   <p className="text-red-400 text-xs mt-1">{errors.password}</p>
                 )}
               </div>
 
-              { }
+
               <div>
                 <label className="text-sm font-medium text-gray-300 block mb-1">
                   Confirm Password
                 </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  placeholder="••••••••"
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg bg-gray-700/50 text-white border 
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    placeholder="••••••••"
+                    onChange={handleChange}
+                    className={`w-full px-4 py-3 pr-12 rounded-lg bg-midnight-gray/50 text-white border
                     ${errors.confirmPassword
-                      ? "border-red-500 ring-red-500"
-                      : "border-gray-700 hover:border-cyan-500/50"
-                    } 
-                    focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition duration-300`}
-                />
+                        ? "border-red-500 ring-red-500"
+                        : "border-white/10 hover:border-midnight-blue/50"
+                      }
+                    focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue outline-none transition duration-300`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-midnight-blue transition-colors"
+                  >
+                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
                 {errors.confirmPassword && (
                   <p className="text-red-400 text-xs mt-1">
                     {errors.confirmPassword}
@@ -279,7 +318,7 @@ const Register = () => {
               </div>
             </div>
 
-            { }
+
             <div>
               <label className="text-sm font-medium text-gray-300 block mb-1">
                 Professional Bio (Optional)
@@ -290,10 +329,10 @@ const Register = () => {
                 placeholder="Ex: Full-stack developer specializing in MERN stack, open to collaboration."
                 onChange={handleChange}
                 rows={3}
-                className="w-full px-4 py-3 rounded-lg bg-gray-700/50 text-white border border-gray-700 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition duration-300 resize-none"
+                className="w-full px-4 py-3 rounded-lg bg-midnight-gray/50 text-white border border-white/10 hover:border-midnight-blue/50 focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue outline-none transition duration-300 resize-none"
               />
             </div>
-            { }
+
             <div>
               <label className="text-sm font-medium text-gray-300 block mb-1">
                 Linkedin URL (optional)
@@ -304,11 +343,11 @@ const Register = () => {
                 placeholder="Your Linkedin Profile URL"
                 onChange={handleChange}
                 rows={1}
-                className="w-full px-4 py-3 rounded-lg bg-gray-700/50 text-white border border-gray-700 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition duration-300 resize-none"
+                className="w-full px-4 py-3 rounded-lg bg-midnight-gray/50 text-white border border-white/10 hover:border-midnight-blue/50 focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue outline-none transition duration-300 resize-none"
               />
             </div>
 
-            { }
+
             <div>
               <label className="text-sm font-medium text-gray-300 block mb-1">
                 GitHub URL (optional)
@@ -319,11 +358,11 @@ const Register = () => {
                 placeholder="Your GitHub Profile URL"
                 onChange={handleChange}
                 rows={3}
-                className="w-full px-4 py-3 rounded-lg bg-gray-700/50 text-white border border-gray-700 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition duration-300 resize-none"
+                className="w-full px-4 py-3 rounded-lg bg-midnight-gray/50 text-white border border-white/10 hover:border-midnight-blue/50 focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue outline-none transition duration-300 resize-none"
               />
             </div>
 
-            { }
+
             <div>
               <label className="text-sm font-medium text-gray-300 block mb-2">
                 Your Skills (add multiple)
@@ -333,7 +372,7 @@ const Register = () => {
                 {formData.skills.map((skill, index) => (
                   <span
                     key={index}
-                    className="px-3 py-1 bg-cyan-600/20 text-cyan-300 text-sm rounded-full flex items-center gap-2 border border-cyan-500/40"
+                    className="px-3 py-1 bg-midnight-blue/20 text-midnight-blue text-sm rounded-full flex items-center gap-2 border border-midnight-blue/40"
                   >
                     {skill}
                     <button
@@ -351,82 +390,70 @@ const Register = () => {
                 type="text"
                 placeholder="Type a skill & press Enter"
                 onKeyDown={handleSkillKeyDown}
-                className="w-full px-4 py-3 rounded-lg bg-gray-700/50 text-white border 
-    border-gray-700 hover:border-cyan-500/50 focus:border-cyan-500 
-    focus:ring-1 focus:ring-cyan-500 outline-none transition duration-300"
+                className="w-full px-4 py-3 rounded-lg bg-midnight-gray/50 text-white border 
+    border-white/10 hover:border-midnight-blue/50 focus:border-midnight-blue 
+    focus:ring-1 focus:ring-midnight-blue outline-none transition duration-300"
               />
             </div>
 
 
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Avatar Upload */}
-              <div>
-                <label className="text-sm font-medium text-gray-300 block mb-1">
-                  Profile Avatar (Image)
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="
-        w-full mt-2 px-4 py-3 rounded-xl 
-        bg-white/5 border border-cyan-400/30
-        file:bg-cyan-900/30 file:border-0 
-        file:px-4 file:py-2
-        file:text-cyan-300 file:rounded-full 
-        hover:file:bg-cyan-900/40
-        transition-all duration-300
-        text-gray-300
-      "
-                />
-              </div>
 
-              {/* Role Selection */}
-              <div>
-                <label className="text-sm font-medium text-gray-300 block mb-2">
-                  Your Role
-                </label>
-                <div className="flex gap-4">
-                  {["Developer", "Recruiter"].map((r) => (
-                    <label
-                      key={r}
-                      className={`cursor-pointer px-4 py-2 rounded-full border text-sm font-medium transition ${formData.role === r
-                        ? "border-cyan-500 text-cyan-300 bg-cyan-900/40 shadow-md shadow-cyan-900/40"
-                        : "border-gray-700 text-gray-400 hover:border-gray-500"
-                        }`}
-                    >
-                      <input
-                        type="radio"
-                        name="role"
-                        value={r}
-                        checked={formData.role === r}
-                        onChange={handleChange}
-                        className="hidden"
-                      />
-                      {r}
-                    </label>
-                  ))}
-                </div>
+            <div>
+              <label className="text-sm font-medium text-gray-300 block mb-2">
+                Your Role
+              </label>
+              <div className="flex gap-4">
+                {["Developer", "Recruiter"].map((r) => (
+                  <label
+                    key={r}
+                    className={`cursor-pointer px-4 py-2 rounded-full border text-sm font-medium transition ${formData.role === r
+                      ? "border-midnight-blue text-midnight-blue bg-midnight-blue/20 shadow-md shadow-midnight-blue/40"
+                      : "border-white/10 text-gray-400 hover:border-gray-500"
+                      }`}
+                  >
+                    <input
+                      type="radio"
+                      name="role"
+                      value={r}
+                      checked={formData.role === r}
+                      onChange={handleChange}
+                      className="hidden"
+                    />
+                    {r}
+                  </label>
+                ))}
               </div>
             </div>
 
-            {/* Full width Create Account Button */}
+            <div>
+              <label className="text-sm font-medium text-gray-300 block mb-1">
+                Profile Avatar (Image)
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="w-full px-4 py-3 rounded-lg bg-midnight-gray/50 text-white border border-white/10 hover:border-midnight-blue/50 focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue outline-none transition duration-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-midnight-blue/10 file:text-midnight-blue hover:file:bg-midnight-blue/20"
+              />
+            </div>
+
+
             <motion.button
               type="submit"
               whileHover={{ scale: 1.015 }}
               whileTap={{ scale: 0.99 }}
               disabled={loading}
-              className="cursor-pointer w-full mt-8 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-lg shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="cursor-pointer w-full mt-8 py-3 rounded-lg bg-gradient-to-r from-midnight-blue to-midnight-violet text-white font-bold text-lg shadow-lg shadow-midnight-blue/20 hover:shadow-midnight-blue/30 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {loading ? <RingLoader size={25} color="white" /> : "Create Account"}
             </motion.button>
 
-            {/* Already a member text */}
+
             <p className="text-center text-gray-500 text-sm pt-2">
               Already have an account?
               <a
                 href="/login"
-                className="text-cyan-400 hover:text-cyan-300 font-semibold ml-1 transition duration-300"
+                className="text-midnight-blue hover:text-blue-400 font-semibold ml-1 transition duration-300"
               >
                 Log In Here
               </a>
@@ -434,8 +461,8 @@ const Register = () => {
           </form>
 
         </div>
-      </motion.div>
-    </div>
+      </motion.div >
+    </div >
   );
 };
 

@@ -4,22 +4,33 @@ import { getReceiverSocketId, io } from "../socket/socket.js";
 
 export const createPostController = async (req, res) => {
   try {
-    const { title, content } = req.body;
+    const { title, content, postType } = req.body;
 
-    let imagePath = null;
+    let imagePath = "";
+    let videoUrl = "";
+    let audioUrl = "";
 
     if (!title || !content) {
       return res.status(400).json({ message: "Title or Content is required!" });
     }
 
     if (req.file) {
-      imagePath = req.file.path;
+      if (postType === "video") {
+        videoUrl = req.file.path;
+      } else if (postType === "audio") {
+        audioUrl = req.file.path;
+      } else {
+        imagePath = req.file.path;
+      }
     }
 
     const post = await Post.create({
       title,
       content,
       image: imagePath,
+      videoUrl,
+      audioUrl,
+      postType: postType || "text",
       author: req.user._id,
     });
 
@@ -28,6 +39,7 @@ export const createPostController = async (req, res) => {
       post,
     });
   } catch (err) {
+    console.error("Error creating post:", err);
     res.status(500).json({ message: "Unable to create post!" });
   }
 };

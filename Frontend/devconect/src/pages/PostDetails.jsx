@@ -81,7 +81,7 @@ const PostDetails = () => {
             shadow-[0_0_30px_rgba(6,182,212,0.15)]
           "
                 >
-                    {}
+                    { }
                     <div className="flex items-center gap-4 mb-6">
                         <img
                             src={post?.author?.avatar || "https://github.com/shadcn.png"}
@@ -101,18 +101,28 @@ const PostDetails = () => {
                         </div>
                     </div>
 
-                    {}
+                    { }
                     <h2 className="text-2xl font-bold mb-3 tracking-wide">
                         {post.title}
                     </h2>
 
-                    {}
+                    { }
                     <p className="text-gray-300 text-base leading-relaxed mb-6">
                         {post.content}
                     </p>
 
-                    {}
-                    {post.image && (
+                    { }
+                    {/* Post Media (Video or Image) */}
+                    {post.postType === "video" && post.videoUrl ? (
+                        <video
+                            src={post.videoUrl}
+                            controls
+                            className="
+                w-full rounded-xl max-h-[500px] bg-black 
+                border border-cyan-500/30 shadow-[0_0_30px_rgba(6,182,212,0.25)]
+              "
+                        />
+                    ) : post.image && (
                         <img
                             src={post.image}
                             alt="post"
@@ -123,7 +133,7 @@ const PostDetails = () => {
                         />
                     )}
 
-                    {}
+                    { }
                     <div className="flex items-center gap-3 mt-4">
                         <button
                             onClick={() => {
@@ -154,7 +164,7 @@ const PostDetails = () => {
                         </button>
                     </div>
 
-                    {}
+                    { }
                     <div className="mt-6 space-y-5">
                         {post.comments?.map((c) => (
                             <div
@@ -200,7 +210,7 @@ const PostDetails = () => {
                             </div>
                         ))}
 
-                        {}
+                        { }
                         <div className="flex gap-3 mt-5">
                             <input
                                 type="text"
@@ -235,7 +245,7 @@ const PostDetails = () => {
                 </div>
             </div>
 
-            {}
+            { }
             {showModal && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
                     <div

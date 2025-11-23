@@ -14,11 +14,25 @@ const applicationSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ["Pending", "Reviewed", "Accepted", "Rejected"],
-            default: "Pending",
+            enum: ["Applied", "Interview Scheduled", "Interviewing", "Hired", "Offered", "Rejected"],
+            default: "Applied",
         },
         coverLetter: {
             type: String,
+        },
+        interviewDate: {
+            type: Date,
+        },
+        interviewTime: {
+            type: String,
+        },
+        interviewMode: {
+            type: String,
+            enum: ["Online", "Offline"],
+        },
+        interviewType: {
+            type: String,
+            enum: ["Technical", "HR", "Managerial"],
         },
     },
     { timestamps: true }

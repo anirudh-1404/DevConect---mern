@@ -21,7 +21,7 @@ const JobDetails = () => {
 
     useEffect(() => {
         fetchJob();
-        
+
         checkApplicationStatus();
     }, [id]);
 
@@ -90,7 +90,7 @@ const JobDetails = () => {
     if (loading) {
         return (
             <div className="min-h-screen bg-[#020617] text-white flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-midnight-blue"></div>
             </div>
         );
     }
@@ -100,18 +100,18 @@ const JobDetails = () => {
     return (
         <div className="min-h-screen bg-[#020617] text-white px-4 sm:px-6 py-16">
             <div className="max-w-4xl mx-auto">
-                {}
-                <Link to="/jobs" className="inline-flex items-center text-cyan-400 hover:text-cyan-300 mb-8 transition-colors">
+                { }
+                <Link to="/jobs" className="inline-flex items-center text-midnight-blue hover:text-midnight-violet mb-8 transition-all duration-300 hover:translate-x-[-4px]">
                     <ArrowLeft className="w-5 h-5 mr-2" />
                     Back to Jobs
                 </Link>
 
-                {}
-                <div className="bg-gray-900/50 backdrop-blur-xl border border-cyan-800/40 rounded-3xl p-8 mb-8">
+                { }
+                <div className="bg-midnight-gray/50 backdrop-blur-xl border border-white/10 rounded-3xl p-8 mb-8 shadow-2xl">
                     <div className="flex justify-between items-start mb-6">
                         <div className="flex-1">
                             <h1 className="text-4xl font-bold text-white mb-4">{job.title}</h1>
-                            <div className="flex items-center text-cyan-400 text-lg font-medium mb-4">
+                            <div className="flex items-center text-midnight-blue text-lg font-medium mb-4">
                                 <Building2 className="w-5 h-5 mr-2" />
                                 {job.company}
                             </div>
@@ -148,20 +148,20 @@ const JobDetails = () => {
                         </div>
                     </div>
 
-                    {}
+                    { }
                     <div className="mb-6">
                         <h2 className="text-2xl font-bold text-white mb-4">Job Description</h2>
                         <p className="text-gray-300 leading-relaxed whitespace-pre-line">{job.description}</p>
                     </div>
 
-                    {}
+                    { }
                     {job.requirements && job.requirements.length > 0 && (
                         <div className="mb-6">
                             <h2 className="text-2xl font-bold text-white mb-4">Requirements</h2>
                             <ul className="space-y-2">
                                 {job.requirements.map((req, index) => (
                                     <li key={index} className="flex items-start text-gray-300">
-                                        <CheckCircle className="w-5 h-5 mr-2 text-cyan-400 shrink-0 mt-0.5" />
+                                        <CheckCircle className="w-5 h-5 mr-2 text-midnight-blue shrink-0 mt-0.5" />
                                         {req}
                                     </li>
                                 ))}
@@ -169,27 +169,20 @@ const JobDetails = () => {
                         </div>
                     )}
 
-                    {}
+                    { }
                     <div className="flex gap-4 mt-8">
-                        {}
+                        { }
                         {!isOwner && !hasApplied && (
                             <button
                                 onClick={() => document.getElementById('apply-section').scrollIntoView({ behavior: 'smooth' })}
-                                className="
-                  px-8 py-3 rounded-xl 
-                  bg-gradient-to-r from-cyan-500 to-blue-600 
-                  text-white font-bold 
-                  hover:shadow-lg hover:shadow-cyan-500/25 hover:scale-105 
-                  transition-all duration-300
-                  flex items-center gap-2
-                "
+                                className="px-8 py-3 rounded-xl bg-gradient-to-r from-midnight-blue to-midnight-violet text-white font-bold hover:shadow-lg hover:shadow-midnight-blue/40 hover:scale-105 transition-all duration-300 flex items-center gap-2"
                             >
                                 <Briefcase className="w-5 h-5" />
                                 Apply Now
                             </button>
                         )}
 
-                        {}
+                        { }
                         {!isOwner && hasApplied && (
                             <button
                                 disabled
@@ -206,19 +199,12 @@ const JobDetails = () => {
                             </button>
                         )}
 
-                        {}
+                        { }
                         {isOwner && (
                             <>
                                 <button
                                     onClick={() => setShowApplicants(!showApplicants)}
-                                    className="
-                    px-8 py-3 rounded-xl 
-                    bg-cyan-500/10 border border-cyan-500/50 
-                    text-cyan-400 font-bold 
-                    hover:bg-cyan-500 hover:text-white 
-                    transition-all duration-300
-                    flex items-center gap-2
-                  "
+                                    className="px-8 py-3 rounded-xl bg-midnight-blue/10 border border-midnight-blue/50 text-midnight-blue font-bold hover:bg-midnight-blue hover:text-white transition-all duration-300 flex items-center gap-2"
                                 >
                                     <User className="w-5 h-5" />
                                     View Applicants ({applications.length})
@@ -240,9 +226,9 @@ const JobDetails = () => {
                     </div>
                 </div>
 
-                {}
+                { }
                 {isOwner && showApplicants && (
-                    <div className="bg-gray-900/50 backdrop-blur-xl border border-cyan-800/40 rounded-3xl p-8 mb-8">
+                    <div className="bg-midnight-gray/50 backdrop-blur-xl border border-white/10 rounded-3xl p-8 mb-8 shadow-2xl">
                         <h2 className="text-2xl font-bold text-white mb-6">Applicants</h2>
                         {applications.length === 0 ? (
                             <p className="text-gray-400 text-center py-8">No applications yet</p>
@@ -282,7 +268,7 @@ const JobDetails = () => {
                                             </div>
                                         )}
 
-                                        {}
+                                        { }
                                         <div className="flex gap-3 mt-4 pt-4 border-t border-gray-700/50">
                                             <Link
                                                 to={`/messages?userId=${app.applicant._id}`}
@@ -295,7 +281,7 @@ const JobDetails = () => {
                                             </Link>
                                             <Link
                                                 to={`/${app.applicant.role?.toLowerCase() === 'developer' ? 'developers' : 'recruiters'}/${app.applicant._id}`}
-                                                className="flex-1 px-4 py-2 rounded-xl bg-gray-800/50 border border-cyan-500/30 text-cyan-400 font-semibold text-center hover:bg-gray-800 transition-all"
+                                                className="flex-1 px-4 py-2 rounded-xl bg-gray-800/50 border border-midnight-blue/30 text-midnight-blue font-semibold text-center hover:bg-gray-800 transition-all"
                                             >
                                                 View Profile
                                             </Link>
@@ -307,9 +293,9 @@ const JobDetails = () => {
                     </div>
                 )}
 
-                {}
+                { }
                 {!isOwner && !hasApplied && (
-                    <div id="apply-section" className="bg-gray-900/50 backdrop-blur-xl border border-cyan-800/40 rounded-3xl p-8">
+                    <div id="apply-section" className="bg-midnight-gray/50 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
                         <h2 className="text-2xl font-bold text-white mb-6">Apply for this Position</h2>
                         <form onSubmit={handleApply}>
                             <div className="mb-6">
@@ -319,25 +305,13 @@ const JobDetails = () => {
                                     onChange={(e) => setCoverLetter(e.target.value)}
                                     rows={6}
                                     placeholder="Tell us why you're a great fit for this role..."
-                                    className="
-                    w-full px-4 py-3 rounded-xl 
-                    bg-gray-800/40 border border-cyan-500/30 
-                    text-white placeholder-gray-500 
-                    focus:ring-2 focus:ring-cyan-500/40 outline-none
-                  "
+                                    className="w-full px-4 py-3 rounded-xl bg-midnight-black border border-white/10 text-white placeholder-slate-500 focus:ring-2 focus:ring-midnight-blue/40 focus:border-midnight-blue outline-none transition-all duration-300 resize-none"
                                 />
                             </div>
                             <button
                                 type="submit"
                                 disabled={applying}
-                                className="
-                  w-full py-4 rounded-xl 
-                  bg-gradient-to-r from-cyan-500 to-blue-600 
-                  text-white font-bold 
-                  hover:shadow-lg hover:shadow-cyan-500/25 
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                  transition-all duration-300
-                "
+                                className="w-full py-4 rounded-xl bg-gradient-to-r from-midnight-blue to-midnight-violet text-white font-bold hover:shadow-lg hover:shadow-midnight-blue/40 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                             >
                                 {applying ? "Submitting..." : "Submit Application"}
                             </button>

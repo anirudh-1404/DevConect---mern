@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
+import { Eye, EyeOff } from "lucide-react";
 
 import loginAnim from "../../../Lottie/loginAnim.json";
 import API from "@/API/Interceptor";
@@ -15,6 +16,7 @@ const Login = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -71,45 +73,45 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#020617] flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-midnight-black flex items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="
           w-full max-w-7xl 
-          bg-gray-900/80 backdrop-blur-lg 
-          border border-cyan-800/50 
-          rounded-2xl shadow-2xl shadow-cyan-900/20
+          bg-midnight-gray/80 backdrop-blur-lg 
+          border border-white/10 
+          rounded-2xl shadow-2xl shadow-midnight-blue/20
           p-8 md:p-12 lg:p-16
           grid grid-cols-1 lg:grid-cols-2
           gap-10 lg:gap-16
         "
       >
-        {}
-        <div className="hidden lg:flex flex-col items-center justify-center space-y-4 p-4 border-r border-cyan-800/30">
+        { }
+        <div className="hidden lg:flex flex-col items-center justify-center space-y-4 p-4 border-r border-white/10">
           <Lottie
             animationData={loginAnim}
             loop
             className="w-full max-w-lg opacity-90 transition-opacity duration-500 hover:opacity-100"
           />
-          <p className="text-xl font-semibold text-cyan-400 text-center mt-4">
+          <p className="text-xl font-semibold text-midnight-blue text-center mt-4">
             Welcome back to the community.
           </p>
         </div>
 
-        {}
+        { }
         <div className="flex flex-col justify-center space-y-6">
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight">
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-midnight-blue to-midnight-violet tracking-tight">
             Login to <span className="text-white">DevConnect</span>
           </h2>
 
-          <p className="text-gray-400 text-sm sm:text-base leading-relaxed border-l-4 border-cyan-500 pl-3 py-1">
+          <p className="text-gray-400 text-sm sm:text-base leading-relaxed border-l-4 border-midnight-blue pl-3 py-1">
             Connect with developers and stay updated with tech trends.
           </p>
 
           <form className="space-y-6" onSubmit={handleSubmission}>
-            {}
+            { }
             <div>
               <label className="text-sm font-medium text-gray-300 block mb-1">
                 Email
@@ -120,13 +122,12 @@ const Login = () => {
                 value={formData.email}
                 placeholder="you@example.com"
                 onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg bg-gray-700/50 text-white border 
-                  ${
-                    errors.email
-                      ? "border-red-500 ring-red-500"
-                      : "border-gray-700 hover:border-cyan-500/50"
+                className={`w-full px-4 py-3 rounded-lg bg-midnight-gray/50 text-white border 
+                  ${errors.email
+                    ? "border-red-500 ring-red-500"
+                    : "border-white/10 hover:border-midnight-blue/50"
                   }
-                  focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 
+                  focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue 
                   outline-none transition duration-300`}
               />
               {errors.email && (
@@ -134,50 +135,58 @@ const Login = () => {
               )}
             </div>
 
-            {}
+            { }
             <div>
               <label className="text-sm font-medium text-gray-300 block mb-1">
                 Password
               </label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                placeholder="••••••••"
-                onChange={handleChange}
-                className={`w-full px-4 py-3 rounded-lg bg-gray-700/50 text-white border 
-                  ${
-                    errors.password
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={formData.password}
+                  placeholder="••••••••"
+                  onChange={handleChange}
+                  className={`w-full px-4 py-3 pr-12 rounded-lg bg-midnight-gray/50 text-white border 
+                    ${errors.password
                       ? "border-red-500 ring-red-500"
-                      : "border-gray-700 hover:border-cyan-500/50"
-                  }
-                  focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 
-                  outline-none transition duration-300`}
-              />
+                      : "border-white/10 hover:border-midnight-blue/50"
+                    }
+                    focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue 
+                    outline-none transition duration-300`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-midnight-blue transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
               {errors.password && (
                 <p className="text-red-400 text-xs mt-1">{errors.password}</p>
               )}
             </div>
 
-            {}
+            { }
             <motion.button
               type="submit"
               whileHover={{ scale: 1.015 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full mt-4 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white 
-                font-bold text-lg shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 
+              className="w-full mt-4 py-3 rounded-lg bg-gradient-to-r from-midnight-blue to-midnight-violet text-white 
+                font-bold text-lg shadow-lg shadow-midnight-blue/20 hover:shadow-midnight-blue/30 
                 transition-all duration-300"
             >
               Login
             </motion.button>
           </form>
 
-          {}
+          { }
           <p className="text-center text-gray-500 text-sm pt-2">
             New here?
             <Link
               to="/register"
-              className="text-cyan-400 hover:text-cyan-300 font-semibold ml-1 transition duration-300"
+              className="text-midnight-blue hover:text-blue-400 font-semibold ml-1 transition duration-300"
             >
               Create an account
             </Link>

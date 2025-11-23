@@ -8,12 +8,12 @@ export const trackProfileView = async (req, res) => {
         const { userId } = req.params;
         const viewerId = req.user._id;
 
-        
+
         if (userId === viewerId.toString()) {
             return res.status(200).json({ message: "Self-view not tracked" });
         }
 
-        
+
         const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
         const existingView = await ProfileView.findOne({
             viewer: viewerId,
@@ -41,23 +41,23 @@ export const getDashboardAnalytics = async (req, res) => {
         const userRole = req.user.role?.toLowerCase();
 
         if (userRole === "developer") {
-            
+
             const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
-            
+
             const profileViews = await ProfileView.find({
                 viewedUser: userId,
                 createdAt: { $gte: thirtyDaysAgo },
             }).populate("viewer", "username avatar");
 
-            
+
             const viewsByDate = {};
             profileViews.forEach((view) => {
                 const date = view.createdAt.toISOString().split("T")[0];
                 viewsByDate[date] = (viewsByDate[date] || 0) + 1;
             });
 
-            
+
             const applications = await Application.find({ applicant: userId }).populate(
                 "job",
                 "title company"
@@ -65,13 +65,13 @@ export const getDashboardAnalytics = async (req, res) => {
 
             const applicationStats = {
                 total: applications.length,
-                pending: applications.filter((a) => a.status === "Pending").length,
-                reviewed: applications.filter((a) => a.status === "Reviewed").length,
-                accepted: applications.filter((a) => a.status === "Accepted").length,
+                applied: applications.filter((a) => a.status === "Applied").length,
+                interviewing: applications.filter((a) => ["Interview Scheduled", "Interviewing"].includes(a.status)).length,
+                hired: applications.filter((a) => ["Hired", "Offered"].includes(a.status)).length,
                 rejected: applications.filter((a) => a.status === "Rejected").length,
             };
 
-            
+
             const recentViewers = profileViews
                 .slice(-10)
                 .reverse()
@@ -80,7 +80,7 @@ export const getDashboardAnalytics = async (req, res) => {
                     viewedAt: v.createdAt,
                 }));
 
-            
+
             const user = await User.findById(userId);
             const completionFields = ["avatar", "bio", "skills", "location", "github", "linkedin"];
             const completedFields = completionFields.filter((field) => user[field] && (Array.isArray(user[field]) ? user[field].length > 0 : true));
@@ -100,17 +100,17 @@ export const getDashboardAnalytics = async (req, res) => {
                 profileCompletion,
             });
         } else if (userRole === "recruiter") {
-            
+
             const jobs = await Job.find({ postedBy: userId });
             const jobIds = jobs.map((j) => j._id);
 
-            
+
             const applications = await Application.find({ job: { $in: jobIds } }).populate(
                 "applicant",
                 "username avatar"
             );
 
-            
+
             const applicationsPerJob = {};
             jobs.forEach((job) => {
                 applicationsPerJob[job.title] = applications.filter(
@@ -118,7 +118,7 @@ export const getDashboardAnalytics = async (req, res) => {
                 ).length;
             });
 
-            
+
             const jobsWithApplicants = jobs.map((job) => ({
                 ...job.toObject(),
                 applicantCount: applications.filter(
@@ -129,7 +129,7 @@ export const getDashboardAnalytics = async (req, res) => {
                 .sort((a, b) => b.applicantCount - a.applicantCount)
                 .slice(0, 5);
 
-            
+
             const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
             const profileViews = await ProfileView.find({
                 viewedUser: userId,

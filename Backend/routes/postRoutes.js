@@ -19,7 +19,7 @@ const router = express.Router();
 router.post(
   "/create",
   protectRoute,
-  upload.single("image"),
+  upload.single("file"),
   createPostController
 );
 router.get("/", fetchAllPosts);

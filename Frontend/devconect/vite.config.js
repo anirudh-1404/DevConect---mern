@@ -9,6 +9,13 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "stream": "stream-browserify",
     },
+  },
+  define: {
+    global: 'globalThis',
+  },
+  optimizeDeps: {
+    include: ['simple-peer'],
   },
 });

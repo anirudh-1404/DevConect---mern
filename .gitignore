@@ -1,1 +1,57 @@
+# Dependencies
+node_modules/
+Backend/node_modules/
+Frontend/devconect/node_modules/
+
+# Environment variables (CRITICAL - DO NOT PUSH)
+.env
+.env.local
+.env.development
+.env.production
+Backend/.env
+Frontend/devconect/.env
+
+# Build outputs
+dist/
+build/
+Frontend/devconect/dist/
+Frontend/devconect/build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Documentation (if you want to keep it local)
 docs
+
+# Utility scripts (personal use only)
+remove_comments.sh
+
+# Package manager locks (optional - some prefer to commit these)
+# package-lock.json
+# yarn.lock

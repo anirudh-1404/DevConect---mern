@@ -6,7 +6,8 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: "devconnect",
-    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    allowed_formats: ["jpg", "jpeg", "png", "webp", "mp4", "mov", "avi", "mkv", "mp3", "wav"],
+    resource_type: "auto",
   },
 });
 

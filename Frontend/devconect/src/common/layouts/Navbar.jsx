@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "@/context/AuthContext";
 import { useSocketContext } from "@/context/SocketContext";
 import API from "@/API/Interceptor";
-import { Bell, MessageCircle, Menu, X, Code2, Sparkles, ChevronDown, Users, Briefcase, Terminal, LayoutDashboard, Globe, FileText } from "lucide-react";
+import { Bell, MessageCircle, Menu, X, Code2, Sparkles, ChevronDown, Users, Briefcase, Terminal, LayoutDashboard, Globe, FileText, UserCog, Video, Trophy } from "lucide-react";
 
 const Navbar = () => {
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { isAuthenticated, logout, user } = useContext(AuthContext);
   const { socket } = useSocketContext();
   const [menuOpen, setMenuOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -90,73 +90,87 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 left-0 w-full z-50 bg-gray-900/95 backdrop-blur-xl border-b border-cyan-500/20 shadow-[0_4px_30px_rgba(6,182,212,0.1)]">
+    <nav className="sticky top-0 left-0 w-full z-50 bg-midnight-black/80 backdrop-blur-xl border-b border-white/5 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           { }
           <Link to="/" className="flex items-center gap-2 group">
             <div className="relative">
-              <Code2 className="w-8 h-8 text-cyan-400 group-hover:text-cyan-300 transition-colors" />
-              <Sparkles className="w-3 h-3 text-blue-400 absolute -top-1 -right-1 animate-pulse" />
+              <Code2 className="w-8 h-8 text-neon-cyan group-hover:text-neon-green transition-colors" />
+              <Sparkles className="w-3 h-3 text-neon-pink absolute -top-1 -right-1 animate-pulse" />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 text-transparent bg-clip-text">
+            <span className="text-2xl font-bold bg-gradient-to-r from-midnight-blue to-midnight-violet text-transparent bg-clip-text">
               DevConnect
             </span>
           </Link>
 
           { }
           <div className="hidden lg:flex items-center gap-4">
-            {/* Explore Dropdown */}
+            { }
             <div className="relative group">
-              <button className="flex items-center gap-1.5 px-3 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-gray-800/50">
-                <Globe className="w-4 h-4 text-cyan-400" />
+              <button className="flex items-center gap-1.5 px-3 py-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/5">
+                <Globe className="w-4 h-4 text-midnight-blue" />
                 <span className="font-medium text-sm">Explore</span>
                 <ChevronDown className="w-3 h-3 transition-transform group-hover:rotate-180" />
               </button>
               <div className="absolute top-full left-0 w-52 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 z-50">
-                <div className="bg-gray-900 border border-cyan-500/20 rounded-xl shadow-xl overflow-hidden">
-                  <Link to="/community" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
-                    <Globe className="w-4 h-4 text-green-400" />
+                <div className="bg-midnight-gray border border-white/10 rounded-xl shadow-xl overflow-hidden">
+                  <Link to="/community" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors">
+                    <Globe className="w-4 h-4 text-midnight-blue" />
                     Community
                   </Link>
-                  <Link to="/jobs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors border-t border-gray-800">
-                    <Briefcase className="w-4 h-4 text-purple-400" />
+                  <Link to="/jobs" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-neon-black hover:text-white transition-colors border-t border-gray-800">
+                    <Briefcase className="w-4 h-4 text-neon-pink" />
                     Jobs
                   </Link>
-                  <Link to="/developers" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors border-t border-gray-800">
-                    <Users className="w-4 h-4 text-blue-400" />
+                  <Link to="/developers" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-neon-black hover:text-white transition-colors border-t border-gray-800">
+                    <Users className="w-4 h-4 text-neon-cyan" />
                     Developers
                   </Link>
-                  <Link to="/recruiters" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors border-t border-gray-800">
-                    <Users className="w-4 h-4 text-blue-400" />
+                  <Link to="/recruiters" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-neon-black hover:text-white transition-colors border-t border-gray-800">
+                    <Users className="w-4 h-4 text-neon-cyan" />
                     Recruiters
                   </Link>
                 </div>
               </div>
             </div>
 
-            {/* Tools Dropdown - Only for authenticated users */}
+            { }
             {isAuthenticated && (
               <div className="relative group">
-                <button className="flex items-center gap-1.5 px-3 py-2 text-gray-300 hover:text-white transition-colors rounded-lg hover:bg-gray-800/50">
-                  <Terminal className="w-4 h-4 text-yellow-400" />
+                <button className="flex items-center gap-1.5 px-3 py-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/5">
+                  <Terminal className="w-4 h-4 text-midnight-violet" />
                   <span className="font-medium text-sm">Tools</span>
                   <ChevronDown className="w-3 h-3 transition-transform group-hover:rotate-180" />
                 </button>
                 <div className="absolute top-full left-0 w-52 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 z-50">
-                  <div className="bg-gray-900 border border-cyan-500/20 rounded-xl shadow-xl overflow-hidden">
-                    <Link to="/dashboard" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
-                      <LayoutDashboard className="w-4 h-4 text-cyan-400" />
+                  <div className="bg-midnight-gray border border-white/10 rounded-xl shadow-xl overflow-hidden">
+                    <Link to="/dashboard" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/5 hover:text-white transition-colors">
+                      <LayoutDashboard className="w-5 h-5 text-midnight-blue" />
                       Dashboard
                     </Link>
-                    <Link to="/resume-builder" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors border-t border-gray-800">
-                      <FileText className="w-4 h-4 text-green-400" />
+                    <Link to="/resume-builder" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-neon-black hover:text-white transition-colors border-t border-gray-800">
+                      <FileText className="w-4 h-4 text-neon-green" />
                       Resume Builder
                     </Link>
-                    <Link to="/coding-sessions" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-gray-800 hover:text-white transition-colors border-t border-gray-800">
-                      <Terminal className="w-4 h-4 text-yellow-400" />
+                    <Link to="/coding-sessions" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-neon-black hover:text-white transition-colors border-t border-gray-800">
+                      <Terminal className="w-4 h-4 text-neon-green" />
                       Live Coding
                     </Link>
+                    <Link to="/interviews" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-neon-black hover:text-white transition-colors border-t border-gray-800">
+                      <Video className="w-4 h-4 text-midnight-violet" />
+                      Interviews
+                    </Link>
+                    <Link to="/hackathons" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-neon-black hover:text-white transition-colors border-t border-gray-800">
+                      <Trophy className="w-4 h-4 text-yellow-500" />
+                      Hackathons
+                    </Link>
+                    {user?.role?.toLowerCase() === "recruiter" && (
+                      <Link to="/recruiter/crm" className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-neon-black hover:text-white transition-colors border-t border-gray-800">
+                        <UserCog className="w-4 h-4 text-midnight-violet" />
+                        Recruiter CRM
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
@@ -168,12 +182,12 @@ const Navbar = () => {
             {!isAuthenticated ? (
               <>
                 <Link to="/login">
-                  <button className="px-5 py-2 text-sm font-semibold text-cyan-400 hover:text-cyan-300 transition-colors">
+                  <button className="px-5 py-2 text-sm font-semibold text-gray-400 hover:text-white transition-colors">
                     Login
                   </button>
                 </Link>
                 <Link to="/register">
-                  <button className="px-5 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold text-sm hover:shadow-lg hover:shadow-cyan-500/25 hover:scale-105 transition-all">
+                  <button className="px-5 py-2 rounded-lg bg-white text-black font-semibold text-sm hover:bg-gray-200 transition-all">
                     Get Started
                   </button>
                 </Link>
@@ -181,10 +195,10 @@ const Navbar = () => {
             ) : (
               <>
                 { }
-                <Link to="/messages" className="relative p-2 hover:bg-gray-800/50 rounded-lg transition-colors">
-                  <MessageCircle className="w-5 h-5 text-gray-400 hover:text-cyan-400 transition-colors" />
+                <Link to="/messages" className="relative p-2 hover:bg-white/5 rounded-lg transition-colors">
+                  <MessageCircle className="w-5 h-5 text-gray-400 hover:text-white transition-colors" />
                   {unreadMessages > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-midnight-blue text-white text-xs font-bold rounded-full flex items-center justify-center">
                       {unreadMessages > 9 ? "9+" : unreadMessages}
                     </span>
                   )}
@@ -194,11 +208,11 @@ const Navbar = () => {
                 <div className="relative">
                   <button
                     onClick={() => setNotificationOpen(!notificationOpen)}
-                    className="relative p-2 hover:bg-gray-800/50 rounded-lg transition-colors"
+                    className="relative p-2 hover:bg-white/5 rounded-lg transition-colors"
                   >
-                    <Bell className="w-5 h-5 text-gray-400 hover:text-cyan-400 transition-colors" />
+                    <Bell className="w-5 h-5 text-gray-400 hover:text-white transition-colors" />
                     {unreadCount > 0 && (
-                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
+                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-midnight-blue text-white text-xs font-bold rounded-full flex items-center justify-center">
                         {unreadCount > 9 ? "9+" : unreadCount}
                       </span>
                     )}
@@ -206,7 +220,7 @@ const Navbar = () => {
 
                   { }
                   {notificationOpen && (
-                    <div className="absolute right-0 mt-2 w-80 bg-gray-900 border border-cyan-500/30 rounded-2xl shadow-[0_0_30px_rgba(6,182,212,0.2)] overflow-hidden">
+                    <div className="absolute right-0 mt-2 w-80 bg-midnight-gray border border-white/10 rounded-xl shadow-xl overflow-hidden">
                       <div className="p-4 border-b border-gray-800">
                         <h3 className="text-white font-bold">Notifications</h3>
                       </div>
@@ -217,18 +231,18 @@ const Navbar = () => {
                           notifications.slice(0, 10).map((notif) => (
                             <div
                               key={notif._id}
-                              className={`p-4 border-b border-gray-800 hover:bg-gray-800/50 transition-colors ${!notif.isRead ? "bg-cyan-500/5" : ""
+                              className={`p-4 border-b border-white/5 hover:bg-white/5 transition-colors ${!notif.isRead ? "bg-midnight-blue/10" : ""
                                 }`}
                             >
                               <div className="flex items-start gap-3">
                                 <img
                                   src={notif.from?.avatar || "https://github.com/shadcn.png"}
                                   alt={notif.from?.username}
-                                  className="w-10 h-10 rounded-full border-2 border-cyan-400"
+                                  className="w-10 h-10 rounded-full border border-white/10"
                                 />
                                 <div className="flex-1">
                                   <p className="text-white text-sm">
-                                    <span className="font-semibold text-cyan-400">{notif.from?.username}</span>{" "}
+                                    <span className="font-semibold text-white">{notif.from?.username}</span>{" "}
                                     {notif.message}
                                   </p>
                                   <div className="flex items-center justify-between mt-2">
@@ -239,7 +253,7 @@ const Navbar = () => {
                                       {!notif.isRead && (
                                         <button
                                           onClick={() => markAsRead(notif._id)}
-                                          className="text-xs text-cyan-400 hover:text-cyan-300"
+                                          className="text-xs text-midnight-blue hover:text-midnight-violet"
                                         >
                                           Mark read
                                         </button>
@@ -264,7 +278,7 @@ const Navbar = () => {
 
                 { }
                 <Link to="/post/create">
-                  <button className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold text-sm hover:shadow-lg hover:shadow-purple-500/25 hover:scale-105 transition-all">
+                  <button className="px-4 py-2 rounded-lg bg-midnight-blue text-white font-semibold text-sm hover:bg-blue-600 transition-all">
                     Create Post
                   </button>
                 </Link>
@@ -299,15 +313,15 @@ const Navbar = () => {
 
       { }
       {menuOpen && (
-        <div className="lg:hidden bg-gray-900/98 backdrop-blur-xl border-t border-cyan-500/20">
+        <div className="lg:hidden bg-midnight-black/95 backdrop-blur-xl border-t border-white/10">
           <div className="px-4 py-6 space-y-3">
             {isAuthenticated && (
               <Link
                 to="/dashboard"
-                className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-800/50 hover:text-white transition-all rounded-lg"
+                className="flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-white/5 hover:text-white transition-all rounded-lg"
                 onClick={() => setMenuOpen(false)}
               >
-                <LayoutDashboard className="w-5 h-5 text-cyan-400" />
+                <LayoutDashboard className="w-5 h-5 text-midnight-blue" />
                 Dashboard
               </Link>
             )}
@@ -315,44 +329,54 @@ const Navbar = () => {
             {isAuthenticated && (
               <Link
                 to="/resume-builder"
-                className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-800/50 hover:text-white transition-all rounded-lg"
+                className="flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-white/5 hover:text-white transition-all rounded-lg"
                 onClick={() => setMenuOpen(false)}
               >
-                <FileText className="w-5 h-5 text-green-400" />
+                <FileText className="w-5 h-5 text-midnight-violet" />
                 Resume Builder
               </Link>
             )}
-            <Link to="/jobs" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-800/50 rounded-lg">
-              <Briefcase className="w-5 h-5 text-purple-400" />
+            <Link to="/jobs" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-white/5 rounded-lg">
+              <Briefcase className="w-5 h-5 text-midnight-blue" />
               Jobs
             </Link>
-            <Link to="/community" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-800/50 rounded-lg">
-              <Globe className="w-5 h-5 text-green-400" />
+            <Link to="/community" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-white/5 rounded-lg">
+              <Globe className="w-5 h-5 text-midnight-violet" />
               Community
             </Link>
-            <Link to="/coding-sessions" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-800/50 rounded-lg">
-              <Terminal className="w-5 h-5 text-yellow-400" />
+            <Link to="/coding-sessions" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-neon-gray/50 rounded-lg">
+              <Terminal className="w-5 h-5 text-neon-green" />
               Live Coding
             </Link>
+            <Link to="/hackathons" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-neon-gray/50 rounded-lg">
+              <Trophy className="w-5 h-5 text-yellow-500" />
+              Hackathons
+            </Link>
+            {user?.role?.toLowerCase() === "recruiter" && (
+              <Link to="/recruiter/crm" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-neon-gray/50 rounded-lg">
+                <UserCog className="w-5 h-5 text-midnight-violet" />
+                Recruiter CRM
+              </Link>
+            )}
             <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Network</div>
-            <Link to="/developers" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-800/50 rounded-lg">
-              <Users className="w-5 h-5 text-blue-400" />
+            <Link to="/developers" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-neon-gray/50 rounded-lg">
+              <Users className="w-5 h-5 text-neon-cyan" />
               Developers
             </Link>
-            <Link to="/recruiters" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-800/50 rounded-lg">
-              <Users className="w-5 h-5 text-indigo-400" />
+            <Link to="/recruiters" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-neon-gray/50 rounded-lg">
+              <Users className="w-5 h-5 text-neon-cyan" />
               Recruiters
             </Link>
 
             {!isAuthenticated ? (
               <div className="space-y-3 pt-4 border-t border-gray-800">
                 <Link to="/login" onClick={() => setMenuOpen(false)}>
-                  <button className="w-full px-4 py-3 text-cyan-400 border border-cyan-500/30 rounded-lg font-semibold hover:bg-cyan-500/10 transition-all">
+                  <button className="w-full px-4 py-3 text-neon-cyan border border-neon-cyan/30 rounded-lg font-semibold hover:bg-neon-cyan/10 transition-all">
                     Login
                   </button>
                 </Link>
                 <Link to="/register" onClick={() => setMenuOpen(false)}>
-                  <button className="w-full px-4 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all">
+                  <button className="w-full px-4 py-3 bg-gradient-to-r from-neon-cyan to-neon-blue text-black rounded-lg font-semibold hover:shadow-lg transition-all">
                     Get Started
                   </button>
                 </Link>
@@ -360,22 +384,22 @@ const Navbar = () => {
             ) : (
               <div className="space-y-3 pt-4 border-t border-gray-800">
                 <Link to="/messages" onClick={() => setMenuOpen(false)}>
-                  <button className="w-full px-4 py-3 text-left text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg font-medium transition-all flex items-center justify-between">
+                  <button className="w-full px-4 py-3 text-left text-gray-300 hover:text-white hover:bg-neon-gray/50 rounded-lg font-medium transition-all flex items-center justify-between">
                     Messages
                     {unreadMessages > 0 && (
-                      <span className="px-2 py-1 bg-cyan-500 text-white text-xs font-bold rounded-full">
+                      <span className="px-2 py-1 bg-neon-cyan text-black text-xs font-bold rounded-full">
                         {unreadMessages}
                       </span>
                     )}
                   </button>
                 </Link>
                 <Link to="/post/create" onClick={() => setMenuOpen(false)}>
-                  <button className="w-full px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all">
+                  <button className="w-full px-4 py-3 bg-gradient-to-r from-neon-pink to-purple-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all">
                     Create Post
                   </button>
                 </Link>
                 <Link to="/profile" onClick={() => setMenuOpen(false)}>
-                  <button className="w-full px-4 py-3 text-left text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg font-medium transition-all">
+                  <button className="w-full px-4 py-3 text-left text-gray-300 hover:text-white hover:bg-neon-gray/50 rounded-lg font-medium transition-all">
                     Profile
                   </button>
                 </Link>

@@ -39,26 +39,26 @@ const Dashboard = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#020617] text-white flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500"></div>
+            <div className="min-h-screen bg-midnight-black text-white flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-midnight-blue"></div>
             </div>
         );
     }
 
     if (!analytics) {
         return (
-            <div className="min-h-screen bg-[#020617] text-white flex items-center justify-center">
+            <div className="min-h-screen bg-midnight-black text-white flex items-center justify-center">
                 <p className="text-gray-400">Failed to load analytics</p>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#020617] text-white px-4 sm:px-6 py-16">
+        <div className="min-h-screen bg-midnight-black text-white px-4 sm:px-6 py-16">
             <div className="max-w-7xl mx-auto">
                 { }
                 <div className="mb-12">
-                    <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 mb-2">
+                    <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-midnight-blue to-midnight-violet mb-2">
                         Analytics Dashboard
                     </h1>
                     <p className="text-gray-400">
@@ -85,8 +85,8 @@ const Dashboard = () => {
                                 color="blue"
                             />
                             <StatsCard
-                                title="Accepted"
-                                value={analytics.applications.stats?.accepted}
+                                title="Hired / Offered"
+                                value={analytics.applications.stats?.hired}
                                 icon={CheckCircle}
                                 color="green"
                             />
@@ -104,9 +104,9 @@ const Dashboard = () => {
                             <SimpleChart
                                 title="Application Status Breakdown"
                                 data={{
-                                    Pending: analytics.applications.stats.pending,
-                                    Reviewed: analytics.applications.stats.reviewed,
-                                    Accepted: analytics.applications.stats.accepted,
+                                    Applied: analytics.applications.stats.applied,
+                                    Interviewing: analytics.applications.stats.interviewing,
+                                    Hired: analytics.applications.stats.hired,
                                     Rejected: analytics.applications.stats.rejected,
                                 }}
                             />
@@ -119,7 +119,7 @@ const Dashboard = () => {
                         </div>
 
                         { }
-                        <div className="bg-gray-900/50 backdrop-blur-xl border border-cyan-800/40 rounded-2xl p-6 mb-8">
+                        <div className="bg-midnight-gray/50 backdrop-blur-xl border border-white/10 rounded-2xl p-6 mb-8">
                             <h3 className="text-lg font-semibold text-white mb-4">
                                 Recent Profile Viewers
                             </h3>
@@ -132,13 +132,13 @@ const Dashboard = () => {
                                     {analytics.profileViews?.recent?.map((view, idx) => (
                                         <div
                                             key={idx}
-                                            className="flex items-center justify-between bg-gray-800/40 rounded-xl p-4 hover:bg-gray-800/60 transition-all"
+                                            className="flex items-center justify-between bg-midnight-gray/40 rounded-xl p-4 hover:bg-midnight-gray/60 transition-all"
                                         >
                                             <div className="flex items-center gap-3">
                                                 <img
                                                     src={view.user.avatar || "https://github.com/shadcn.png"}
                                                     alt={view.user.username}
-                                                    className="w-10 h-10 rounded-full border-2 border-cyan-400"
+                                                    className="w-10 h-10 rounded-full border-2 border-midnight-blue"
                                                 />
                                                 <div>
                                                     <p className="text-white font-medium">
@@ -151,7 +151,7 @@ const Dashboard = () => {
                                             </div>
                                             <Link
                                                 to={`/developers/${view.user._id}`}
-                                                className="text-cyan-400 hover:text-cyan-300 text-sm"
+                                                className="text-midnight-blue hover:text-blue-400 text-sm"
                                             >
                                                 View Profile
                                             </Link>
@@ -162,7 +162,7 @@ const Dashboard = () => {
                         </div>
 
                         { }
-                        <div className="bg-gray-900/50 backdrop-blur-xl border border-cyan-800/40 rounded-2xl p-6">
+                        <div className="bg-midnight-gray/50 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
                             <h3 className="text-lg font-semibold text-white mb-4">
                                 Recent Applications
                             </h3>
@@ -175,7 +175,7 @@ const Dashboard = () => {
                                     {analytics.applications?.recent?.map((app) => (
                                         <div
                                             key={app._id}
-                                            className="flex items-center justify-between bg-gray-800/40 rounded-xl p-4"
+                                            className="flex items-center justify-between bg-midnight-gray/40 rounded-xl p-4"
                                         >
                                             <div className="flex-1">
                                                 <p className="text-white font-medium">{app.job.title}</p>
@@ -184,15 +184,15 @@ const Dashboard = () => {
                                             <span
                                                 className={`
                         px-3 py-1 rounded-full text-xs font-bold
-                        ${app.status === "Pending"
-                                                        ? "bg-yellow-500/20 text-yellow-400"
-                                                        : ""
-                                                    }
-                        ${app.status === "Reviewed"
+                        ${app.status === "Applied"
                                                         ? "bg-blue-500/20 text-blue-400"
                                                         : ""
                                                     }
-                        ${app.status === "Accepted"
+                        ${["Interview Scheduled", "Interviewing"].includes(app.status)
+                                                        ? "bg-purple-500/20 text-purple-400"
+                                                        : ""
+                                                    }
+                        ${["Hired", "Offered"].includes(app.status)
                                                         ? "bg-green-500/20 text-green-400"
                                                         : ""
                                                     }
@@ -251,7 +251,7 @@ const Dashboard = () => {
                         </div>
 
                         { }
-                        <div className="bg-gray-900/50 backdrop-blur-xl border border-cyan-800/40 rounded-2xl p-6">
+                        <div className="bg-midnight-gray/50 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
                             <h3 className="text-lg font-semibold text-white mb-4">
                                 Most Popular Jobs
                             </h3>
@@ -264,7 +264,7 @@ const Dashboard = () => {
                                     {analytics.popularJobs?.map((job) => (
                                         <div
                                             key={job._id}
-                                            className="flex items-center justify-between bg-gray-800/40 rounded-xl p-4 hover:bg-gray-800/60 transition-all"
+                                            className="flex items-center justify-between bg-midnight-gray/40 rounded-xl p-4 hover:bg-midnight-gray/60 transition-all"
                                         >
                                             <div className="flex-1">
                                                 <p className="text-white font-medium">{job.title}</p>
@@ -272,14 +272,14 @@ const Dashboard = () => {
                                             </div>
                                             <div className="flex items-center gap-4">
                                                 <div className="text-right">
-                                                    <p className="text-cyan-400 font-semibold">
+                                                    <p className="text-midnight-blue font-semibold">
                                                         {job.applicantCount}
                                                     </p>
                                                     <p className="text-gray-500 text-xs">applicants</p>
                                                 </div>
                                                 <Link
                                                     to={`/jobs/${job._id}`}
-                                                    className="text-cyan-400 hover:text-cyan-300 text-sm"
+                                                    className="text-midnight-blue hover:text-blue-400 text-sm"
                                                 >
                                                     View →
                                                 </Link>

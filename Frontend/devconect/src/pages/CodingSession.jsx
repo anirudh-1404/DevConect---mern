@@ -16,7 +16,7 @@ const CodingSession = () => {
     const { socket } = useSocketContext();
 
     const [session, setSession] = useState(null);
-    const [code, setCode] = useState("// Write your code here");
+    const [code, setCode] = useState("");
     const [language, setLanguage] = useState("javascript");
     const [loading, setLoading] = useState(true);
     const [participants, setParticipants] = useState([]);

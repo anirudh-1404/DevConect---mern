@@ -42,7 +42,7 @@ const codingSessionSchema = new mongoose.Schema(
         },
         code: {
             type: String,
-            default: "// Write your code here",
+            default: "",
         },
         status: {
             type: String,

@@ -40,9 +40,9 @@ const RecruitersPage = () => {
 
   return (
     <main>
-      <section className="min-h-screen bg-[#020617] text-white py-20 px-4 sm:px-8 lg:px-16">
+      <section className="min-h-screen bg-midnight-black text-white py-20 px-4 sm:px-8 lg:px-16">
         <div className="max-w-7xl mx-auto text-center mb-16">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 tracking-tight">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-midnight-blue to-midnight-violet tracking-tight">
             Top Recruiters & Hiring Partners
           </h1>
 
@@ -51,9 +51,9 @@ const RecruitersPage = () => {
           </p>
         </div>
 
-        {}
+        { }
         <div className="max-w-7xl mx-auto mb-12 space-y-6">
-          {}
+          { }
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
             <input
@@ -61,10 +61,10 @@ const RecruitersPage = () => {
               placeholder="Search by name or company..."
               className="
                 w-full pl-12 pr-4 py-4 rounded-xl
-                bg-gray-800/50 backdrop-blur-md 
-                border border-cyan-800/40 
+                bg-midnight-gray/50 backdrop-blur-md 
+                border border-white/10 
                 text-white placeholder-gray-400
-                focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400
+                focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue
                 transition-all outline-none
               "
               value={search}
@@ -72,9 +72,9 @@ const RecruitersPage = () => {
             />
           </div>
 
-          {}
+          { }
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {}
+            { }
             <div className="relative">
               <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
               <input
@@ -82,10 +82,10 @@ const RecruitersPage = () => {
                 placeholder="Filter by company..."
                 className="
                   w-full pl-12 pr-4 py-3 rounded-xl
-                  bg-gray-800/50 backdrop-blur-md 
-                  border border-cyan-800/40 
+                  bg-midnight-gray/50 backdrop-blur-md 
+                  border border-white/10 
                   text-white placeholder-gray-400
-                  focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400
+                  focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue
                   transition-all outline-none
                 "
                 value={company}
@@ -93,17 +93,17 @@ const RecruitersPage = () => {
               />
             </div>
 
-            {}
+            { }
             <div className="relative">
               <input
                 type="text"
                 placeholder="Filter by industry..."
                 className="
                   w-full px-4 py-3 rounded-xl
-                  bg-gray-800/50 backdrop-blur-md 
-                  border border-cyan-800/40 
+                  bg-midnight-gray/50 backdrop-blur-md 
+                  border border-white/10 
                   text-white placeholder-gray-400
-                  focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400
+                  focus:border-midnight-blue focus:ring-1 focus:ring-midnight-blue
                   transition-all outline-none
                 "
                 value={industry}
@@ -112,10 +112,10 @@ const RecruitersPage = () => {
             </div>
           </div>
 
-          {}
+          { }
           <div className="flex justify-between items-center">
             <p className="text-gray-400 text-sm">
-              Found <span className="text-cyan-400 font-semibold">{recruiters.length}</span> recruiter{recruiters.length !== 1 ? 's' : ''}
+              Found <span className="text-midnight-blue font-semibold">{recruiters.length}</span> recruiter{recruiters.length !== 1 ? 's' : ''}
             </p>
             {hasActiveFilters && (
               <button
@@ -128,10 +128,10 @@ const RecruitersPage = () => {
           </div>
         </div>
 
-        {}
+        { }
         {loading ? (
           <div className="text-center text-gray-500 py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-midnight-blue mx-auto mb-4"></div>
             Loading recruiters...
           </div>
         ) : recruiters.length === 0 ? (
@@ -145,11 +145,11 @@ const RecruitersPage = () => {
                 key={rec._id}
                 className="
                   group flex items-center gap-8 p-6  
-                  rounded-2xl bg-gray-900/70 backdrop-blur-xl 
-                  border border-cyan-800/40
-                  shadow-[0_0_20px_rgba(6,182,212,0.15)]
-                  hover:shadow-[0_0_35px_rgba(6,182,212,0.45)]
-                  hover:border-cyan-500/60 hover:-translate-y-1
+                  rounded-2xl bg-midnight-gray/70 backdrop-blur-xl 
+                  border border-white/10
+                  shadow-[0_0_20px_rgba(59,130,246,0.15)]
+                  hover:shadow-[0_0_35px_rgba(59,130,246,0.45)]
+                  hover:border-midnight-blue/60 hover:-translate-y-1
                   transition-all duration-300
                 "
               >
@@ -158,20 +158,20 @@ const RecruitersPage = () => {
                   alt="recruiter-avatar"
                   className="
                     w-24 h-24 rounded-full object-cover
-                    border-2 border-cyan-400
-                    shadow-[0_0_20px_rgba(6,182,212,0.55)]
-                    group-hover:shadow-[0_0_35px_rgba(6,182,212,0.85)]
+                    border-2 border-midnight-blue
+                    shadow-[0_0_20px_rgba(59,130,246,0.55)]
+                    group-hover:shadow-[0_0_35px_rgba(59,130,246,0.85)]
                     transition-all duration-300
                   "
                 />
 
                 <div className="flex-1">
-                  <h4 className="text-2xl font-semibold tracking-wide text-white group-hover:text-cyan-300 transition">
+                  <h4 className="text-2xl font-semibold tracking-wide text-white group-hover:text-midnight-blue transition">
                     {rec.username}
                   </h4>
 
                   {rec.company && (
-                    <p className="text-cyan-400 text-sm mt-1 font-medium flex items-center gap-1">
+                    <p className="text-midnight-blue text-sm mt-1 font-medium flex items-center gap-1">
                       <Building2 className="w-4 h-4" />
                       {rec.company}
                     </p>
@@ -191,9 +191,9 @@ const RecruitersPage = () => {
                     <button
                       className="
                         mt-4 px-5 py-2 rounded-full text-sm font-medium
-                        bg-gradient-to-r from-pink-400 to-purple-600
+                        bg-gradient-to-r from-midnight-blue to-midnight-violet
                         text-white
-                        hover:scale-[1.05] hover:shadow-[0_0_25px_rgba(236,72,153,0.6)] 
+                        hover:scale-[1.05] hover:shadow-[0_0_25px_rgba(59,130,246,0.6)] 
                         transition-all duration-300 cursor-pointer
                       "
                     >

@@ -27,8 +27,16 @@ import Dashboard from "./pages/Dashboard";
 import CodingSessions from "./pages/CodingSessions";
 import CodingSession from "./pages/CodingSession";
 import ResumeBuilder from "./pages/ResumeBuilder";
+import RecruiterCRM from "./pages/RecruiterCRM";
+import InterviewRoom from "./pages/InterviewRoom";
+import ScheduleInterview from "./pages/ScheduleInterview";
+import InterviewsList from "./pages/InterviewsList";
+import Hackathons from "./pages/Hackathons";
+import CreateHackathon from "./pages/CreateHackathon";
+import HackathonDetails from "./pages/HackathonDetails";
 
 const App = () => {
+  // Force reload for route changes
   const router = createBrowserRouter([
     {
       path: "/",
@@ -82,6 +90,14 @@ const App = () => {
           element: (
             <ProtectedRoute>
               <RecruitersProfile />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/recruiter/crm",
+          element: (
+            <ProtectedRoute>
+              <RecruiterCRM />
             </ProtectedRoute>
           ),
         },
@@ -162,6 +178,54 @@ const App = () => {
           element: (
             <ProtectedRoute>
               <ResumeBuilder />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/interview/:roomId",
+          element: (
+            <ProtectedRoute>
+              <InterviewRoom />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/schedule-interview",
+          element: (
+            <ProtectedRoute>
+              <ScheduleInterview />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/interviews",
+          element: (
+            <ProtectedRoute>
+              <InterviewsList />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/hackathons",
+          element: (
+            <ProtectedRoute>
+              <Hackathons />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/hackathons/create",
+          element: (
+            <ProtectedRoute>
+              <CreateHackathon />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/hackathons/:id",
+          element: (
+            <ProtectedRoute>
+              <HackathonDetails />
             </ProtectedRoute>
           ),
         },
