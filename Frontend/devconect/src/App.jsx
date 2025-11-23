@@ -34,6 +34,8 @@ import InterviewsList from "./pages/InterviewsList";
 import Hackathons from "./pages/Hackathons";
 import CreateHackathon from "./pages/CreateHackathon";
 import HackathonDetails from "./pages/HackathonDetails";
+import SavedJobs from "./pages/SavedJobs";
+import SavedPosts from "./pages/SavedPosts";
 
 const App = () => {
   // Force reload for route changes
@@ -136,6 +138,22 @@ const App = () => {
         {
           path: "/jobs/:id",
           element: <ProtectedRoute> <JobDetails /> </ProtectedRoute>,
+        },
+        {
+          path: "/saved-jobs",
+          element: (
+            <ProtectedRoute>
+              <SavedJobs />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/saved-posts",
+          element: (
+            <ProtectedRoute>
+              <SavedPosts />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "/coding-sessions",

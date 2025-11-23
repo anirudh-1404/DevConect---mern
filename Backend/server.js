@@ -20,6 +20,8 @@ import interviewRoutes from "./routes/interviewRoutes.js";
 import hackathonRoutes from "./routes/hackathonRoutes.js";
 import teamRoutes from "./routes/teamRoutes.js";
 import submissionRoutes from "./routes/submissionRoutes.js";
+import savedJobRoutes from "./routes/savedJobRoutes.js";
+import savedPostRoutes from "./routes/savedPostRoutes.js";
 import { app, server, io } from "./socket/socket.js";
 import { setupInterviewSocket } from "./socket/interviewSocket.js";
 
@@ -51,6 +53,8 @@ app.use("/api/interviews", interviewRoutes);
 app.use("/api/hackathons", hackathonRoutes);
 app.use("/api/teams", teamRoutes);
 app.use("/api/submissions", submissionRoutes);
+app.use("/api/saved-jobs", savedJobRoutes);
+app.use("/api/saved-posts", savedPostRoutes);
 
 db();
 

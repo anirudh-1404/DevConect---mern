@@ -15,8 +15,10 @@ const SavedJobs = () => {
 
     const fetchSavedJobs = async () => {
         try {
-            const { data } = await API.get("/jobs/saved/all");
-            setJobs(data);
+            const { data } = await API.get("/saved-jobs");
+            // Extract job objects from savedJobs array
+            const jobsList = data.savedJobs.map(saved => saved.job);
+            setJobs(jobsList);
             setLoading(false);
         } catch (error) {
             console.error("Error fetching saved jobs:", error);
@@ -24,15 +26,20 @@ const SavedJobs = () => {
         }
     };
 
-    const handleUnsave = (jobId) => {
-        setJobs(jobs.filter(job => job._id !== jobId));
+    const handleUnsave = async (jobId) => {
+        try {
+            await API.delete(`/saved-jobs/${jobId}`);
+            setJobs(jobs.filter(job => job._id !== jobId));
+        } catch (error) {
+            console.error("Error unsaving job:", error);
+        }
     };
 
     const filteredJobs = jobs.filter(
         (job) =>
-            job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            job.location.toLowerCase().includes(searchTerm.toLowerCase())
+            job?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            job?.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            job?.location?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (loading) {
@@ -49,7 +56,7 @@ const SavedJobs = () => {
     return (
         <div className="min-h-screen bg-[#020617] text-white px-4 sm:px-6 py-16">
             <div className="max-w-7xl mx-auto">
-                {}
+                { }
                 <div className="text-center mb-12">
                     <div className="flex items-center justify-center gap-3 mb-4">
                         <Bookmark className="w-12 h-12 text-emerald-400 fill-emerald-400" />
@@ -63,7 +70,7 @@ const SavedJobs = () => {
                 </div>
 
                 {jobs.length === 0 ? (
-                    
+
                     <div className="text-center py-20">
                         <div className="relative inline-block mb-8">
                             <div className="absolute inset-0 bg-emerald-500/20 blur-3xl rounded-full"></div>
@@ -85,7 +92,7 @@ const SavedJobs = () => {
                     </div>
                 ) : (
                     <>
-                        {}
+                        { }
                         <div className="mb-8">
                             <div className="relative max-w-2xl mx-auto">
                                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
@@ -99,14 +106,14 @@ const SavedJobs = () => {
                             </div>
                         </div>
 
-                        {}
+                        { }
                         {searchTerm && (
                             <p className="text-slate-400 text-sm mb-6 text-center">
                                 Showing {filteredJobs.length} of {jobs.length} saved jobs
                             </p>
                         )}
 
-                        {}
+                        { }
                         {filteredJobs.length === 0 ? (
                             <div className="text-center py-12">
                                 <p className="text-slate-400">No jobs match your search</p>

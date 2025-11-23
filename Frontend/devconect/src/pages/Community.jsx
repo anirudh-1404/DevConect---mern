@@ -11,6 +11,7 @@ const Community = () => {
   const [commentText, setCommentText] = useState({});
   const [loading, setLoading] = useState(true);
   const [expandedComments, setExpandedComments] = useState({});
+  const [savedPosts, setSavedPosts] = useState(new Set());
 
   const { isAuthenticated, user } = useContext(AuthContext);
 
@@ -19,11 +20,25 @@ const Community = () => {
       setLoading(true);
       const response = await API.get("/post");
       setAllPosts(response.data.allPosts);
+
+      if (isAuthenticated) {
+        fetchSavedPosts();
+      }
     } catch (err) {
       console.log("Unable to fetch community posts!", err.message);
       toast.error("Failed to load posts");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchSavedPosts = async () => {
+    try {
+      const { data } = await API.get("/saved-posts");
+      const savedIds = new Set(data.savedPosts.map(item => item.post._id));
+      setSavedPosts(savedIds);
+    } catch (err) {
+      console.log("Failed to fetch saved posts", err);
     }
   };
 
@@ -71,6 +86,27 @@ const Community = () => {
       ...prev,
       [postId]: !prev[postId]
     }));
+  };
+
+  const handleSavePost = async (postId) => {
+    try {
+      if (savedPosts.has(postId)) {
+        await API.delete(`/saved-posts/${postId}`);
+        setSavedPosts(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(postId);
+          return newSet;
+        });
+        toast.success("Post removed from saved");
+      } else {
+        await API.post(`/saved-posts/${postId}`);
+        setSavedPosts(prev => new Set(prev).add(postId));
+        toast.success("Post saved successfully");
+      }
+    } catch (err) {
+      console.log("Failed to toggle save post", err);
+      toast.error("Failed to update saved status");
+    }
   };
 
   useEffect(() => {
@@ -314,9 +350,14 @@ const Community = () => {
                   </button>
 
                   { }
-                  <button className="flex items-center gap-2 hover:text-midnight-blue transition group/bookmark">
-                    <Bookmark className="w-5 h-5 text-gray-400 group-hover/bookmark:text-midnight-blue 
-                    group-hover/bookmark:scale-110 transition-all" />
+                  <button
+                    onClick={() => handleSavePost(item._id)}
+                    className="flex items-center gap-2 hover:text-midnight-blue transition group/bookmark"
+                  >
+                    <Bookmark className={`w-5 h-5 transition-all group-hover/bookmark:scale-110 ${savedPosts.has(item._id)
+                      ? "fill-midnight-blue text-midnight-blue"
+                      : "text-gray-400 group-hover/bookmark:text-midnight-blue"
+                      }`} />
                   </button>
                 </div>
 
