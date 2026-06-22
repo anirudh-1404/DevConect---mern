@@ -57,10 +57,11 @@ export const registerUser = async (req, res) => {
     });
 
     const token = await genToken(user._id);
+    const isProduction = process.env.NODE_ENV === "production";
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "strict",
-      secure: false,
+      sameSite: isProduction ? "none" : "strict",
+      secure: isProduction,
       maxAge: 24 * 60 * 60 * 1000 * 2,
     });
 
@@ -96,10 +97,11 @@ export const loginController = async (req, res, next) => {
       });
     }
     const token = await genToken(userExists._id);
+    const isProduction = process.env.NODE_ENV === "production";
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "strict",
-      secure: false,
+      sameSite: isProduction ? "none" : "strict",
+      secure: isProduction,
       maxAge: 24 * 60 * 60 * 1000 * 2,
     });
 
