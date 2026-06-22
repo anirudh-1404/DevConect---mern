@@ -7,7 +7,7 @@ import loginAnim from "../../../Lottie/loginAnim.json";
 import API from "@/API/Interceptor";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "@/context/authContext";
+import { AuthContext } from "@/context/AuthContext";
 
 const Login = () => {
   const [formData, setFormData] = useState({

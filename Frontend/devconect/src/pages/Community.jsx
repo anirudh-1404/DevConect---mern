@@ -1,5 +1,5 @@
 import API from "@/API/Interceptor";
-import { AuthContext } from "@/context/authContext";
+import { AuthContext } from "@/context/AuthContext";
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Heart, MessageCircle, Share2, Bookmark, MoreHorizontal, Trash2 } from "lucide-react";
